@@ -1,9 +1,9 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 /**
  * IResourceFactory
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 interface IResourceFactory

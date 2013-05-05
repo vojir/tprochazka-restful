@@ -1,12 +1,12 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 use Nette\Application\IRouter;
 use Nette\Http\IRequest;
 
 /**
  * IResourceRouter
- * @package Drahak\Rest\Routes
+ * @package Drahak\Api\Routes
  * @author Drahomír Hanák
  */
 interface IResourceRouter extends IRouter

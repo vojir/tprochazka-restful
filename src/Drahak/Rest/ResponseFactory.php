@@ -1,13 +1,13 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
-use Drahak\Rest\IResource;
+use Drahak\Api\IResource;
 use Nette\Application\IResponse;
 use Nette\Object;
 
 /**
  * REST ResponseFactory
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 class ResponseFactory extends Object implements IResponseFactory

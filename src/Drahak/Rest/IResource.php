@@ -1,9 +1,9 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 /**
  * IResource determines REST service result set
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 interface IResource

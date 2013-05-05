@@ -1,13 +1,13 @@
 <?php
-namespace Drahak\Rest\Application\Routes;
+namespace Drahak\Api\Application\Routes;
 
-use Drahak\Rest\IResourceRouter;
+use Drahak\Api\IResourceRouter;
 use Nette\Application\Routers\Route;
 use Nette\Http;
 
 /**
  * ResourceRoute
- * @package Drahak\Rest\Routes
+ * @package Drahak\Api\Routes
  * @author Drahomír Hanák
  *
  * @property-read string $method

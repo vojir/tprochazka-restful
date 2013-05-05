@@ -1,13 +1,13 @@
 <?php
-namespace Drahak\Rest\Application\Routes;
+namespace Drahak\Api\Application\Routes;
 
-use Drahak\Rest\IResourceRouter;
-use Drahak\Rest\InvalidStateException;
+use Drahak\Api\IResourceRouter;
+use Drahak\Api\InvalidStateException;
 use Nette\Application\Routers\RouteList;
 
 /**
  * ResourceRouteList
- * @package Drahak\Rest\Route
+ * @package Drahak\Api\Route
  * @author Drahomír Hanák
  */
 class ResourceRouteList extends RouteList
@@ -17,7 +17,7 @@ class ResourceRouteList extends RouteList
      * Set offset
      * @param mixed $index
      * @param mixed $route
-     * @throws \Drahak\Rest\InvalidStateException
+     * @throws \Drahak\Api\InvalidStateException
      */
     public function offsetSet($index, $route)
     {

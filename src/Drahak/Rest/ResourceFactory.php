@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 use Nette\Object;
 
 /**
  * ResourceFactory
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 class ResourceFactory extends Object implements IResourceFactory

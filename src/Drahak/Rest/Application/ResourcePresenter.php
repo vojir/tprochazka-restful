@@ -1,20 +1,20 @@
 <?php
-namespace Drahak\Rest\Application;
+namespace Drahak\Api\Application;
 
-use Drahak\Rest\IResourceFactory;
-use Drahak\Rest\IResourcePresenter;
-use Drahak\Rest\IResourceRouter;
-use Drahak\Rest\IResponseFactory;
-use Drahak\Rest\InvalidStateException;
-use Drahak\Rest\IResource;
-use Drahak\Rest\Resource;
+use Drahak\Api\IResourceFactory;
+use Drahak\Api\IResourcePresenter;
+use Drahak\Api\IResourceRouter;
+use Drahak\Api\IResponseFactory;
+use Drahak\Api\InvalidStateException;
+use Drahak\Api\IResource;
+use Drahak\Api\Resource;
 use Nette\Utils\Strings;
 use Nette\Application\UI;
 use Nette\Application\IResponse;
 
 /**
  * Base presenter for REST API presenters
- * @package Drahak\Rest\Application
+ * @package Drahak\Api\Application
  * @author Drahomír Hanák
  */
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter

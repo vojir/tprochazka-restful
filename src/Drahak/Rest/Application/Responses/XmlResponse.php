@@ -1,15 +1,15 @@
 <?php
-namespace Drahak\Rest\Application\Responses;
+namespace Drahak\Api\Application\Responses;
 
-use Drahak\Rest\Mapping\IMapper;
-use Drahak\Rest\Mapping\XmlMapper;
+use Drahak\Api\Mapping\IMapper;
+use Drahak\Api\Mapping\XmlMapper;
 use Nette\Application\IResponse;
 use Nette\Object;
 use Nette\Http;
 
 /**
  * XmlResponse
- * @package Drahak\Rest\Responses
+ * @package Drahak\Api\Responses
  * @author Drahomír Hanák
  */
 class XmlResponse extends Object implements IResponse

@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 use Nette\Application\IResponse;
 
 /**
  * IResponseFactory
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 interface IResponseFactory

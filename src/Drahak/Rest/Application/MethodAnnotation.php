@@ -1,14 +1,14 @@
 <?php
-namespace Drahak\Rest\Application;
+namespace Drahak\Api\Application;
 
-use Drahak\Rest\InvalidStateException;
+use Drahak\Api\InvalidStateException;
 use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
 use Nette\Utils\Strings;
 
 /**
  * MethodAnnotation
- * @package Drahak\Rest\Annotations
+ * @package Drahak\Api\Annotations
  * @author Drahomír Hanák
  */
 class MethodAnnotation extends Object
@@ -32,7 +32,7 @@ class MethodAnnotation extends Object
     /**
      * Create routes
      * @return array
-     * @throws \Drahak\Rest\InvalidStateException
+     * @throws \Drahak\Api\InvalidStateException
      */
     private function createRoutes()
     {

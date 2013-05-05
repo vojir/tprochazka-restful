@@ -1,8 +1,8 @@
 <?php
-namespace Drahak\Rest\Application\Routes;
+namespace Drahak\Api\Application\Routes;
 
-use Drahak\Rest\Application\MethodAnnotation;
-use Drahak\Rest\IResourceRouter;
+use Drahak\Api\Application\MethodAnnotation;
+use Drahak\Api\IResourceRouter;
 use Nette\Application\IRouter;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
@@ -11,7 +11,7 @@ use Nette\Object;
 
 /**
  * RouteListFactory
- * @package Drahak\Rest\Application\Routes
+ * @package Drahak\Api\Application\Routes
  * @author Drahomír Hanák
  */
 class RouteListFactory extends Object

@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 use ArrayAccess;
 use Nette\Utils\Json;
@@ -9,7 +9,7 @@ use Nette\MemberAccessException;
 
 /**
  * REST resource
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  *
  * @property string $mimeType Allowed result mime type

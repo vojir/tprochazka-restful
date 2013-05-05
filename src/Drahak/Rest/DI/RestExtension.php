@@ -1,18 +1,18 @@
 <?php
-namespace Drahak\Rest\DI;
+namespace Drahak\Api\DI;
 
-use Drahak\Rest\Application\MethodAnnotation;
-use Drahak\Rest\Application\Routes\ResourceRoute;
-use Drahak\Rest\Application\Routes\ResourceRouteList;
-use Drahak\Rest\IResourceRouter;
+use Drahak\Api\Application\MethodAnnotation;
+use Drahak\Api\Application\Routes\ResourceRoute;
+use Drahak\Api\Application\Routes\ResourceRouteList;
+use Drahak\Api\IResourceRouter;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Config\CompilerExtension;
 use Nette\Config\Configurator;
 use Nette\Loaders\RobotLoader;
 
 /**
- * Drahak\Rest Extension
- * @package Drahak\Rest\DI
+ * Drahak\Api Extension
+ * @package Drahak\Api\DI
  * @author Drahomír Hanák
  */
 class RestExtension extends CompilerExtension

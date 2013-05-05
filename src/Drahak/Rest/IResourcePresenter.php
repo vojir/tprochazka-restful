@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 use Nette\Application\IPresenter;
 
 /**
  * REST API ResourcePresenter
- * @package Drahak\Rest
+ * @package Drahak\Api
  * @author Drahomír Hanák
  */
 interface IResourcePresenter extends IPresenter

@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Rest\Application\Responses;
+namespace Drahak\Api\Application\Responses;
 
 use Nette\Application\IResponse;
 use Nette\Object;
@@ -7,7 +7,7 @@ use Nette\Http;
 
 /**
  * NullResponse
- * @package Drahak\Rest\Responses
+ * @package Drahak\Api\Responses
  * @author Drahomír Hanák
  */
 class NullResponse extends Object implements IResponse

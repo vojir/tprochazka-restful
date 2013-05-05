@@ -1,13 +1,13 @@
 <?php
-namespace Drahak\Rest\Mapping;
+namespace Drahak\Api\Mapping;
 
-use Drahak\Rest\IMapper;
-use Drahak\Rest\InvalidArgumentException;
+use Drahak\Api\IMapper;
+use Drahak\Api\InvalidArgumentException;
 use Nette\Object;
 
 /**
  * XmlMapper
- * @package Drahak\Rest\Mapping
+ * @package Drahak\Api\Mapping
  * @author Drahomír Hanák
  */
 class XmlMapper extends Object implements IMapper

@@ -1,9 +1,9 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 /**
  * Resource data mapper interface
- * @package Drahak\Rest\Mapping
+ * @package Drahak\Api\Mapping
  * @author Drahomír Hanák
  */
 interface IMapper

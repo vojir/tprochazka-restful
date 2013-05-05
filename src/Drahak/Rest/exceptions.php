@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Rest;
+namespace Drahak\Api;
 
 /**
  * Determines usage error
