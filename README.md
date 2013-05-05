@@ -35,12 +35,12 @@ Then create your API resource presenter:
     use Drahak\Api\IResource;
 
     /**
-    * SamplePresenter resource
-    * @package ResourcesModule
-    * @author Drahomír Hanák
-    */
-   class SamplePresenter extends BasePresenter
-   {
+     * SamplePresenter resource
+     * @package ResourcesModule
+     * @author Drahomír Hanák
+     */
+    class SamplePresenter extends BasePresenter
+    {
 
        protected $typeMap = array(
            'json' => IResource::JSON,
