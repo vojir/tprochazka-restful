@@ -7,7 +7,7 @@ Do not use it on production. It is only for study purposes.
 Sample usage
 ------------
 
-Create `BaseOresenter`:
+Create `BasePresenter`:
 
     namespace ResourcesModule;
 
@@ -29,11 +29,12 @@ Create `BaseOresenter`:
 
 Then create your API resource presenter:
 
-   namespace ResourcesModule;
 
-   use Drahak\Api\IResource;
+    namespace ResourcesModule;
 
-   /**
+    use Drahak\Api\IResource;
+
+    /**
     * SamplePresenter resource
     * @package ResourcesModule
     * @author Drahomír Hanák
@@ -66,7 +67,7 @@ Then create your API resource presenter:
 
    }
 
-See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Api library to generate API routes for you so you don't need to do it manualy. But tt is not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
+See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Api library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
 
     use Drahak\Api\Application\Routes\ResourceRoute;
 
