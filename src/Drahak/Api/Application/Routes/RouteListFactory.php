@@ -6,6 +6,7 @@ use Drahak\Api\IResourceRouter;
 use Nette\Application\IRouter;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
+use Nette\Http\IRequest;
 use Nette\Loaders\RobotLoader;
 use Nette\Object;
 
@@ -50,11 +51,11 @@ class RouteListFactory extends Object
         $routeList = new ResourceRouteList($module);
         foreach ($this->loader->getIndexedClasses() as $class => $file) {
             $methods = array(
-                IResourceRouter::GET => new MethodAnnotation($class::getReflection(), IResourceRouter::GET),
-                IResourceRouter::POST => new MethodAnnotation($class::getReflection(), IResourceRouter::POST),
-                IResourceRouter::PUT => new MethodAnnotation($class::getReflection(), IResourceRouter::PUT),
-                IResourceRouter::HEAD => new MethodAnnotation($class::getReflection(), IResourceRouter::HEAD),
-                IResourceRouter::DELETE => new MethodAnnotation($class::getReflection(), IResourceRouter::DELETE),
+                IResourceRouter::GET => new MethodAnnotation($class::getReflection(), IRequest::GET),
+                IResourceRouter::POST => new MethodAnnotation($class::getReflection(), IRequest::POST),
+                IResourceRouter::PUT => new MethodAnnotation($class::getReflection(), IRequest::PUT),
+                IResourceRouter::HEAD => new MethodAnnotation($class::getReflection(), IRequest::HEAD),
+                IResourceRouter::DELETE => new MethodAnnotation($class::getReflection(), IRequest::DELETE),
             );
 
             foreach ($methods as $method => $annotations) {
@@ -64,7 +65,7 @@ class RouteListFactory extends Object
                             $this->routeConfig['prefix'] . '/' .  $pattern :
                             $pattern;
 
-                    $routeList[] = new ResourceRoute($method, $urlPattern, $destination);
+                    $routeList[] = new ResourceRoute($urlPattern, $destination, $method);
                 }
             }
         }
