@@ -82,3 +82,65 @@ $anyRouteList[] = new ResourceRoute('sample[.<type xml|json>]', 'Resources:Sampl
 ```
 
 There is only one more parameter unlike the Nette default Route, the request method. This allows you to generate same URL for e.g. GET and POST method. You can pass this parameter to route as a flag so you can combine more request methods such as `ResourceRoute::GET | ResourceRoute::POST` to listen on GET and POST request method in the same route.
+
+You can also define action names dictionary for each reqest method:
+
+```php
+<?php
+new ResourceRoute('myResourceName', array(
+    'presenter' => 'MyResourcePresenter',
+    'action' => array(
+        ResourceRoute::GET => 'content',
+        ResourceRoute::DELETE => 'delete'
+    )
+), ResourceRoute::GET | ResourceRoute::DELETE);
+```
+
+Simple CRUD resources
+---------------------
+Well it's nice but in many cases I define only CRUD operations so how can I do it more intuitively? Use `CrudRoute`! This childe of `ResourceRoute` predefines base CRUD operations for you. Namely, it is `Presenter:create` for PUT method, `Presenter:read` for GET, `Presenter:update` for POST and `Presenter:delete` for DELETE. Then your router will look like this:
+
+```php
+<?php
+new CrudRoute('<module>/crud', 'MyResourcePresenter');
+```
+Note the second parameter, metadata. You can define only Presenter not action name. This is because the action name will be replaced by value from actionDictionary (`[CrudRoute::PUT => 'create', CrudRoute::GET => 'read', CrudRoute::POST => 'update', CrudRoute::DELETE => 'delete']`) which is property of `ResourceRoute` so even of `CrudRoute` since it is its child. Also note that we don't have to set flags. Default flags are setted to `CrudRoute::RESTFUL` so the route will match all request methods.
+
+Then you can simple define your CRUD resource presenter:
+
+```php
+<?php
+namespace ResourcesModule;
+
+/**
+ * CRUD resource presenter
+ * @package ResourcesModule
+ * @author Drahomír Hanák
+ */
+class CrudPresenter extends BasePresenter
+{
+
+    public function actionCreate()
+    {
+        $this->resource->action = 'Create';
+    }
+
+    public function actionRead()
+    {
+        $this->resource->action = 'Read';
+    }
+
+    public function actionUpdate()
+    {
+        $this->resource->action = 'Update';
+    }
+
+    public function actionDelete()
+    {
+        $this->resource->action = 'Delete';
+    }
+
+}
+```
+
+So that's it. Enjoy and hope you like it!
