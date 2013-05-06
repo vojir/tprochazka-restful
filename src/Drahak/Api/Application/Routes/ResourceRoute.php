@@ -24,6 +24,9 @@ class ResourceRoute extends Route implements IResourceRouter
         Http\IRequest::DELETE => self::DELETE
     );
 
+    /** @var array */
+    private $actionDictionary;
+
     /**
      * Is this route mapped to given method
      * @param int $method
@@ -32,6 +35,20 @@ class ResourceRoute extends Route implements IResourceRouter
     public function isMethod($method)
     {
         return ($this->flags & $method) == $method;
+    }
+
+    /**
+     * @param string $mask
+     * @param array|string $metadata
+     * @param int $flags
+     */
+    public function __construct($mask, $metadata = array(), $flags = 0)
+    {
+        parent::__construct($mask, $metadata, $flags);
+
+        if (isset($metadata['action']) && is_array($metadata['action'])) {
+            $this->actionDictionary = $metadata['action'];
+        }
     }
 
     /**
@@ -45,9 +62,20 @@ class ResourceRoute extends Route implements IResourceRouter
             return NULL;
         }
 
+        // Check requested method
         $methodFlag = $this->methodDictionary[$httpRequest->getMethod()];
         if (!$this->isMethod($methodFlag)) {
             return NULL;
+        }
+
+        // If there is action dictionary, set method
+        if ($this->actionDictionary) {
+            if (!isset($this->actionDictionary[$methodFlag])) {
+                return NULL;
+            }
+
+            $parameters = $appRequest->getParameters() + array('action' => $this->actionDictionary[$methodFlag]);
+            $appRequest->setParameters($parameters);
         }
 
         return $appRequest;

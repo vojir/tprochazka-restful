@@ -81,4 +81,4 @@ use Drahak\Api\Application\Routes\ResourceRoute;
 $anyRouteList[] = new ResourceRoute('sample[.<type xml|json>]', 'Resources:Sample:content', ResourceRoute::GET);
 ```
 
-There is only one more parameter unlike the Nette default Route, the request method. This allows you to generate same URL for e.g. GET and POST method.
+There is only one more parameter unlike the Nette default Route, the request method. This allows you to generate same URL for e.g. GET and POST method. You can pass this parameter to route as a flag so you can combine more request methods such as `ResourceRoute::GET | ResourceRoute::POST` to listen on GET and POST request method in the same route.
