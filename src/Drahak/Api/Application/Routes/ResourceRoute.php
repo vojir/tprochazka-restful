@@ -11,6 +11,7 @@ use Nette\Http;
  * @author Drahomír Hanák
  *
  * @property-read string $method
+ * @property array $actionDictionary
  */
 class ResourceRoute extends Route implements IResourceRouter
 {
@@ -25,17 +26,7 @@ class ResourceRoute extends Route implements IResourceRouter
     );
 
     /** @var array */
-    private $actionDictionary;
-
-    /**
-     * Is this route mapped to given method
-     * @param int $method
-     * @return bool
-     */
-    public function isMethod($method)
-    {
-        return ($this->flags & $method) == $method;
-    }
+    protected $actionDictionary;
 
     /**
      * @param string $mask
@@ -49,6 +40,37 @@ class ResourceRoute extends Route implements IResourceRouter
         if (isset($metadata['action']) && is_array($metadata['action'])) {
             $this->actionDictionary = $metadata['action'];
         }
+    }
+
+
+    /**
+     * Is this route mapped to given method
+     * @param int $method
+     * @return bool
+     */
+    public function isMethod($method)
+    {
+        return ($this->flags & $method) == $method;
+    }
+
+    /**
+     * Get action dictionary
+     * @return array|NULL
+     */
+    public function getActionDictionary()
+    {
+        return $this->actionDictionary;
+    }
+
+    /**
+     * Set action dictionary
+     * @param array|NULL
+     * @return $this
+     */
+    public function setActionDictionary($actionDictionary)
+    {
+        $this->actionDictionary = $actionDictionary;
+        return $this;
     }
 
     /**
@@ -74,7 +96,8 @@ class ResourceRoute extends Route implements IResourceRouter
                 return NULL;
             }
 
-            $parameters = $appRequest->getParameters() + array('action' => $this->actionDictionary[$methodFlag]);
+            $parameters = $appRequest->getParameters();
+            $parameters['action'] = $this->actionDictionary[$methodFlag];
             $appRequest->setParameters($parameters);
         }
 
