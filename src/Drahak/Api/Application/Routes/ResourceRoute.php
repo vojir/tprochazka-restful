@@ -15,28 +15,23 @@ use Nette\Http;
 class ResourceRoute extends Route implements IResourceRouter
 {
 
-    /** @var string */
-    private $method = self::GET;
+    /** @var array */
+    private $methodDictionary = array(
+        Http\IRequest::GET => self::GET,
+        Http\IRequest::POST => self::POST,
+        Http\IRequest::PUT => self::PUT,
+        Http\IRequest::HEAD => self::HEAD,
+        Http\IRequest::DELETE => self::DELETE
+    );
 
     /**
-     * Get cuurrent route method
-     * @return string
+     * Is this route mapped to given method
+     * @param int $method
+     * @return bool
      */
-    public function getMethod()
+    public function isMethod($method)
     {
-        return $this->method;
-    }
-
-    /**
-     * @param string $method
-     * @param array $mask
-     * @param array $metadata
-     * @param int $flags
-     */
-    public function __construct($method, $mask, $metadata = array(), $flags = 0)
-    {
-        parent::__construct($mask, $metadata, $flags);
-        $this->method = $method;
+        return ($this->flags & $method) == $method;
     }
 
     /**
@@ -50,7 +45,8 @@ class ResourceRoute extends Route implements IResourceRouter
             return NULL;
         }
 
-        if ($httpRequest->getMethod() !== $this->getMethod()) {
+        $methodFlag = $this->methodDictionary[$httpRequest->getMethod()];
+        if (!$this->isMethod($methodFlag)) {
             return NULL;
         }
 

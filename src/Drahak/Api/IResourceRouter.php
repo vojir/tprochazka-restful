@@ -12,17 +12,19 @@ use Nette\Http\IRequest;
 interface IResourceRouter extends IRouter
 {
 
-    /** Resource types */
-    const GET = IRequest::GET;
-    const POST = IRequest::POST;
-    const PUT = IRequest::PUT;
-    const HEAD = IRequest::HEAD;
-    const DELETE = IRequest::DELETE;
+    /** Resource methods */
+    const GET = 4;
+    const POST = 8;
+    const PUT = 16;
+    const DELETE = 32;
+    const HEAD = 64;
+    const RESTFUL = 124; // GET | POST | PUT | DELETE | HEAD
 
     /**
-     * Get cuurrent route method
-     * @return string
+     * Is this route mapped to given method
+     * @param int $method
+     * @return bool
      */
-    public function getMethod();
+    public function isMethod($method);
 
 }
