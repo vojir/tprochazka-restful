@@ -9,7 +9,7 @@ Sample usage
 
 Create `BasePresenter`:
 
-´´´php
+```php
 <?php
 namespace ResourcesModule;
 
@@ -28,11 +28,11 @@ abstract class BasePresenter extends ResourcePresenter
     protected $defaultMimeType = IResource::JSON;
 
 }
-´´´
+```
 
 Then create your API resource presenter:
 
-´´´php
+```php
 <?php
 namespace ResourcesModule;
 
@@ -70,7 +70,7 @@ class SamplePresenter extends BasePresenter
    }
 
 }
-´´´
+```
 
 See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Api library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
 
