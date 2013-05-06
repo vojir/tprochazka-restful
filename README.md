@@ -52,7 +52,7 @@ class SamplePresenter extends BasePresenter
    );
 
    /**
-    * @GET sample/?type=<type>
+    * @GET sample[.<type xml|json>]
     */
    public function actionContent($type = 'json')
    {
@@ -74,11 +74,11 @@ class SamplePresenter extends BasePresenter
 
 See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Api library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
 
-´´´php
+```php
 <?php
 use Drahak\Api\Application\Routes\ResourceRoute;
 
-$anyRouteList[] = new ResourceRoute(ResourceRoute::GET, 'article/?type=<type>', 'Resources:Sample:content');
-´´´
+$anyRouteList[] = new ResourceRoute('sample[.<type xml|json>]', 'Resources:Sample:content', ResourceRoute::GET);
+```
 
 There is only one more parameter unlike the Nette default Route, the request method. This allows you to generate same URL for e.g. GET and POST method.
