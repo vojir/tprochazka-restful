@@ -76,7 +76,7 @@ class RestExtension extends CompilerExtension
     public static function install(Configurator $configurator)
     {
         $configurator->onCompile[] = function($configurator, $compiler) {
-            $compiler->addExtension('rest', new RestExtension);
+            $compiler->addExtension('restful', new RestExtension);
         };
     }
 
