@@ -30,7 +30,7 @@ class ResponseFactoryTest extends TestCase
     {
 		parent::setUp();
 		$this->factory = new ResponseFactory();
-		$this->resource = $this->mockista->create('Drahak\Api\Resource');
+		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 	}
 
 	public function testCreateResponse()
@@ -69,7 +69,7 @@ class ResponseFactoryTest extends TestCase
 
 		Assert::throws(function() {
 			$this->factory->create($this->resource);
-		}, 'Drahak\Api\InvalidStateException');
+		}, 'Drahak\Restful\InvalidStateException');
 	}
 
     public function testThrowsExceptionWhenResponseClassNotExists()
@@ -77,7 +77,7 @@ class ResponseFactoryTest extends TestCase
 		$factory = $this->factory;
 		Assert::throws(function() use($factory) {
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
-		}, 'Drahak\Api\InvalidArgumentException');
+		}, 'Drahak\Restful\InvalidArgumentException');
     }
 }
 \run(new ResponseFactoryTest());

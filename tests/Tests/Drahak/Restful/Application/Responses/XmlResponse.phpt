@@ -30,7 +30,7 @@ class XmlResponseTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->mapper = $this->mockista->create('Drahak\Api\Mapping\XmlMapper');
+		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\XmlMapper');
 		$this->response = new XmlResponse(array());
 		$this->response->setMapper($this->mapper);
     }
