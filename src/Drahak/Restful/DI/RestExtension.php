@@ -54,7 +54,7 @@ class RestExtension extends CompilerExtension
                 ->setArguments(array($config['routes']));
 
             $container->getDefinition('router')
-                ->addSetup('@rest.routeListFactory::addRoutes', '@self');
+                ->addSetup('@' . $this->prefix('routeListFactory') . '::addRoutes', '@self');
         }
 
 		// Create resource routes debugger panel
