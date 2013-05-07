@@ -4,7 +4,7 @@ This repository is under development.
 
 Do not use it on production. It is only for study purposes.
 
-##### Content
+### Content
 - [Requirements](#requirements)
 - [Installation & setup](#installation--setup)
 - [Neon configuration](#neon-configuration)

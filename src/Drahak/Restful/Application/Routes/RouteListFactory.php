@@ -32,7 +32,7 @@ class RouteListFactory extends Object
         $loader = new RobotLoader();
         $loader->addDirectory($routeConfig['presentersRoot']);
         $loader->setCacheStorage($cacheStorage);
-        $loader->tryLoad('Drahak\Rest\IResourcePresenter');
+        $loader->tryLoad('Drahak\Restful\IResourcePresenter');
 
         $this->loader = $loader;
         $this->routeConfig = $routeConfig;
