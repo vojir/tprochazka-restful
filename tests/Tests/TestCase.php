@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Drahak;
+namespace Tests;
 
 use Mockista\Registry;
 use Tester;
 
 /**
  * TestCase
- * @package Tests\Drahak
+ * @package Tests
  * @author Drahomír Hanák
  */
 class TestCase extends Tester\TestCase
@@ -18,11 +18,6 @@ class TestCase extends Tester\TestCase
     protected function setUp()
     {
         $this->mockista = new Registry;
-    }
-
-    protected function tearDown()
-    {
-        $this->mockista->assertExpectations();
     }
 
 }

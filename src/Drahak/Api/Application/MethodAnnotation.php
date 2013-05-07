@@ -4,6 +4,7 @@ namespace Drahak\Api\Application;
 use Drahak\Api\InvalidStateException;
 use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
+use Nette\Reflection\ClassType;
 use Nette\Utils\Strings;
 
 /**
@@ -14,7 +15,7 @@ use Nette\Utils\Strings;
 class MethodAnnotation extends Object
 {
 
-    /** @var \Nette\Application\UI\PresenterComponentReflection */
+    /** @var ClassType */
     private $reflection;
 
     /** @var string */
@@ -23,7 +24,7 @@ class MethodAnnotation extends Object
     /** @var array */
     private $routes = array();
 
-    public function __construct(PresenterComponentReflection $reflection, $method)
+    public function __construct(ClassType $reflection, $method)
     {
         $this->reflection = $reflection;
         $this->method = $method;

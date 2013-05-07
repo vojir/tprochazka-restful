@@ -80,13 +80,13 @@ class ResourceRoute extends Route implements IResourceRouter
     public function match(Http\IRequest $httpRequest)
     {
         $appRequest = parent::match($httpRequest);
-        if (!$appRequest) {
+		if (!$appRequest) {
             return NULL;
         }
 
         // Check requested method
         $methodFlag = $this->methodDictionary[$httpRequest->getMethod()];
-        if (!$this->isMethod($methodFlag)) {
+		if (!$this->isMethod($methodFlag)) {
             return NULL;
         }
 

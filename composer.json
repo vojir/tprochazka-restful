@@ -1,6 +1,8 @@
 {
-	"name": "Nette REST API",
-	"description": "Nette REST API boudnle",
+	"name": "drahak/nette-rest-api",
+	"type": "library",
+	"description": "Nette REST API bundle",
+	"keywords": ["nette", "rest", "api", "drahak"],
 	"homepage": "http://www.drahak.eu",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
@@ -20,5 +22,13 @@
 	"require-dev": {
 		"nette/tester": "dev-master",
 		"janmarek/mockista": "dev-master"
+	},
+	"autoload": {
+		"psr-0": {
+			"Drahak\\Api": "src/"
+		},
+		"classmap": [
+			"src/Drahak/Api/exceptions.php"
+		]
 	}
 }

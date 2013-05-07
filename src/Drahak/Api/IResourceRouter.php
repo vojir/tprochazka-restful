@@ -2,7 +2,6 @@
 namespace Drahak\Api;
 
 use Nette\Application\IRouter;
-use Nette\Http\IRequest;
 
 /**
  * IResourceRouter
