@@ -10,7 +10,6 @@ use Nette\Http;
  * @package Drahak\Api\Routes
  * @author Drahomír Hanák
  *
- * @property-read string $method
  * @property array $actionDictionary
  */
 class ResourceRoute extends Route implements IResourceRouter
