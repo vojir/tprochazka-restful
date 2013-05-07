@@ -1,5 +1,5 @@
 {
-	"name": "drahak/nette-rest-api",
+	"name": "drahak/Restful",
 	"type": "library",
 	"description": "Nette REST API bundle",
 	"keywords": ["nette", "rest", "api", "drahak"],
