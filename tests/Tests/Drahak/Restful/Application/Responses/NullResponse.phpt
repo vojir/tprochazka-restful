@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Drahak\Api\Application\Responses;
+namespace Tests\Drahak\Restful\Application\Responses;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
