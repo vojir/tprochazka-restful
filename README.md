@@ -13,8 +13,8 @@ Create `BasePresenter`:
 <?php
 namespace ResourcesModule;
 
-use Drahak\Api\Application\ResourcePresenter;
-use Drahak\Api\IResource;
+use Drahak\Restful\Application\ResourcePresenter;
+use Drahak\Restful\IResource;
 
 /**
  * BasePresenter
@@ -36,7 +36,7 @@ Then create your API resource presenter:
 <?php
 namespace ResourcesModule;
 
-use Drahak\Api\IResource;
+use Drahak\Restful\IResource;
 
 /**
  * SamplePresenter resource
@@ -72,11 +72,11 @@ class SamplePresenter extends BasePresenter
 }
 ```
 
-See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Api library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
+See `@GET` annotation. There are also allowed annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
 
 ```php
 <?php
-use Drahak\Api\Application\Routes\ResourceRoute;
+use Drahak\Restful\Application\Routes\ResourceRoute;
 
 $anyRouteList[] = new ResourceRoute('sample[.<type xml|json>]', 'Resources:Sample:content', ResourceRoute::GET);
 ```

@@ -28,7 +28,7 @@
 			"Drahak\\Api": "src/"
 		},
 		"classmap": [
-			"src/Drahak/Api/exceptions.php"
+			"src/Drahak/Restful/exceptions.php"
 		]
 	}
 }
