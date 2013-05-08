@@ -2,6 +2,7 @@
 namespace Drahak\Restful;
 
 use Drahak\Restful\Application\Routes\ResourceRouteList;
+use Nette\Caching\IStorage;
 
 /**
  * IRouteListFactory
@@ -10,6 +11,12 @@ use Drahak\Restful\Application\Routes\ResourceRouteList;
  */
 interface IRouteListFactory
 {
+
+	/**
+	 * @param array $routeConfig
+	 * @param IStorage $cacheStorage
+	 */
+	public function __construct(array $routeConfig, IStorage $cacheStorage);
 
 	/**
 	 * Create resources route list

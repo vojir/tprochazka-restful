@@ -3,7 +3,7 @@ namespace Drahak\Restful\Application\Routes;
 
 use Drahak\Restful\Application\MethodAnnotation;
 use Drahak\Restful\IResourceRouter;
-use Nette\Application\IRouter;
+use Drahak\Restful\IRouteListFactory;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
 use Nette\Http\IRequest;
