@@ -1,11 +1,15 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\IInput;
+use Drahak\Restful\IMapper;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\IResourcePresenter;
 use Drahak\Restful\IResponseFactory;
+use Drahak\Restful\Input\InputContext;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
+use Drahak\Restful\Mapping\JsonMapper;
 use Drahak\Restful\Resource;
 use Nette\Utils\Strings;
 use Nette\Application\UI;
@@ -25,11 +29,17 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResource */
 	protected $resource;
 
+	/** @var IInput */
+	protected $input;
+
 	/** @var IResponseFactory */
 	protected $responseFactory;
 
-	/** @var IResourceFactory */
-	protected $resourceFactory;
+	/** @var IMapper */
+	protected $mapper;
+
+	/** @var InputContext */
+	private $inputContext;
 
 	/**
 	 * Inject response factory
@@ -50,12 +60,32 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	}
 
 	/**
+	 * Inject input strategy context
+	 * @param InputContext $inputContext
+	 */
+	public function injectInputContext(InputContext $inputContext)
+	{
+		$this->inputContext = $inputContext;
+	}
+
+	/**
+	 * Inject json input mapper by default
+	 * @param JsonMapper $mapper
+	 */
+	public function injectJsonMapper(JsonMapper $mapper)
+	{
+		$this->mapper = $mapper;
+	}
+
+	/**
 	 * Presenter startup
 	 */
 	protected function startup()
 	{
 		parent::startup();
 
+		$this->input = $this->inputContext->getCurrent();
+		$this->input->setMapper($this->mapper);
 		if ($this->defaultMimeType) {
 			$this->resource->setMimeType($this->defaultMimeType);
 		}
