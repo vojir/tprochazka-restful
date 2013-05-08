@@ -4,11 +4,13 @@ namespace Drahak\Restful\Application\Routes;
 use Drahak\Restful\Application\MethodAnnotation;
 use Drahak\Restful\IResourceRouter;
 use Drahak\Restful\IRouteListFactory;
+use Drahak\Restful\InvalidStateException;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
 use Nette\Http\IRequest;
 use Nette\Loaders\RobotLoader;
 use Nette\Object;
+use Nette\Reflection\Method;
 
 /**
  * RouteListFactory
@@ -50,23 +52,39 @@ class RouteListFactory extends Object implements IRouteListFactory
 
 		$routeList = new ResourceRouteList($module);
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
+			$classReflection = $class::getReflection();
 			$methods = array(
-				IResourceRouter::GET => new MethodAnnotation($class::getReflection(), IRequest::GET),
-				IResourceRouter::POST => new MethodAnnotation($class::getReflection(), IRequest::POST),
-				IResourceRouter::PUT => new MethodAnnotation($class::getReflection(), IRequest::PUT),
-				IResourceRouter::HEAD => new MethodAnnotation($class::getReflection(), IRequest::HEAD),
-				IResourceRouter::DELETE => new MethodAnnotation($class::getReflection(), IRequest::DELETE),
+				IResourceRouter::GET => new MethodAnnotation($classReflection, IRequest::GET),
+				IResourceRouter::POST => new MethodAnnotation($classReflection, IRequest::POST),
+				IResourceRouter::PUT => new MethodAnnotation($classReflection, IRequest::PUT),
+				IResourceRouter::HEAD => new MethodAnnotation($classReflection, IRequest::HEAD),
+				IResourceRouter::DELETE => new MethodAnnotation($classReflection, IRequest::DELETE),
 			);
 
+			// Fetch routes data
+			$routeData = array();
 			foreach ($methods as $method => $annotations) {
-				foreach ($annotations->routes as $destination => $pattern) {
+				/** @var Method $methodReflection  */
+				foreach ($annotations->routes as $destination => $methodReflection) {
 
+					$pattern = $methodReflection->getAnnotation($method);
 					$urlPattern = $this->routeConfig['prefix'] ?
 							$this->routeConfig['prefix'] . '/' .  $pattern :
 							$pattern;
 
-					$routeList[] = new ResourceRoute($urlPattern, $destination, $method);
+					$splited = explode(':', $destination);
+					$action = array_pop($splited);
+
+					$routeData[$urlPattern][$method] = $action;
 				}
+			}
+
+			// Create joined Resource routes form routes data
+			foreach ($routeData as $mask => $dictionary) {
+				$routeList[] = new ResourceRoute($mask, array(
+					'presenter' => str_replace('Presenter', '', $classReflection->getShortName()),
+					'action' => $dictionary
+				), IResourceRouter::RESTFUL);
 			}
 		}
 		return $routeList;

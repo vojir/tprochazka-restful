@@ -53,7 +53,7 @@ class MethodAnnotation extends Object
 				if (isset($routes[$destination])) {
 					throw new InvalidStateException('Route to resource ' . $destination . ' already exists.');
 				}
-				$routes[$destination] = $method->getAnnotation($this->method);
+				$routes[$destination] = $method;
 			}
 		}
 		return $routes;
