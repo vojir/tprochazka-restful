@@ -40,13 +40,13 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
         $this->responseFactory = $responseFactory;
     }
 
-    /**
-     * Inject resource factory
-     * @param IResourceFactory $resourceFactory
-     */
-    public function injectResourceFactory(IResourceFactory $resourceFactory)
+	/**
+	 * Inject resource
+	 * @param IResource $resource
+	 */
+	public function injectResource(IResource $resource)
     {
-        $this->resourceFactory = $resourceFactory;
+        $this->resource = $resource;
     }
 
     /**
@@ -55,9 +55,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
     protected function startup()
     {
         parent::startup();
-        $this->resource = $this->resourceFactory->create();
 
-        if ($this->defaultMimeType) {
+		if ($this->defaultMimeType) {
             $this->resource->setMimeType($this->defaultMimeType);
         }
     }
