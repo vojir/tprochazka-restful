@@ -11,11 +11,11 @@ use Nette\Application\IResponse;
 interface IResponseFactory
 {
 
-    /**
-     * Create new API response
-     * @param IResource $resource
-     * @return IResponse
-     */
-    public function create(IResource $resource);
+	/**
+	 * Create new API response
+	 * @param IResource $resource
+	 * @return IResponse
+	 */
+	public function create(IResource $resource);
 
 }

@@ -13,14 +13,14 @@ use Nette\Http;
 class NullResponse extends Object implements IResponse
 {
 
-    /**
-     * Do nothing
-     * @param Http\IRequest $httpRequest
-     * @param Http\IResponse $httpResponse
-     */
-    public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
-    {
-    }
+	/**
+	 * Do nothing
+	 * @param Http\IRequest $httpRequest
+	 * @param Http\IResponse $httpResponse
+	 */
+	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
+	{
+	}
 
 
 }

@@ -11,13 +11,13 @@ use Nette\Object;
 class ResourceFactory extends Object implements IResourceFactory
 {
 
-    /**
-     * Create new API resource
-     * @return IResource
-     */
-    public function create()
-    {
-        return new Resource();
-    }
+	/**
+	 * Create new API resource
+	 * @return IResource
+	 */
+	public function create()
+	{
+		return new Resource();
+	}
 
 }

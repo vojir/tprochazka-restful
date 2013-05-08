@@ -9,10 +9,10 @@ namespace Drahak\Restful;
 interface IResourceFactory
 {
 
-    /**
-     * Create new API resource
-     * @return IResource
-     */
-    public function create();
+	/**
+	 * Create new API resource
+	 * @return IResource
+	 */
+	public function create();
 
 }

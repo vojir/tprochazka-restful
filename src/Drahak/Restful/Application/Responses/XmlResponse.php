@@ -17,17 +17,17 @@ use Nette\Http;
 class XmlResponse extends Object implements IResponse
 {
 
-    /** @var IMapper */
-    private $mapper;
+	/** @var IMapper */
+	private $mapper;
 
-    /**
-     * @param array|\stdClass|\Traversable $data
-     * @param string $rootElement
-     */
-    public function __construct($data, $rootElement = 'root')
-    {
-        $this->mapper = new XmlMapper($data, $rootElement);
-    }
+	/**
+	 * @param array|\stdClass|\Traversable $data
+	 * @param string $rootElement
+	 */
+	public function __construct($data, $rootElement = 'root')
+	{
+		$this->mapper = new XmlMapper($data, $rootElement);
+	}
 
 	/**
 	 * Change XmlResponse mapper
@@ -40,16 +40,16 @@ class XmlResponse extends Object implements IResponse
 		return $this;
 	}
 
-    /**
-     * Sends response to output
-     * @param Http\IRequest $httpRequest
-     * @param Http\IResponse $httpResponse
-     */
-    public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
-    {
-        $httpResponse->setContentType('application/xml');
-        echo $this->mapper->convert();
-    }
+	/**
+	 * Sends response to output
+	 * @param Http\IRequest $httpRequest
+	 * @param Http\IResponse $httpResponse
+	 */
+	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
+	{
+		$httpResponse->setContentType('application/xml');
+		echo $this->mapper->convert();
+	}
 
 
 }

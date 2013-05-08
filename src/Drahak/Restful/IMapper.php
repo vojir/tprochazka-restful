@@ -9,10 +9,10 @@ namespace Drahak\Restful;
 interface IMapper
 {
 
-    /**
-     * Convert array or Traversable input to string output
-     * @return mixed
-     */
-    public function convert();
+	/**
+	 * Convert array or Traversable input to string output
+	 * @return mixed
+	 */
+	public function convert();
 
 }

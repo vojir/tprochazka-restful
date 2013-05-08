@@ -9,22 +9,22 @@ namespace Drahak\Restful;
 interface IResource
 {
 
-    /** Result types */
-    const XML = 'application/xml';
-    const JSON = 'application/json';
-    const TEXT = 'text/plain';
-    const NULL = 'NULL';
+	/** Result types */
+	const XML = 'application/xml';
+	const JSON = 'application/json';
+	const TEXT = 'text/plain';
+	const NULL = 'NULL';
 
-    /**
-     * Get mime type
-     * @return string
-     */
-    public function getMimeType();
+	/**
+	 * Get mime type
+	 * @return string
+	 */
+	public function getMimeType();
 
-    /**
-     * Get result set data
-     * @return array|\stdClass|\Traversable
-     */
-    public function getData();
+	/**
+	 * Get result set data
+	 * @return array|\stdClass|\Traversable
+	 */
+	public function getData();
 
 }
