@@ -36,8 +36,8 @@ class ResourceRouteTest extends TestCase
 			'presenter' => 'Test',
 			'action' => array(
 				IResourceRouter::GET => 'read',
-				IResourceRouter::PUT => 'create',
-				IResourceRouter::POST => 'update',
+				IResourceRouter::POST => 'create',
+				IResourceRouter::PUT => 'update',
 				IResourceRouter::DELETE => 'delete',
 			)
 		), IResourceRouter::CRUD);
@@ -82,6 +82,10 @@ class ResourceRouteTest extends TestCase
 			->atLeastOnce()
 			->andReturn(IRequest::HEAD);
 
+		$this->httpRequest->expects('getHeader')
+			->once()
+			->andReturn(NULL);
+
 		$appRequest = $this->route->match($this->httpRequest);
 		Assert::null($appRequest);
 	}
@@ -91,6 +95,27 @@ class ResourceRouteTest extends TestCase
 		$this->setupRequestMock();
 		$this->httpRequest->expects('getMethod')
 			->once()
+			->andReturn(IRequest::GET);
+
+		$this->httpRequest->expects('getHeader')
+			->once()
+			->andReturn(NULL);
+
+		$appRequest = $this->route->match($this->httpRequest);
+		Assert::true($appRequest instanceof Nette\Application\Request);
+		Assert::equal($appRequest->getParameters()['action'], 'read');
+	}
+
+	public function testOverrideRequestMethod()
+	{
+		$this->setupRequestMock();
+		$this->httpRequest->expects('getMethod')
+			->once()
+			->andReturn(IRequest::HEAD);
+
+		$this->httpRequest->expects('getHeader')
+			->once()
+			->with(ResourceRoute::HEADER_OVERRIDE)
 			->andReturn(IRequest::GET);
 
 		$appRequest = $this->route->match($this->httpRequest);

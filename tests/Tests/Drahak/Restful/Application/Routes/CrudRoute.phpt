@@ -32,10 +32,10 @@ class CrudRouteTest extends TestCase
     public function testPredefinedCrudActionDictionary()
     {
 		$array = $this->route->actionDictionary;
-		Assert::equal($array[IResourceRouter::POST], 'create');
-		Assert::equal($array[IResourceRouter::GET], 'read');
-		Assert::equal($array[IResourceRouter::PUT], 'update');
-		Assert::equal($array[IResourceRouter::DELETE], 'delete');
+		Assert::equal($array[IResourceRouter::POST], CrudRoute::ACTION_CREATE);
+		Assert::equal($array[IResourceRouter::GET], CrudRoute::ACTION_READ);
+		Assert::equal($array[IResourceRouter::PUT], CrudRoute::ACTION_UPDATE);
+		Assert::equal($array[IResourceRouter::DELETE], CrudRoute::ACTION_DELETE);
     }
 
 }
