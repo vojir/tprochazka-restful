@@ -25,15 +25,22 @@ class XmlMapperTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->mapper = new XmlMapper(array('node' => 'value'), 'root');
+		$this->mapper = new XmlMapper('root');
     }
     
     public function testConvertDataArrayToXml()
     {
-		$xml = $this->mapper->convert();
+		$xml = $this->mapper->parseResponse(array('node' => 'value'));
 		$dom = Tester\DomQuery::fromXml($xml);
 		Assert::true($dom->has('root'));
 		Assert::true($dom->has('root node'));
 	}
+
+	public function testConvertXmlToDataArray()
+	{
+		$array = $this->mapper->parseRequest('<?xml version="1.0" encoding="utf-8" ?><root><node>value</node></root>');
+		Assert::equal($array['node'], 'value');
+	}
+
 }
 \run(new XmlMapperTest());

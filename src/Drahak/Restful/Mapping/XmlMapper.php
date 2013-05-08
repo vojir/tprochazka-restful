@@ -3,6 +3,7 @@ namespace Drahak\Restful\Mapping;
 
 use Drahak\Restful\IMapper;
 use Drahak\Restful\InvalidArgumentException;
+use Drahak\Restful\InvalidStateException;
 use Nette\Object;
 
 /**
@@ -13,46 +14,88 @@ use Nette\Object;
 class XmlMapper extends Object implements IMapper
 {
 
-	/** @var array|\Traversable  */
-	private $data;
-
 	/** @var \DOMDocument */
 	private $xml;
 
+	/** @var null|string */
+	private $rootElement;
+
 	/**
-	 * @param array|\Traversable $data
 	 * @param string|null $rootElement
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct($data, $rootElement = NULL)
+	public function __construct($rootElement = NULL)
 	{
-		if (!is_array($data) && !($data instanceof \Traversable)) {
-			throw new InvalidArgumentException('Data must be of type array or Traversable');
-		}
-		$this->data = $rootElement ? array($rootElement => $data) : $data;
-
+		$this->rootElement = $rootElement;
 		$this->xml = new \DOMDocument('1.0', 'UTF-8');
 		$this->xml->formatOutput = TRUE;
 	}
 
 	/**
-	 * Converts data to XML
-	 * @return string
+	 * Set XML root element
+	 * @param string|null $rootElement
+	 * @return XmlMapper
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function convert()
+	public function setRootElement($rootElement)
 	{
-		$this->toXml($this->data);
+		if (!is_string($rootElement) && $rootElement !== NULL) {
+			throw new InvalidArgumentException('Root element must be of type string or null if disabled');
+		}
+		$this->rootElement = $rootElement;
+		return $this;
+	}
+
+	/**
+	 * Get XML root element
+	 * @return null|string
+	 */
+	public function getRootElement()
+	{
+		return $this->rootElement;
+	}
+
+	/**
+	 * Parse traversable or array resource data to XML
+	 * @param array|\Traversable $data
+	 * @return string
+	 *
+	 * @throws \Drahak\Restful\InvalidArgumentException
+	 */
+	public function parseResponse($data)
+	{
+		if (!is_array($data) && !($data instanceof \Traversable)) {
+			throw new InvalidArgumentException('Data must be of type array or Traversable');
+		}
+
+		if ($this->rootElement) {
+			$data = array($this->rootElement => $data);
+		}
+
+		$this->toXml($data);
 		return $this->xml->saveXML();
 	}
 
 	/**
-	 * Magic to string function
-	 * @return string
+	 * Parse XML to array
+	 * @param string $data
+	 * @return array|\Traversable
 	 */
-	public function __toString()
+	public function parseRequest($data)
 	{
-		return $this->convert();
+		return $this->fromXml($data);
+	}
+
+	/**
+	 * @param string $data
+	 * @return array
+	 */
+	private function fromXml($data)
+	{
+		$xml = new \SimpleXMLElement($data);
+		return (array)$xml;
 	}
 
 	/**

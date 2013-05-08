@@ -20,13 +20,17 @@ class XmlResponse extends Object implements IResponse
 	/** @var IMapper */
 	private $mapper;
 
+	/** @var array|\stdClass|\Traversable */
+	private $data;
+
 	/**
 	 * @param array|\stdClass|\Traversable $data
 	 * @param string $rootElement
 	 */
 	public function __construct($data, $rootElement = 'root')
 	{
-		$this->mapper = new XmlMapper($data, $rootElement);
+		$this->mapper = new XmlMapper($rootElement);
+		$this->data = $data;
 	}
 
 	/**
@@ -48,7 +52,7 @@ class XmlResponse extends Object implements IResponse
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
 		$httpResponse->setContentType('application/xml');
-		echo $this->mapper->convert();
+		echo $this->mapper->parseResponse($this->data);
 	}
 
 
