@@ -1,13 +1,11 @@
 <?php
 namespace Drahak\Restful\DI;
 
-use Drahak\Restful\Application\MethodAnnotation;
 use Drahak\Restful\Application\Routes\ResourceRoute;
-use Drahak\Restful\Application\Routes\ResourceRouteList;
-use Drahak\Restful\IResourceRouter;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Config\CompilerExtension;
 use Nette\Config\Configurator;
+use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
 
@@ -54,7 +52,10 @@ class RestExtension extends CompilerExtension
                 ->setArguments(array($config['routes']));
 
             $container->getDefinition('router')
-                ->addSetup('@' . $this->prefix('routeListFactory') . '::addRoutes', '@self');
+                ->addSetup('offsetSet', array(
+					NULL,
+					new Statement($this->prefix('@routeListFactory') . '::create')
+				));
         }
 
 		// Create resource routes debugger panel

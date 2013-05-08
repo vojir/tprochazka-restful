@@ -72,14 +72,4 @@ class RouteListFactory extends Object
         return $routeList;
     }
 
-    /**
-     * Add routes to router
-     * @param IRouter $router
-     */
-    public function addRoutes(IRouter $router)
-    {
-        $router[] = $this->create();
-    }
-
-
 }
