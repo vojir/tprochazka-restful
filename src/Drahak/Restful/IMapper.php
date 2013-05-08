@@ -1,6 +1,8 @@
 <?php
 namespace Drahak\Restful;
 
+use Drahak\Restful\Mapping\MappingException;
+
 /**
  * Resource data mapper interface
  * @package Drahak\Restful\Mapping
@@ -14,7 +16,7 @@ interface IMapper
 	 * @param array|\Traversable $data
 	 * @return mixed
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws MappingException
 	 */
 	public function parseResponse($data);
 
@@ -23,7 +25,7 @@ interface IMapper
 	 * @param mixed $data
 	 * @return array|\Traversable
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws MappingException
 	 */
 	public function parseRequest($data);
 

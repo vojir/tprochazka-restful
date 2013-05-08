@@ -25,10 +25,11 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Drahak\\Api": "src/"
+			"Drahak\\Restful": "src/"
 		},
 		"classmap": [
-			"src/Drahak/Restful/exceptions.php"
+			"src/Drahak/Restful/exceptions.php",
+			"src/Drahak/Restful/Mapping/exceptions.php"
 		]
 	}
 }
