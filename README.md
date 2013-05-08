@@ -10,6 +10,7 @@ Do not use it on production. It is only for study purposes.
 - [Neon configuration](#neon-configuration)
 - [Sample usage](#sample-usage)
 - [Simple CRUD resources](#simple-crud-resources)
+- [Accessing input data](#accessing-input-data)
 
 Requirements
 ------------
@@ -189,5 +190,33 @@ class CrudPresenter extends BasePresenter
 
 }
 ```
+
+Accessing input data
+--------------------
+If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parsers, which reads data and parse it to an array. The request body of PUT, DELETE and HEAD method will be parsed with mapper (exactly `IMapper`). If you use default implementation of `ResourcePresenter`, default mapper is `JsonMapper` but you can use different (e.g. `XmlMapper`) or define your own and set it to `$presneter->mapper` property.
+
+```php
+<?php
+namespace ResourcesModule;
+
+/**
+ * Sample resource
+ * @package ResourcesModule
+ * @author Drahomír Hanák
+ */
+class SamplePresenter extends BasePresenter
+{
+
+	/**
+	 * @PUT <module>/sample
+	 */
+	public function actionUpdate()
+	{
+		$this->resource->message = isset($this->input->message) ? $this->input->message : 'no message';
+	}
+
+}
+```
+Then you can send `PUT` request to `resources/sample` with JSON string in body: `{"message": "hello"}`. The library will choose correct request method and parse it with `$presenter->mapper` which is any implementation of `IMapper`.
 
 So that's it. Enjoy and hope you like it!
