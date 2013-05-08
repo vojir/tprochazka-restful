@@ -15,7 +15,7 @@ use Nette\Object;
  * @package Drahak\Restful\Application\Routes
  * @author Drahomír Hanák
  */
-class RouteListFactory extends Object
+class RouteListFactory extends Object implements IRouteListFactory
 {
 
 	/** @var \Nette\Loaders\RobotLoader */
