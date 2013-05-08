@@ -23,9 +23,9 @@ class CrudRoute extends ResourceRoute
     {
         parent::__construct($mask, $presenter . ':default', $flags);
         $this->actionDictionary = array(
-            IResourceRouter::PUT => self::ACTION_CREATE,
+            IResourceRouter::POST => self::ACTION_CREATE,
             IResourceRouter::GET => self::ACTION_READ,
-            IResourceRouter::POST => self::ACTION_UPDATE,
+            IResourceRouter::PUT => self::ACTION_UPDATE,
             IResourceRouter::DELETE => self::ACTION_DELETE
         );
     }
