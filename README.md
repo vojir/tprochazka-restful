@@ -1,6 +1,6 @@
 Simple Nette REST API
 =====================
-This repository is under development.
+This repository is being developed.
 
 Do not use it on production. It is only for study purposes.
 

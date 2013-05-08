@@ -2,6 +2,7 @@
 namespace Drahak\Restful;
 
 use Nette\Application\IRouter;
+use Nette\Http;
 
 /**
  * IResourceRouter
@@ -28,5 +29,12 @@ interface IResourceRouter extends IRouter
 	 * @return bool
 	 */
 	public function isMethod($method);
+
+	/**
+	 * Get request method flag
+	 * @param Http\IRequest $httpRequest
+	 * @return string|null
+	 */
+	public function getMethod(Http\IRequest $httpRequest);
 
 }
