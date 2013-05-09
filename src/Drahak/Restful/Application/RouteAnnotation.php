@@ -1,74 +1,63 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\IAnnotationParser;
+use Drahak\Restful\IResourceRouter;
+use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\InvalidStateException;
-use Nette\Application\UI\PresenterComponentReflection;
+use Nette\Http\IRequest;
 use Nette\Object;
 use Nette\Reflection\ClassType;
+use Nette\Reflection\Method;
 use Nette\Utils\Strings;
 
 /**
  * RouteAnnotation
  * @package Drahak\Restful\Application
  * @author Drahomír Hanák
+ *
+ * @property-read string[] $methods
  */
-class RouteAnnotation extends Object
+class RouteAnnotation extends Object implements IAnnotationParser
 {
 
-	/** @var ClassType */
-	private $reflection;
-
-	/** @var string */
-	private $method;
-
 	/** @var array */
-	private $routes = array();
+	private $methods = array(
+		IRequest::GET => IResourceRouter::GET,
+		IRequest::POST => IResourceRouter::POST,
+		IRequest::PUT => IResourceRouter::PUT,
+		IRequest::DELETE => IResourceRouter::DELETE,
+		IRequest::HEAD => IResourceRouter::HEAD
+	);
 
-	public function __construct(ClassType $reflection, $method)
+	/**
+	 * Get parsed
+	 * @return array
+	 */
+	public function getMethods()
 	{
-		$this->reflection = $reflection;
-		$this->method = $method;
+		return $this->methods;
 	}
 
 	/**
-	 * Create routes
+	 * @param Method $reflection
 	 * @return array
-	 * @throws \Drahak\Restful\InvalidStateException
+	 *
+	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
-	private function createRoutes()
+	public function parse($reflection)
 	{
-		$routes = array();
-		$methods = $this->reflection->getMethods();
-		foreach ($methods as $method) {
-			if ($method->hasAnnotation($this->method)) {
-				if (!Strings::contains($method->getName(), 'action')) {
-					throw new InvalidStateException(
-						'HTTP request method annotations (such as GET) can be assignet only to action<Action> methods'
-					);
-				}
-				$name = str_replace('action', '', $method->getName());
-				$name = Strings::lower(Strings::substring($name, 0, 1)) . Strings::substring($name, 1);
+		if (!$reflection instanceof Method) {
+			throw new InvalidArgumentException('RouteAnnotation can be parsed only on method');
+		}
 
-				$destination = str_replace('Presenter', '', $this->reflection->getShortName()) . ':' . $name;
-				if (isset($routes[$destination])) {
-					throw new InvalidStateException('Route to resource ' . $destination . ' already exists.');
-				}
-				$routes[$destination] = $method;
+		$result = array();
+		foreach ($this->methods as $methodName => $methodFlag) {
+			if ($reflection->hasAnnotation($methodName)) {
+				$result[$methodFlag] = $reflection->getAnnotation($methodName);
 			}
 		}
-		return $routes;
-	}
-
-	/**
-	 * Get resource presenter routes from annotation
-	 * @return array
-	 */
-	public function getRoutes()
-	{
-		if (!$this->routes) {
-			$this->routes = $this->createRoutes();
-		}
-		return $this->routes;
+		return $result;
 	}
 
 }

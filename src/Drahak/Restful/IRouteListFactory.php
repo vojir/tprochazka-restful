@@ -13,12 +13,6 @@ interface IRouteListFactory
 {
 
 	/**
-	 * @param array $routeConfig
-	 * @param IStorage $cacheStorage
-	 */
-	public function __construct(array $routeConfig, IStorage $cacheStorage);
-
-	/**
 	 * Create resources route list
 	 * @param string|null $module
 	 * @return ResourceRouteList

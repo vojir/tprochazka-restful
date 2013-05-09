@@ -67,6 +67,10 @@ class RestExtension extends CompilerExtension
 			->addSetup('$service->addInput(?)', array($this->prefix('@deleteInput')))
 			->addSetup('$service->addInput(?)', array($this->prefix('@headInput')));
 
+		// Annotation parsers
+		$container->addDefinition($this->prefix('routeAnnotation'))
+			->setClass('Drahak\Restful\Application\RouteAnnotation');
+
 		// Mappers
 		$container->addDefinition($this->prefix('xmlMapper'))
 			->setClass('Drahak\Restful\Mapping\XmlMapper');
