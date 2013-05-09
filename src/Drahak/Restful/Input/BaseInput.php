@@ -24,9 +24,6 @@ abstract class BaseInput extends Object implements IteratorAggregate, IInput
 	/** @var IMapper */
 	protected $mapper;
 
-	/** @var array */
-	private $data;
-
 	public function __construct(Http\IRequest $httpRequest)
 	{
 		$this->httpRequest = $httpRequest;
