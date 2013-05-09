@@ -219,6 +219,16 @@ class SamplePresenter extends BasePresenter
 ```
 Then you can send `PUT` request to `resources/sample` with JSON string in body: `{"message": "hello"}`. The library will choose correct request method and parse it with `$presenter->mapper` which is any implementation of `IMapper`.
 
-Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you due to Input strategy context `InputContext`. There you can also register your own input parsers. There is also available `InputIterator` so you can iterate through input in presenter.
+Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you due to Input strategy context `InputContext`. There you can also register your own input parsers. There is available `InputIterator` so you can iterate through input in presenter.
 
 So that's it. Enjoy and hope you like it!
+
+___
+
+TODO list
+---------
+What I plan to (sometime) implement.
+
+- Better API resources panel. There are to many records in the table.
+- `@resource` annotation (presenter class) to auto generate CrudRoute
+- Refactor `RouteListFactory` for easier scalability
