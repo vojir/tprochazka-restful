@@ -3,7 +3,7 @@ namespace Tests\Drahak\Restful\Application;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Application\MethodAnnotation;
+use Drahak\Restful\Application\RouteAnnotation;
 use Mockista\MockInterface;
 use Nette;
 use Tester;
@@ -11,7 +11,7 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Application\MethodAnnotation.
+ * Test: Tests\Drahak\Restful\Application\RouteAnnotation.
  *
  * @testCase Tests\Drahak\Restful\Application\MethodAnnotationTest
  * @author Drahomír Hanák
@@ -23,14 +23,14 @@ class MethodAnnotationTest extends TestCase
 	/** @var MockInterface */
 	private $presenterReflection;
 
-	/** @var MethodAnnotation */
+	/** @var RouteAnnotation */
 	private $methodAnnotation;
     
     protected function setUp()
     {
 		parent::setUp();
 		$this->presenterReflection = $this->mockista->create('Nette\Reflection\ClassType');
-		$this->methodAnnotation = new MethodAnnotation($this->presenterReflection, 'GET');
+		$this->methodAnnotation = new RouteAnnotation($this->presenterReflection, 'GET');
     }
     
     public function testCreateRoutesFromPresenterActionAnnotations()

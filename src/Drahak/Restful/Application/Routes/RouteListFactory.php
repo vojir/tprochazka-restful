@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Routes;
 
-use Drahak\Restful\Application\MethodAnnotation;
+use Drahak\Restful\Application\RouteAnnotation;
 use Drahak\Restful\IResourceRouter;
 use Drahak\Restful\IRouteListFactory;
 use Drahak\Restful\InvalidStateException;
@@ -54,11 +54,11 @@ class RouteListFactory extends Object implements IRouteListFactory
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
 			$classReflection = $class::getReflection();
 			$methods = array(
-				IResourceRouter::GET => new MethodAnnotation($classReflection, IRequest::GET),
-				IResourceRouter::POST => new MethodAnnotation($classReflection, IRequest::POST),
-				IResourceRouter::PUT => new MethodAnnotation($classReflection, IRequest::PUT),
-				IResourceRouter::HEAD => new MethodAnnotation($classReflection, IRequest::HEAD),
-				IResourceRouter::DELETE => new MethodAnnotation($classReflection, IRequest::DELETE),
+				IResourceRouter::GET => new RouteAnnotation($classReflection, IRequest::GET),
+				IResourceRouter::POST => new RouteAnnotation($classReflection, IRequest::POST),
+				IResourceRouter::PUT => new RouteAnnotation($classReflection, IRequest::PUT),
+				IResourceRouter::HEAD => new RouteAnnotation($classReflection, IRequest::HEAD),
+				IResourceRouter::DELETE => new RouteAnnotation($classReflection, IRequest::DELETE),
 			);
 
 			// Fetch routes data
