@@ -14,7 +14,7 @@ use Nette\Loaders\RobotLoader;
  * @package Drahak\Restful\DI
  * @author Drahomír Hanák
  */
-class RestExtension extends CompilerExtension
+class Extension extends CompilerExtension
 {
 
 	/**
@@ -109,7 +109,7 @@ class RestExtension extends CompilerExtension
 	public static function install(Configurator $configurator)
 	{
 		$configurator->onCompile[] = function($configurator, $compiler) {
-			$compiler->addExtension('restful', new RestExtension);
+			$compiler->addExtension('restful', new Extension);
 		};
 	}
 
