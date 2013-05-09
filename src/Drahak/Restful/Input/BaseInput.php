@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Input;
 
+use IteratorAggregate;
 use Drahak\Restful\IInput;
 use Drahak\Restful\IMapper;
 use Nette\MemberAccessException;
@@ -14,7 +15,7 @@ use Nette\Http;
  *
  * @property-write IMapper $mapper
  */
-abstract class BaseInput extends Object implements IInput
+abstract class BaseInput extends Object implements IteratorAggregate, IInput
 {
 
 	/** @var \Nette\Http\IRequest */
@@ -22,6 +23,9 @@ abstract class BaseInput extends Object implements IInput
 
 	/** @var IMapper */
 	protected $mapper;
+
+	/** @var array */
+	private $data;
 
 	public function __construct(Http\IRequest $httpRequest)
 	{
@@ -85,5 +89,15 @@ abstract class BaseInput extends Object implements IInput
 		return $isset ? $isset : isset($this->getData()[$name]);
 	}
 
+	/******************** Iterator aggregate interface ********************/
+
+	/**
+	 * Get input data iterator
+	 * @return InputIterator
+	 */
+	public function getIterator()
+	{
+		return new InputIterator($this);
+	}
 
 }
