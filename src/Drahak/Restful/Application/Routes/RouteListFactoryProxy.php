@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Routes;
 
+use Drahak\Restful\Application\RouteAnnotation;
 use Drahak\Restful\IRouteListFactory;
 use Nette\Caching\Cache;
 use Nette\Caching\IStorage;
@@ -23,14 +24,19 @@ final class RouteListFactoryProxy extends Object implements IRouteListFactory
 	/** @var \Nette\Caching\Cache */
 	private $cache;
 
+	/** @var \Drahak\Restful\Application\RouteAnnotation */
+	private $routeAnnotation;
+
 	/**
 	 * @param array $routeConfig
 	 * @param IStorage $cacheStorage
+	 * @param RouteAnnotation $annotation
 	 */
-	public function __construct(array $routeConfig, IStorage $cacheStorage)
+	public function __construct(array $routeConfig, IStorage $cacheStorage, RouteAnnotation $annotation)
 	{
 		$this->routeConfig = $routeConfig;
 		$this->cache = new Cache($cacheStorage);
+		$this->routeAnnotation = $annotation;
 	}
 
 	/**
@@ -60,7 +66,7 @@ final class RouteListFactoryProxy extends Object implements IRouteListFactory
 			$files[] = $path;
 		}
 
-		$factory = new RouteListFactory($this->routeConfig, $this->cache->storage);
+		$factory = new RouteListFactory($this->routeConfig, $this->cache->storage, $this->routeAnnotation);
 		$routeList = $factory->create($module);
 		$this->cache->save(self::CACHE_NAME, $routeList, array(
 			Cache::FILES => $files

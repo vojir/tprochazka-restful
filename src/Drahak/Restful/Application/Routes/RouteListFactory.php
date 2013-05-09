@@ -7,10 +7,10 @@ use Drahak\Restful\IRouteListFactory;
 use Drahak\Restful\InvalidStateException;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
-use Nette\Http\IRequest;
 use Nette\Loaders\RobotLoader;
 use Nette\Object;
-use Nette\Reflection\Method;
+use Nette\Reflection\ClassType;
+use Nette\Utils\Strings;
 
 /**
  * RouteListFactory
@@ -29,7 +29,10 @@ class RouteListFactory extends Object implements IRouteListFactory
 	/** @var \Nette\Caching\IStorage */
 	private $cacheStorage;
 
-	public function __construct(array $routeConfig, IStorage $cacheStorage)
+	/** @var \Drahak\Restful\Application\RouteAnnotation */
+	private $routeAnnotation;
+
+	public function __construct(array $routeConfig, IStorage $cacheStorage, RouteAnnotation $routeAnnotation)
 	{
 		$loader = new RobotLoader();
 		$loader->addDirectory($routeConfig['presentersRoot']);
@@ -39,12 +42,15 @@ class RouteListFactory extends Object implements IRouteListFactory
 		$this->loader = $loader;
 		$this->routeConfig = $routeConfig;
 		$this->cacheStorage = $cacheStorage;
+		$this->routeAnnotation = $routeAnnotation;
 	}
 
 	/**
 	 * Create route list
 	 * @param string|null $module
 	 * @return ResourceRouteList
+	 *
+	 * @throws \Drahak\Restful\InvalidStateException
 	 */
 	public function create($module = NULL)
 	{
@@ -52,37 +58,34 @@ class RouteListFactory extends Object implements IRouteListFactory
 
 		$routeList = new ResourceRouteList($module);
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
+			/** @var ClassType $classReflection */
 			$classReflection = $class::getReflection();
-			$methods = array(
-				IResourceRouter::GET => new RouteAnnotation($classReflection, IRequest::GET),
-				IResourceRouter::POST => new RouteAnnotation($classReflection, IRequest::POST),
-				IResourceRouter::PUT => new RouteAnnotation($classReflection, IRequest::PUT),
-				IResourceRouter::HEAD => new RouteAnnotation($classReflection, IRequest::HEAD),
-				IResourceRouter::DELETE => new RouteAnnotation($classReflection, IRequest::DELETE),
-			);
+			$presenter = str_replace('Presenter', '', $classReflection->getShortName());
+			$methods = $classReflection->getMethods();
 
 			// Fetch routes data
 			$routeData = array();
-			foreach ($methods as $method => $annotations) {
-				/** @var Method $methodReflection  */
-				foreach ($annotations->routes as $destination => $methodReflection) {
+			foreach ($methods as $method) {
+				if (!Strings::contains($method->getName(), 'action'))
+					continue;
 
-					$pattern = $methodReflection->getAnnotation($method);
-					$urlPattern = $this->routeConfig['prefix'] ?
-							$this->routeConfig['prefix'] . '/' .  $pattern :
-							$pattern;
+				$annotations = $this->routeAnnotation->parse($method);
+				foreach ($annotations as $requestMethod => $mask) {
+					$action = str_replace('action', '', $method->getName());
+					$action = Strings::lower(Strings::substring($action, 0, 1)) . Strings::substring($action, 1);
 
-					$splited = explode(':', $destination);
-					$action = array_pop($splited);
+					$pattern = $this->routeConfig['prefix'] ?
+						$this->routeConfig['prefix'] . '/' .  $mask :
+						$mask;
 
-					$routeData[$urlPattern][$method] = $action;
+					$routeData[$pattern][$requestMethod] = $action;
 				}
 			}
 
 			// Create joined Resource routes form routes data
 			foreach ($routeData as $mask => $dictionary) {
 				$routeList[] = new ResourceRoute($mask, array(
-					'presenter' => str_replace('Presenter', '', $classReflection->getShortName()),
+					'presenter' => $presenter,
 					'action' => $dictionary
 				), IResourceRouter::RESTFUL);
 			}
