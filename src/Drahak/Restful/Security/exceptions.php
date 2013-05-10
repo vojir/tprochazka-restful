@@ -22,6 +22,15 @@ class UnauthorizedRequestException extends SecurityException
 }
 
 /**
+ * AuthenticationException is thrown when request authentication is wrong
+ * @package Drahak\Restful\Security
+ * @author Drahomír Hanák
+ */
+class AuthenticationException extends SecurityException
+{
+}
+
+/**
  * RequestTimeoutException is thrown when request time is not valid
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák

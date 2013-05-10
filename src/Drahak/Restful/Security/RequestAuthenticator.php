@@ -1,8 +1,10 @@
 <?php
 namespace Drahak\Restful\Security;
 
-use Drahak\Restful\IAuthTokenCalculator;
 use Drahak\Restful\IInput;
+use Drahak\Restful\IAuthTokenCalculator;
+use Drahak\Restful\IRequestAuthenticator;
+use Drahak\Restful\InvalidArgumentException;
 use Nette\Http\IRequest;
 use Nette\Object;
 
@@ -11,44 +13,75 @@ use Nette\Object;
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
  */
-class RequestAuthenticator extends Object
+class RequestAuthenticator extends Object implements IRequestAuthenticator
 {
 
 	/** Auth token header */
 	const AUTH_HEADER = 'X-HTTP-AUTH-TOKEN';
 
-	/** @var string */
-	private $privateKey;
+	/** @var array */
+	protected $securityConfig;
 
 	/** @var IRequest */
 	private $request;
 
-	public function __construct(IRequest $request, IAuthTokenCalculator $calculator, $privateKey)
+	/**
+	 * @param array $securityConfig
+	 * @param IRequest $request
+	 * @param IAuthTokenCalculator $calculator
+	 *
+	 * @throws \Drahak\Restful\InvalidArgumentException
+	 */
+	public function __construct(array $securityConfig, IRequest $request, IAuthTokenCalculator $calculator)
 	{
+		if (!isset($this->securityConfig['privateKey'])) {
+			throw new InvalidArgumentException('Private key not found in security config');
+		}
+
 		$this->request = $request;
 		$this->calculator = $calculator;
-		$this->privateKey = $privateKey;
-		$this->calculator->setPrivateKey($this->privateKey);
+		$this->securityConfig = $securityConfig;
+		$this->calculator->setPrivateKey($this->securityConfig['privateKey']);
 	}
 
 	/**
 	 * Authenticate request
-	 * @param \Drahak\Restful\IInput $input
-	 * @throws UnauthorizedRequestException
-	 * @return bool
+	 * @param IInput $input
+	 * @return string
+	 *
+	 * @throws AuthenticationException
 	 */
 	public function authenticate(IInput $input)
 	{
-		$generatedHash = $this->calculator->calculate($input);
-		$sentHash = $this->request->getHeader(self::AUTH_HEADER);
-		if (!$sentHash) {
-			throw new UnauthorizedRequestException('Authorization header not found.');
+		$requested = $this->getRequestedHash();
+		$expected = $this->getExpectedHash($input);
+		if (!$requested) {
+			throw new AuthenticationException('Authorization header not found.');
 		}
 
-		if ($sentHash !== $generatedHash) {
-			throw new UnauthorizedRequestException('Authentication codes do not match.');
+		if ($requested !== $expected) {
+			throw new AuthenticationException('Authentication codes do not match.');
 		}
-		return TRUE;
+		return $requested;
+	}
+
+	/**
+	 * Get request hash
+	 * @return string
+	 */
+	protected function getRequestedHash()
+	{
+		return $this->request->getHeader(self::AUTH_HEADER);
+	}
+
+	/**
+	 * Get expected hash
+	 * @param IInput $input
+	 * @return string
+	 */
+	protected function getExpectedHash(IInput $input)
+	{
+		return $this->calculator->calculate($input);
 	}
 
 }
