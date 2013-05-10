@@ -58,7 +58,7 @@ class Extension extends CompilerExtension
 
 		// Add input parser
 		$container->addDefinition($this->prefix('input'))
-			->setClass('Drahak\Restful\Input\Input')
+			->setClass('Drahak\Restful\Input')
 			->addSetup('$service->setMapper(?)', array($this->prefix('@queryMapper')));
 
 		// Annotation parsers

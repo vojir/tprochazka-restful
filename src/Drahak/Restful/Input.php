@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Input;
+namespace Drahak\Restful;
 
 use IteratorAggregate;
 use Drahak\Restful\IInput;
