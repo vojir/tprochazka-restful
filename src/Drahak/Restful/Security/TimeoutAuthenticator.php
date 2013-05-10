@@ -4,11 +4,11 @@ namespace Drahak\Restful\Security;
 use Drahak\Restful\IInput;
 
 /**
- * ReplyAttackAuthenticator
+ * TimeoutAuthenticator
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
  */
-class ReplyAttackAuthenticator extends RequestAuthenticator
+class TimeoutAuthenticator extends RequestAuthenticator
 {
 
 	/**
