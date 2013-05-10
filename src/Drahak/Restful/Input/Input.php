@@ -9,17 +9,20 @@ use Nette\Object;
 use Nette\Http;
 
 /**
- * Abstract base Input
+ * Request Input parser
  * @package Drahak\Restful\Input
  * @author Drahomír Hanák
  *
- * @property-write IMapper $mapper
+ * @property-read array $data
  */
-abstract class BaseInput extends Object implements IteratorAggregate, IInput
+class Input extends Object implements IteratorAggregate, IInput
 {
 
 	/** @var \Nette\Http\IRequest */
-	protected $httpRequest;
+	private $httpRequest;
+
+	/** @var array */
+	private $data;
 
 	/** @var IMapper */
 	protected $mapper;
@@ -41,18 +44,18 @@ abstract class BaseInput extends Object implements IteratorAggregate, IInput
 	}
 
 	/**
-	 * This gets PHP input to read PUT, DELETE and HEAD request methods
-	 * @return string
+	 * Get parsed input data
+	 * @return array
 	 */
-	protected function getPhpInput()
+	public function getData()
 	{
-		$put = fopen('php://input', 'r');
-		$request = '';
-		while($data = fread($put, 1024)) {
-			$request .= $data;
+		if (!$this->data) {
+			$queryString = $this->httpRequest->getUrl()->getQuery();
+			$this->data = $this->mapper->parseRequest(
+				$queryString ? $queryString : file_get_contents('php://input')
+			);
 		}
-		fclose($put);
-		return $request;
+		return $this->data;
 	}
 
 	/******************** Magic methods ********************/
@@ -66,7 +69,7 @@ abstract class BaseInput extends Object implements IteratorAggregate, IInput
 	public function &__get($name)
 	{
 		try {
-			parent::__get($name);
+			return parent::__get($name);
 		} catch(MemberAccessException $e) {
 			$data = $this->getData();
 			if (isset($data[$name])) {
@@ -96,5 +99,6 @@ abstract class BaseInput extends Object implements IteratorAggregate, IInput
 	{
 		return new InputIterator($this);
 	}
+
 
 }

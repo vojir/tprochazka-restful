@@ -16,12 +16,6 @@ interface IInput
 	public function getData();
 
 	/**
-	 * Get input method name
-	 * @return string
-	 */
-	public function getMethod();
-
-	/**
 	 * Set input mapper
 	 * @param IMapper $mapper
 	 * @return IInput
