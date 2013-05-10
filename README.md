@@ -193,7 +193,7 @@ class CrudPresenter extends BasePresenter
 
 Accessing input data
 --------------------
-If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parsers, which reads data and parse it to an array. The request body of PUT, DELETE and HEAD method will be parsed with mapper (exactly `IMapper`). If you use default implementation of `ResourcePresenter`, default mapper is `JsonMapper` but you can use different (e.g. `XmlMapper`) or define your own and set it to `$presneter->mapper` property.
+If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parser, which reads data and parse it to an array. Data are fetched from query string or from request body and parsed by `IMapper`. Default mapper is `QueryMapper` but you can set e.g. `XmlMapper` to parse request body as XML.
 
 ```php
 <?php
@@ -217,9 +217,9 @@ class SamplePresenter extends BasePresenter
 
 }
 ```
-Then you can send `PUT` request to `resources/sample` with JSON string in body: `{"message": "hello"}`. The library will choose correct request method and parse it with `$presenter->mapper` which is any implementation of `IMapper`.
+You can set any mapper to `$presenter->input` in Presenter or to `restful.input` by calling service method `setMapper(IMapper)`. Then you can send `PUT` request to `resources/sample` with e.g. JSON string in body: `{"message": "hello"}`. The library will choose correct request method and parse it with `$presenter->mapper`.
 
-Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you due to Input strategy context `InputContext`. There you can also register your own input parsers. There is available `InputIterator` so you can iterate through input in presenter.
+Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
 
 So that's it. Enjoy and hope you like it!
 
