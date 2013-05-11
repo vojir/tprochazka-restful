@@ -1,5 +1,7 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Security\Authentication;
+
+use Drahak\Restful\IInput;
 
 /**
  * IRequestAuthenticator

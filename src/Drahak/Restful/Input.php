@@ -3,7 +3,7 @@ namespace Drahak\Restful;
 
 use IteratorAggregate;
 use Drahak\Restful\IInput;
-use Drahak\Restful\IMapper;
+use Drahak\Restful\Mapping\IMapper;
 use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;

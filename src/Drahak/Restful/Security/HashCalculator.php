@@ -1,7 +1,6 @@
 <?php
 namespace Drahak\Restful\Security;
 
-use Drahak\Restful\IAuthTokenCalculator;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Mapping\QueryMapper;
 use Nette\Object;

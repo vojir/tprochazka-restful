@@ -2,7 +2,7 @@
 namespace Drahak\Restful\Diagnostics;
 
 use Traversable;
-use Drahak\Restful\IResourceRouter;
+use Drahak\Restful\Application\Routes\IResourceRouter;
 use Nette\Application\IRouter;
 use Nette\Templating\Helpers;
 use Nette\Diagnostics\IBarPanel;

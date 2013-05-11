@@ -1,9 +1,8 @@
 <?php
 namespace Drahak\Restful\Security\Authentication;
 
-use Drahak\Restful\IAuthTokenCalculator;
 use Drahak\Restful\IInput;
-use Drahak\Restful\IRequestAuthenticator;
+use Drahak\Restful\Security\IAuthTokenCalculator;
 use Drahak\Restful\Security\AuthenticationException;
 use Nette\Http\IRequest;
 use Nette\Object;

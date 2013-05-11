@@ -1,5 +1,7 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Security;
+
+use Drahak\Restful\IInput;
 
 /**
  * Input fingerprint hash Calculator interface

@@ -2,7 +2,6 @@
 namespace Drahak\Restful\Application;
 
 use Drahak\Restful\IInput;
-use Drahak\Restful\IResourcePresenter;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;

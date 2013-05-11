@@ -2,7 +2,6 @@
 namespace Drahak\Restful\Security\Authentication;
 
 use Drahak\Restful\IInput;
-use Drahak\Restful\IRequestAuthenticator;
 use Drahak\Restful\Security\RequestTimeoutException;
 use Nette\Object;
 
