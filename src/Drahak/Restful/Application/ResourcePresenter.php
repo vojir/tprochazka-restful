@@ -2,12 +2,16 @@
 namespace Drahak\Restful\Application;
 
 use Drahak\Restful\IInput;
+use Drahak\Restful\IRequestAuthenticator;
 use Drahak\Restful\IResourcePresenter;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
+use Drahak\Restful\Security\SecurityException;
+use Drahak\Restful\Security\UnauthorizedRequestException;
 use Nette\Utils\Strings;
+use Nette\Application;
 use Nette\Application\UI;
 use Nette\Application\IResponse;
 
@@ -31,6 +35,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResponseFactory */
 	protected $responseFactory;
 
+	/** @var IRequestAuthenticator */
+	protected $requestAuthenticator;
+
 	/**
 	 * Inject response factory
 	 * @param IResponseFactory $responseFactory
@@ -47,6 +54,15 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	public function injectResource(IResource $resource)
 	{
 		$this->resource = $resource;
+	}
+
+	/**
+	 * Inject API request authenticator
+	 * @param IRequestAuthenticator $authenticator
+	 */
+	public function injectRequestAuthenticator(IRequestAuthenticator $authenticator)
+	{
+		$this->requestAuthenticator = $authenticator;
 	}
 
 	/**
@@ -67,6 +83,29 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		if ($this->defaultMimeType) {
 			$this->resource->setMimeType($this->defaultMimeType);
+		}
+
+		$this->requestAuthenticator->authenticate($this->input);
+	}
+
+	/**
+	 * @param Application\Request $request
+	 * @return IResponse|void
+	 *
+	 * @throws UnauthorizedRequestException|\Exception
+	 */
+	public function run(Application\Request $request)
+	{
+		try {
+			parent::run($request);
+		} catch (UnauthorizedRequestException $e) {
+			if ($this->isProduction()) {
+				$this->resource->delete();
+				$this->resource->error = 'API request is not authorized.';
+				$this->sendResource();
+			} else {
+				throw $e;
+			}
 		}
 	}
 
@@ -94,6 +133,15 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		$response = $this->responseFactory->create($this->resource);
 		$this->sendResponse($response);
+	}
+
+	/**
+	 * Is debug mode disabled
+	 * @return bool
+	 */
+	private function isProduction()
+	{
+		return $this->context->parameters['debugMode'];
 	}
 
 }
