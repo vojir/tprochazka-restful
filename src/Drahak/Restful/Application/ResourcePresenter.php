@@ -8,6 +8,7 @@ use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
 use Drahak\Restful\Security\AuthenticationProcess;
 use Drahak\Restful\Security\RequestAuthenticator;
+use Drahak\Restful\Security\SecurityException;
 use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
@@ -78,12 +79,28 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected function startup()
 	{
 		parent::startup();
-
 		if ($this->defaultMimeType) {
 			$this->resource->setMimeType($this->defaultMimeType);
 		}
+	}
 
-		$this->authenticationProcess->authenticate($this->input);
+	/**
+	 * Check security requirements
+	 * @param $element
+	 */
+	public function checkRequirements($element)
+	{
+		try {
+			parent::checkRequirements($element);
+		} catch (Application\ForbiddenRequestException $e) {
+			$this->sendErrorResource($e);
+		}
+
+		try {
+			$this->authenticationProcess->authenticate($this->input);
+		} catch (SecurityException $e) {
+			$this->sendErrorResource($e);
+		}
 	}
 
 	/**
@@ -98,18 +115,37 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/**
 	 * Get REST API response
 	 * @param string $mimeType
+	 * @param int $code
 	 * @return IResponse
 	 *
 	 * @throws InvalidStateException
 	 */
-	public function sendResource($mimeType = NULL)
+	public function sendResource($mimeType = NULL, $code = 200)
 	{
 		if ($mimeType !== NULL) {
 			$this->resource->setMimeType($mimeType);
 		}
 
-		$response = $this->responseFactory->create($this->resource);
+		$this->getHttpResponse()->setCode($code);
+
+		$response = $this->responseFactory->create($this->resource, $code);
 		$this->sendResponse($response);
+	}
+
+	/**
+	 * Send error resource to output
+	 * @param \Exception $e
+	 */
+	protected function sendErrorResource(\Exception $e)
+	{
+		$code = $e->getCode() ? $e->getCode() : 500;
+
+		$this->resource->delete();
+		$this->resource->status = 'error';
+		$this->resource->code = $code;
+		$this->resource->message = $e->getMessage();
+
+		$this->sendResource($this->defaultMimeType, $code);
 	}
 
 }
