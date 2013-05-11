@@ -26,7 +26,7 @@ class UnauthorizedRequestException extends SecurityException
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
  */
-class AuthenticationException extends SecurityException
+class AuthenticationException extends UnauthorizedRequestException
 {
 }
 
@@ -35,6 +35,6 @@ class AuthenticationException extends SecurityException
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
  */
-class RequestTimeoutException extends SecurityException
+class RequestTimeoutException extends UnauthorizedRequestException
 {
 }

@@ -2,14 +2,13 @@
 namespace Drahak\Restful\Application;
 
 use Drahak\Restful\IInput;
-use Drahak\Restful\IRequestAuthenticator;
 use Drahak\Restful\IResourcePresenter;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
-use Drahak\Restful\Security\SecurityException;
-use Drahak\Restful\Security\UnauthorizedRequestException;
+use Drahak\Restful\Security\AuthenticationProcess;
+use Drahak\Restful\Security\RequestAuthenticator;
 use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
@@ -35,8 +34,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResponseFactory */
 	protected $responseFactory;
 
-	/** @var IRequestAuthenticator */
-	protected $requestAuthenticator;
+	/** @var AuthenticationProcess */
+	protected $authenticationProcess;
 
 	/**
 	 * Inject response factory
@@ -58,11 +57,11 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 	/**
 	 * Inject API request authenticator
-	 * @param IRequestAuthenticator $authenticator
+	 * @param AuthenticationProcess $authenticationProcess
 	 */
-	public function injectRequestAuthenticator(IRequestAuthenticator $authenticator)
+	public function injectRequestAuthenticator(AuthenticationProcess $authenticationProcess)
 	{
-		$this->requestAuthenticator = $authenticator;
+		$this->authenticationProcess = $authenticationProcess;
 	}
 
 	/**
@@ -85,28 +84,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->resource->setMimeType($this->defaultMimeType);
 		}
 
-		$this->requestAuthenticator->authenticate($this->input);
-	}
-
-	/**
-	 * @param Application\Request $request
-	 * @return IResponse|void
-	 *
-	 * @throws UnauthorizedRequestException|\Exception
-	 */
-	public function run(Application\Request $request)
-	{
-		try {
-			parent::run($request);
-		} catch (UnauthorizedRequestException $e) {
-			if ($this->isProduction()) {
-				$this->resource->delete();
-				$this->resource->error = 'API request is not authorized.';
-				$this->sendResource();
-			} else {
-				throw $e;
-			}
-		}
+		$this->authenticationProcess->authenticate($this->input);
 	}
 
 	/**
@@ -133,15 +111,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		$response = $this->responseFactory->create($this->resource);
 		$this->sendResponse($response);
-	}
-
-	/**
-	 * Is debug mode disabled
-	 * @return bool
-	 */
-	private function isProduction()
-	{
-		return $this->context->parameters['debugMode'];
 	}
 
 }
