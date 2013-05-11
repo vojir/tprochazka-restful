@@ -11,6 +11,7 @@ Do not use it on production. It is only for study purposes.
 - [Sample usage](#sample-usage)
 - [Simple CRUD resources](#simple-crud-resources)
 - [Accessing input data](#accessing-input-data)
+- [Security & authentication](#security--authentication)
 
 Requirements
 ------------
@@ -222,6 +223,21 @@ You can set any mapper to `$presenter->input` in Presenter or to `restful.input`
 Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
 
 So that's it. Enjoy and hope you like it!
+
+Security & authentication
+-------------------------
+The library provides base support of secure API calls. It's based on sending hashed data with private key. Authentication process is as follows:
+
+### Understanding authentication process
+- Client: append request timestamp to request body.
+- Client: hash all data with `hash_hmac` (sha256 algorithm) and with private key. Then append generated hash to request as `X-HTTP-AUTH-TOKEN` header (by default).
+- Client: sends request to server.
+- Server: accept client's request and calculate hash in the same way as client (using abstract template class `AuthenticationProcess`)
+- Server: compares client's hash with hash that it generated in previous step.
+- Server: also checks request timestamp and make difference. If it's bigger then 300 (5 minutes) throws exception. (this avoid something called [Replay Attack](http://en.wikipedia.org/wiki/Replay_attack))
+- Server: catches any `SecurityException` that throws `AuthenticationProcess` and provides error response (in production, in development just throws exception)
+
+Default `AuthenticationProcess` is `NullAuthentication` so all requests are unsecured. You can turn on authentication by setting `SecuredAuthentication` to `restful.authenticationProcess` or to `$presenter->authenticationProcess`.
 
 ___
 
