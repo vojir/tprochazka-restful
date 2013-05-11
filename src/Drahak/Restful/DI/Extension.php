@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\DI;
 
-use Drahak\Restful\Application\Routes\ResourceRoute;;
+use Drahak\Restful\Application\Routes\ResourceRoute;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Config\CompilerExtension;
 use Nette\Config\Configurator;
@@ -32,7 +32,7 @@ class Extension extends CompilerExtension
 		'security' => array(
 			'privateKey' => NULL,
 			'requestTimeKey' => 'timestamp',
-			'requestTimeout' => 0,
+			'requestTimeout' => 300,
 		)
 	);
 
