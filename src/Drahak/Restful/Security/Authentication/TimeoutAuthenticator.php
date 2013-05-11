@@ -6,7 +6,7 @@ use Drahak\Restful\Security\RequestTimeoutException;
 use Nette\Object;
 
 /**
- * Verify request timeout to avoid reply attack (needs to be applied with any HashAuthenticator)
+ * Verify request timeout to avoid replay attack (needs to be applied with any HashAuthenticator)
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
  */
