@@ -53,7 +53,7 @@ class HashCalculatorTest extends TestCase
 		$this->calculator->setPrivateKey('topSecretKey');
 		$hash = $this->calculator->calculate($this->input);
 
-		Assert::equal(hash_hmac('sha256', $dataString, 'topSecretKey'), $hash);
+		Assert::equal(hash_hmac(HashCalculator::HASH, $dataString, 'topSecretKey'), $hash);
     }
 
 }

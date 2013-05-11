@@ -42,15 +42,15 @@ class HashAuthenticator extends Object implements IRequestAuthenticator
 	public function authenticate(IInput $input)
 	{
 		$requested = $this->getRequestedHash();
-		$expected = $this->getExpectedHash($input);
 		if (!$requested) {
 			throw new AuthenticationException('Authentication header not found.');
 		}
 
+		$expected = $this->getExpectedHash($input);
 		if ($requested !== $expected) {
 			throw new AuthenticationException('Authentication tokens do not match.');
 		}
-		return $requested;
+		return TRUE;
 	}
 
 
