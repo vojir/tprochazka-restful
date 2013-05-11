@@ -240,7 +240,7 @@ The library provides base support of secure API calls. It's based on sending has
 - Server: accept client's request and calculate hash in the same way as client (using abstract template class `AuthenticationProcess`)
 - Server: compares client's hash with hash that it generated in previous step.
 - Server: also checks request timestamp and make difference. If it's bigger then 300 (5 minutes) throws exception. (this avoid something called [Replay Attack](http://en.wikipedia.org/wiki/Replay_attack))
-- Server: catches any `SecurityException` that throws `AuthenticationProcess` and provides error response (in production, in development just throws exception)
+- Server: catches any `SecurityException` that throws `AuthenticationProcess` and provides error response.
 
 Default `AuthenticationProcess` is `NullAuthentication` so all requests are unsecured. You can turn on authentication by setting `SecuredAuthentication` to `restful.authenticationProcess` or to `$presenter->authenticationProcess`.
 
