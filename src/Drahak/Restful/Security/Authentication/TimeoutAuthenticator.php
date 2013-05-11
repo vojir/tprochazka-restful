@@ -38,7 +38,7 @@ class TimeoutAuthenticator extends Object implements IRequestAuthenticator
 	 */
 	public function authenticate(IInput $input)
 	{
-		$timestamp = now();
+		$timestamp = time();
 		$data = $input->getData();
 		if (!isset($data[$this->requestTimeKey]) || !$data[$this->requestTimeKey]) {
 			throw new RequestTimeoutException('Request time not found in requested data.');
