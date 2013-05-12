@@ -2,6 +2,8 @@
 namespace Drahak\Restful\Security;
 
 use Drahak\Restful\IInput;
+use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\QueryMapper;
 use Nette\Object;
 
@@ -21,12 +23,23 @@ class HashCalculator extends Object implements IAuthTokenCalculator
 	/** @var string */
 	private $privateKey;
 
-	/** @var QueryMapper */
+	/** @var IMapper */
 	private $mapper;
 
-	public function __construct(QueryMapper $mapper)
+	public function __construct(IMapper $mapper)
 	{
 		$this->mapper = $mapper;
+	}
+
+	/**
+	 * Set hash data calculator mapper
+	 * @param IMapper $mapper
+	 * @return HashCalculator
+	 */
+	public function setMapper(IMapper $mapper)
+	{
+		$this->mapper = $mapper;
+		return $this;
 	}
 
 	/**
@@ -41,12 +54,18 @@ class HashCalculator extends Object implements IAuthTokenCalculator
 	}
 
 	/**
-	 * Calculate hash
+	 * Calculates hash
 	 * @param IInput $input
 	 * @return string
+	 *
+	 * @throws \Drahak\Restful\InvalidStateException
 	 */
 	public function calculate(IInput $input)
 	{
+		if (!$this->privateKey) {
+			throw new InvalidStateException('Private key is not set');
+		}
+
 		$dataString = $this->mapper->parseResponse($input->getData());
 		return hash_hmac(self::HASH, $dataString, $this->privateKey);
 	}
