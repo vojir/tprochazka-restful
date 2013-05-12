@@ -15,11 +15,13 @@ abstract class AuthenticationProcess extends Object
 	/**
 	 * Authenticate process
 	 * @param IInput $input
+	 * @return bool
 	 */
 	public final function authenticate(IInput $input)
 	{
 		$this->authRequestData($input);
 		$this->authRequestTime($input);
+		return TRUE;
 	}
 
 	/**

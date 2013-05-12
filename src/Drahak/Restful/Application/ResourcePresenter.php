@@ -6,6 +6,7 @@ use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
+use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\AuthenticationProcess;
 use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
@@ -34,8 +35,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResponseFactory */
 	protected $responseFactory;
 
-	/** @var AuthenticationProcess */
-	protected $authenticationProcess;
+	/** @var AuthenticationContext */
+	protected $authentication;
 
 	/**
 	 * Inject response factory
@@ -56,12 +57,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	}
 
 	/**
-	 * Inject API request authenticator
-	 * @param AuthenticationProcess $authenticationProcess
+	 * Inject authentication strategy context
+	 * @param AuthenticationContext $authentication
 	 */
-	public function injectRequestAuthenticator(AuthenticationProcess $authenticationProcess)
+	public function injectRequestAuthenticator(AuthenticationContext $authentication)
 	{
-		$this->authenticationProcess = $authenticationProcess;
+		$this->authentication = $authentication;
 	}
 
 	/**
@@ -97,7 +98,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		}
 
 		try {
-			$this->authenticationProcess->authenticate($this->input);
+			$this->authentication->authenticate($this->input);
 		} catch (SecurityException $e) {
 			$this->sendErrorResource($e);
 		}

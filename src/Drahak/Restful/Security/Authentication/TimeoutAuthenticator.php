@@ -46,7 +46,7 @@ class TimeoutAuthenticator extends Object implements IRequestAuthenticator
 
 		$diff = $timestamp - $data[$this->requestTimeKey];
 		if ($diff > $this->timeout) {
-			throw new RequestTimeoutException;
+			throw new RequestTimeoutException('Request timeout');
 		}
 
 		return TRUE;
