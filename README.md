@@ -244,7 +244,43 @@ The library provides base support of secure API calls. It's based on sending has
 
 Default `AuthenticationProcess` is `NullAuthentication` so all requests are unsecured. You can use `SecuredAuthentication` to secure your resources. To do it, just set this authentication process to `AuthenticationContext` in `restful.authentication` or `$presenter->authentication`.
 
-###### Never send private key
+```php
+<?php
+namespace ResourcesModule;
+
+use Drahak\Restful\Security\SecuredAuthentication;
+
+/**
+ * CRUD resource presenter
+ * @package ResourcesModule
+ * @author Drahomír Hanák
+ */
+class CrudPresenter extends BasePresenter
+{
+
+	/** @var SecuredAuthentication */
+	private $securedAuthentication;
+
+	/**
+	 * Inject secured authentication process
+	 * @param SecuredAuthentication $auth
+	 */
+	public function injectSecuredAuthentication(SecuredAuthentication $auth)
+	{
+		$this->securedAuthentication = $auth;
+	}
+
+	protected function startup()
+	{
+		parent::startup();
+		$this->authentication->setAuthProcess($this->securedAuthentication);
+	}
+
+	// your secured resource action
+}
+```
+
+##### Never send private key!
 
 ___
 
