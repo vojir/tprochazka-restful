@@ -142,8 +142,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$code = $e->getCode() ? $e->getCode() : 500;
 
 		$this->resource->delete();
-		$this->resource->status = 'error';
 		$this->resource->code = $code;
+		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
 
 		$this->sendResource($this->defaultMimeType, $code);

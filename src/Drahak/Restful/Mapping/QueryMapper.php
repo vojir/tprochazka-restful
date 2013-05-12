@@ -31,9 +31,9 @@ class QueryMapper extends Object implements IMapper
 	 */
 	public function parseRequest($data)
 	{
-		$result = array();
-		parse_str($data, $result);
-		return $result;
+		$array = array();
+		parse_str($data, $array);
+		return $array;
 	}
 
 

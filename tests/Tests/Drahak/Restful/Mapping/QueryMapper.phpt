@@ -40,8 +40,9 @@ class QueryMapperTest extends TestCase
 	{
 		$data['message'] = 'Follow me on Twitter';
 		$data['sender'] = '@drahomir_hanak';
+		$data['specialChars'] = '+_-!@*()';
 		$query = $this->mapper->parseResponse($data);
-		Assert::equal($query, 'message=Follow+me+on+Twitter&sender=%40drahomir_hanak');
+		Assert::equal($query, 'message=Follow+me+on+Twitter&sender=%40drahomir_hanak&specialChars=%2B_-%21%40%2A%28%29');
 	}
 
 }
