@@ -20,8 +20,16 @@ class ResourceRouterPanel extends Object implements IBarPanel
 	/** @var \Nette\Application\IRouter */
 	private $router;
 
-	public function __construct(IRouter $router)
+	/** @var string */
+	private $secretKey;
+
+	/** @var string */
+	private $requestTimeKey;
+
+	public function __construct($secretKey, $requestTimeKey, IRouter $router)
 	{
+		$this->secretKey = $secretKey;
+		$this->requestTimeKey = $requestTimeKey;
 		$this->router = $router;
 	}
 
@@ -69,6 +77,8 @@ class ResourceRouterPanel extends Object implements IBarPanel
 			IResourceRouter::DELETE => 'DELETE',
 			IResourceRouter::HEAD => 'HEAD'
 		);
+		$privateKey = $this->secretKey;
+		$requestTimeKey = $this->requestTimeKey;
 
 		require_once __DIR__ . '/panel.phtml';
 		return ob_get_clean();

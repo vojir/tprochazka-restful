@@ -108,6 +108,10 @@ class Extension extends CompilerExtension
 		if ($config['routes']['panel']) {
 			$container->addDefinition($this->prefix('panel'))
 				->setClass('Drahak\Restful\Diagnostics\ResourceRouterPanel')
+				->setArguments(array(
+					$this->config['security']['privateKey'],
+					isset($this->config['security']['requestTimeKey']) ? $this->config['security']['requestTimeKey'] : 'timestamp'
+				))
 				->addSetup('Nette\Diagnostics\Debugger::$bar->addPanel(?)', array('@self'));
 
 			$container->getDefinition('application')
