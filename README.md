@@ -227,8 +227,6 @@ You can set any mapper to `$presenter->input` in Presenter or to `restful.input`
 
 Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
 
-So that's it. Enjoy and hope you like it!
-
 Security & authentication
 -------------------------
 The library provides base support of secure API calls. It's based on sending hashed data with private key. Authentication process is as follows:
@@ -291,3 +289,5 @@ What I plan to (sometime) implement.
 - Better API resources panel. There are to many records in the table.
 - `@resource` annotation (presenter class) to auto generate CrudRoute
 - Refactor `RouteListFactory` for easier scalability
+
+So that's it. Enjoy and hope you like it!
