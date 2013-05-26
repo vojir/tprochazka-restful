@@ -1,6 +1,6 @@
 Simple Nette REST API
 =====================
-This repository is being developed.
+This repository is being developed. Project is for study purposes. Do not use it on production.
 
 ### Content
 - [Requirements](#requirements)
