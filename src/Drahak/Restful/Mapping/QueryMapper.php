@@ -1,7 +1,9 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
+use Nette\Http\Url;
 use Nette\Object;
+use Nette\Utils\Strings;
 
 /**
  * Query string mapper
@@ -10,6 +12,7 @@ use Nette\Object;
  */
 class QueryMapper extends Object implements IMapper
 {
+
 	/**
 	 * Convert array or Traversable input to string output response
 	 * @param array $data
@@ -19,7 +22,7 @@ class QueryMapper extends Object implements IMapper
 	 */
 	public function parseResponse($data)
 	{
-		return http_build_query($data);
+		return http_build_query($data, '', '&');
 	}
 
 	/**
@@ -31,9 +34,9 @@ class QueryMapper extends Object implements IMapper
 	 */
 	public function parseRequest($data)
 	{
-		$array = array();
-		parse_str($data, $array);
-		return $array;
+		$result = array();
+		parse_str($data, $result);
+		return $result;
 	}
 
 

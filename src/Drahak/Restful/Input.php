@@ -7,6 +7,8 @@ use Drahak\Restful\Mapping\IMapper;
 use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;
+use Nette\Utils\Json;
+use Nette\Utils\Strings;
 
 /**
  * Request Input parser
@@ -50,10 +52,13 @@ class Input extends Object implements IteratorAggregate, IInput
 	public function getData()
 	{
 		if (!$this->data) {
-			$queryString = $this->httpRequest->getUrl()->getQuery();
-			$this->data = $this->mapper->parseRequest(
-				$queryString ? $queryString : file_get_contents('php://input')
-			);
+			if ($this->httpRequest->getPost()) {
+				$this->data = $this->httpRequest->getPost();
+			} else if ($this->httpRequest->getQuery()) {
+				$this->data = $this->httpRequest->getQuery();
+			} else {
+				$this->data = $this->mapper->parseRequest(file_get_contents('php://input'));
+			}
 		}
 		return $this->data;
 	}
