@@ -68,6 +68,10 @@ class XmlMapper extends Object implements IMapper
 			throw new InvalidArgumentException('Data must be of type array or Traversable');
 		}
 
+		if ($data instanceof \Traversable) {
+			$data = iterator_to_array($data);
+		}
+
 		if ($this->rootElement) {
 			$data = array($this->rootElement => $data);
 		}
@@ -79,7 +83,7 @@ class XmlMapper extends Object implements IMapper
 	/**
 	 * Parse XML to array
 	 * @param string $data
-	 * @return array|\Traversable
+	 * @return array
 	 */
 	public function parseRequest($data)
 	{

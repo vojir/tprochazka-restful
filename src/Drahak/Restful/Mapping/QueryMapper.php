@@ -22,13 +22,16 @@ class QueryMapper extends Object implements IMapper
 	 */
 	public function parseResponse($data)
 	{
+		if ($data instanceof \Traversable) {
+			$data = iterator_to_array($data);
+		}
 		return http_build_query($data, '', '&');
 	}
 
 	/**
 	 * Convert client request data to array or traversable
 	 * @param string $data
-	 * @return array|\Traversable
+	 * @return array
 	 *
 	 * @throws MappingException
 	 */

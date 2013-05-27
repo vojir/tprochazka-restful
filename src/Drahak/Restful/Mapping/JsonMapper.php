@@ -1,7 +1,6 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Drahak\Restful\InvalidArgumentException;
 use Nette\Object;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
@@ -19,13 +18,12 @@ class JsonMapper extends Object implements IMapper
 	 * @param array|\Traversable $data
 	 * @return mixed
 	 *
-	 * @throws InvalidArgumentException
 	 * @throws MappingException
 	 */
 	public function parseResponse($data)
 	{
-		if (!is_array($data) && $data instanceof \Traversable && $data !== NULL) {
-			throw new InvalidArgumentException('Data must be of type array, traversable or null');
+		if ($data instanceof \Traversable) {
+			$data = iterator_to_array($data);
 		}
 
 		try {
@@ -38,7 +36,7 @@ class JsonMapper extends Object implements IMapper
 	/**
 	 * Convert client request data to array or traversable
 	 * @param string $data
-	 * @return array|\Traversable
+	 * @return array to be compatible with other mappers
 	 *
 	 * @throws MappingException
 	 */
