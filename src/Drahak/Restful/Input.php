@@ -52,15 +52,22 @@ class Input extends Object implements IteratorAggregate, IInput
 	public function getData()
 	{
 		if (!$this->data) {
-			if ($this->httpRequest->getPost()) {
-				$this->data = $this->httpRequest->getPost();
-			} else if ($this->httpRequest->getQuery()) {
-				$this->data = $this->httpRequest->getQuery();
-			} else {
-				$this->data = $this->mapper->parseRequest(file_get_contents('php://input'));
-			}
+			$this->data = $this->parseData();
 		}
 		return $this->data;
+	}
+
+	/**
+	 * @return array|mixed|\Traversable
+	 */
+	private function parseData()
+	{
+		if ($this->httpRequest->getPost()) {
+			return $this->httpRequest->getPost();
+		} else if ($this->httpRequest->getQuery()) {
+			return $this->httpRequest->getQuery();
+		}
+		return $this->mapper->parseRequest(file_get_contents('php://input'));
 	}
 
 	/******************** Magic methods ********************/
@@ -91,7 +98,11 @@ class Input extends Object implements IteratorAggregate, IInput
 	public function __isset($name)
 	{
 		$isset = parent::__isset($name);
-		return $isset ? $isset : isset($this->getData()[$name]);
+		if ($isset) {
+			return TRUE;
+		}
+		$data = $this->getData();
+		return $data[$name];
 	}
 
 	/******************** Iterator aggregate interface ********************/

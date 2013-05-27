@@ -102,8 +102,9 @@ class ResourceRouteTest extends TestCase
 			->andReturn(NULL);
 
 		$appRequest = $this->route->match($this->httpRequest);
+		$params = $appRequest->getParameters();
 		Assert::true($appRequest instanceof Nette\Application\Request);
-		Assert::equal($appRequest->getParameters()['action'], 'read');
+		Assert::equal($params['action'], 'read');
 	}
 
 	public function testOverrideRequestMethod()
@@ -119,8 +120,9 @@ class ResourceRouteTest extends TestCase
 			->andReturn(IRequest::GET);
 
 		$appRequest = $this->route->match($this->httpRequest);
+		$params = $appRequest->getParameters();
 		Assert::true($appRequest instanceof Nette\Application\Request);
-		Assert::equal($appRequest->getParameters()['action'], 'read');
+		Assert::equal($params['action'], 'read');
 	}
 
 	/**

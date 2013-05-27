@@ -33,7 +33,8 @@ class ResourceTest extends TestCase
     public function testAddingDataThroughArrayAccess()
     {
 		$this->resource['name'] = 'Test';
-		Assert::equal($this->resource->getData()['name'], 'Test');
+		$data = $this->resource->getData();
+		Assert::equal($data['name'], 'Test');
     }
 
 	public function testAddingDataThroughMagicMethods()
