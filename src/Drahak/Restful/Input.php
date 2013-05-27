@@ -102,7 +102,7 @@ class Input extends Object implements IteratorAggregate, IInput
 			return TRUE;
 		}
 		$data = $this->getData();
-		return $data[$name];
+		return isset($data[$name]);
 	}
 
 	/******************** Iterator aggregate interface ********************/
