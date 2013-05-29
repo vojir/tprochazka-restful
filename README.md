@@ -226,7 +226,7 @@ class SamplePresenter extends BasePresenter
 
 }
 ```
-You can set any mapper to `$presenter->input` in Presenter or to `restful.input` by calling service method `setMapper(IMapper)`. Then you can send `PUT` request to `resources/sample` with e.g. JSON string in body: `{"message": "hello"}`. The library will choose correct request method and parse it with `$presenter->mapper`.
+First the library looks for request body. If it's not empty it checks `Content-Type` header and determines correct mapper (e.g. for `application/json` -> `JsonMapper` etc.) Then, if request body is empty, try to get POST data and at the end even URL query data.
 
 Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
 

@@ -7,7 +7,6 @@ use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
 use Drahak\Restful\Security\AuthenticationContext;
-use Drahak\Restful\Security\AuthenticationProcess;
 use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
 use Nette\Utils\Strings;
