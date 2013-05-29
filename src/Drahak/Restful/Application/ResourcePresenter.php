@@ -31,7 +31,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	);
 
 	/** @var string */
-	protected $defaultMimeType = IResource::NULL;
+	protected $defaultMimeType = IResource::JSON;
 
 	/** @var IResource */
 	protected $resource;
