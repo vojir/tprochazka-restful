@@ -84,7 +84,7 @@ abstract class BasePresenter extends ResourcePresenter
 }
 ```
 
-The `defaultMimeType` property determines how to generate response from your resource. Can be overridden by request `Accept` header. Library checks the header for `application/xml`, `application/json` and `text/x-query` and keep an order in `Accept` header.
+The `defaultMimeType` property determines how to generate response from your resource. Can be overridden by request `Accept` header. Library checks the header for `application/xml`, `application/json`, `application/x-data-url` and `text/x-query` and keep an order in `Accept` header.
 
 Note: If you call `$presenter->sendResource()` method with a mime type in first parameter, API will accept only this one.
 
