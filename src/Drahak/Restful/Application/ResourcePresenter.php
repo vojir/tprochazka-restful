@@ -23,6 +23,13 @@ use Nette\Application\IResponse;
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter
 {
 
+	/** @var array */
+	protected $formats = array(
+		'json' => IResource::JSON,
+		'xml' => IResource::XML,
+		'query' => IResource::QUERY
+	);
+
 	/** @var string */
 	protected $defaultMimeType = IResource::NULL;
 
@@ -82,6 +89,16 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		parent::startup();
 		if ($this->defaultMimeType) {
 			$this->resource->setMimeType($this->defaultMimeType);
+		}
+
+		$accept = explode(',', $this->getHttpRequest()->getHeader('Accept'));
+		foreach ($accept as $mimeType) {
+			foreach ($this->formats as $formatMime) {
+				if (Strings::contains($mimeType, $formatMime)) {
+					$this->resource->setMimeType($formatMime);
+					break;
+				}
+			}
 		}
 	}
 
