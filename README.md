@@ -198,7 +198,7 @@ class CrudPresenter extends BasePresenter
 }
 ```
 
-Note: every request method can be overridden if you specify `X-HTTP-Method-Override` header in request.
+Note: every request method can be overridden if you specify `X-HTTP-Method-Override` header in request or by adding query parameter `__method` to URL.
 
 Accessing input data
 --------------------

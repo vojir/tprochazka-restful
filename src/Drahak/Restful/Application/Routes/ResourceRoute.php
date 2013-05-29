@@ -61,6 +61,11 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function getMethod(Http\IRequest $httpRequest)
 	{
+		$method = $httpRequest->getQuery('__method');
+		if ($method && isset($this->methodDictionary[$method])) {
+			return $this->methodDictionary[$method];
+		}
+
 		$overrideMethod = $httpRequest->getHeader(self::HEADER_OVERRIDE);
 		$methodName = $overrideMethod ? $overrideMethod : $httpRequest->getMethod();
 		if (!isset($this->methodDictionary[$methodName])) {
