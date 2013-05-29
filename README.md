@@ -129,7 +129,6 @@ class SamplePresenter extends BasePresenter
 ```
 
 See `@GET` annotation. There are also available annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
-
 ```php
 <?php
 use Drahak\Restful\Application\Routes\ResourceRoute;
@@ -198,6 +197,8 @@ class CrudPresenter extends BasePresenter
 
 }
 ```
+
+Note: every request method can be overridden if you specify `X-HTTP-Method-Override` header in request.
 
 Accessing input data
 --------------------
