@@ -2,6 +2,7 @@
 namespace Drahak\Restful\DI;
 
 use Drahak\Restful\Application\Routes\ResourceRoute;
+use Drahak\Restful\IResource;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Config\CompilerExtension;
 use Nette\Config\Configurator;
@@ -59,11 +60,19 @@ class Extension extends CompilerExtension
 			->setClass('Drahak\Restful\Mapping\JsonMapper');
 		$container->addDefinition($this->prefix('queryMapper'))
 			->setClass('Drahak\Restful\Mapping\QueryMapper');
+		$container->addDefinition($this->prefix('dataUrlMapper'))
+			->setClass('Drahak\Restful\Mapping\DataUrlMapper');
+
+		$container->addDefinition($this->prefix('mapperContext'))
+			->setClass('Drahak\Restful\Mapping\MapperContext')
+			->addSetup('$service->addMapper(?, ?)', array(IResource::XML, $this->prefix('@xmlMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::JSON, $this->prefix('@jsonMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::QUERY, $this->prefix('@queryMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')));
 
 		// Add input parser
 		$container->addDefinition($this->prefix('input'))
-			->setClass('Drahak\Restful\Input')
-			->addSetup('$service->setMapper(?)', array($this->prefix('@jsonMapper')));
+			->setClass('Drahak\Restful\Input');
 
 		// Annotation parsers
 		$container->addDefinition($this->prefix('routeAnnotation'))
