@@ -12,7 +12,7 @@ interface IResource
 	/** Result types */
 	const XML = 'application/xml';
 	const JSON = 'application/json';
-	const QUERY = 'text/plain';
+	const QUERY = 'text/x-query';
 	const NULL = 'NULL';
 
 	/**
