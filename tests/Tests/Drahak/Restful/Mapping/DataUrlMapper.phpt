@@ -30,13 +30,13 @@ class DataUrlMapperTest extends TestCase
     
     public function testEncodeContentToBase64WithMimeTypeFromArray()
     {
-		$encoded = $this->mapper->parseResponse(array('src' => 'Hello world', 'mimeType' => 'text/plain'));
+		$encoded = $this->mapper->parseResponse(array('src' => 'Hello world', 'type' => 'text/plain'));
 		Assert::equal($encoded, 'data:text/plain;base64,SGVsbG8gd29ybGQ=');
     }
 
-	public function textDecodeBase64DataToArray()
+	public function testDecodeBase64DataToArray()
 	{
-		$data = array('src' => 'Hello world', 'text/plain');
+		$data = array('src' => 'Hello world', 'type' => 'text/plain');
 		$result = $this->mapper->parseRequest('data:text/plain;base64,SGVsbG8gd29ybGQ=');
 		Assert::equal($result, $data);
 	}
