@@ -19,7 +19,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 {
 
 	/** @var string */
-	private $mimeType = self::TEXT;
+	private $mimeType = self::QUERY;
 
 	/** @var array */
 	private $data = array();
@@ -28,7 +28,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 * @param array $data
 	 * @param string $mimeType
 	 */
-	public function __construct(array $data = array(), $mimeType = self::TEXT)
+	public function __construct(array $data = array(), $mimeType = self::QUERY)
 	{
 		$this->data = $data;
 		$this->mimeType = $mimeType;
