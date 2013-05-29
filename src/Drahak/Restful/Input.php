@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful;
 
+use Drahak\Restful\Mapping\MapperContext;
 use IteratorAggregate;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Mapping\IMapper;
@@ -29,9 +30,14 @@ class Input extends Object implements IteratorAggregate, IInput
 	/** @var IMapper */
 	protected $mapper;
 
-	public function __construct(Http\IRequest $httpRequest)
+	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext)
 	{
 		$this->httpRequest = $httpRequest;
+		try {
+			$this->mapper = $mapperContext->getMapper($httpRequest->getHeader('Content-Type'));
+		} catch (InvalidStateException $e) {
+			// No mapper for this content type - ignore in this step
+		}
 	}
 
 	/**
@@ -62,12 +68,15 @@ class Input extends Object implements IteratorAggregate, IInput
 	 */
 	private function parseData()
 	{
-		if ($this->httpRequest->getPost()) {
+		if ($input = file_get_contents('php://input')) {
+			if (!$this->mapper) {
+				throw new InvalidStateException('No mapper defined');
+			}
+			return $this->mapper->parseRequest($input);
+		} else if ($this->httpRequest->getPost()) {
 			return $this->httpRequest->getPost();
-		} else if ($this->httpRequest->getQuery()) {
-			return $this->httpRequest->getQuery();
 		}
-		return $this->mapper->parseRequest(file_get_contents('php://input'));
+		return $this->httpRequest->getQuery();
 	}
 
 	/******************** Magic methods ********************/
