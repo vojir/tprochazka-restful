@@ -17,6 +17,9 @@ class ResourceRoute extends Route implements IResourceRouter
 	/** Request method header override name */
 	const HEADER_OVERRIDE = 'X-HTTP-Method-Override';
 
+	/** Request method override query parameter name */
+	const PARAM_OVERRIDE = '__method';
+
 	/** @var array */
 	private $methodDictionary = array(
 		Http\IRequest::GET => self::GET,
@@ -61,7 +64,7 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function getMethod(Http\IRequest $httpRequest)
 	{
-		$method = $httpRequest->getQuery('__method');
+		$method = $httpRequest->getQuery(self::PARAM_OVERRIDE);
 		if ($method && isset($this->methodDictionary[$method])) {
 			return $this->methodDictionary[$method];
 		}
