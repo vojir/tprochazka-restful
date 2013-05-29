@@ -18,6 +18,7 @@ class ResponseFactory extends Object implements IResponseFactory
 		IResource::JSON => 'Nette\Application\Responses\JsonResponse',
 		IResource::QUERY => 'Drahak\Restful\Application\Responses\QueryResponse',
 		IResource::XML => 'Drahak\Restful\Application\Responses\XmlResponse',
+		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\DataUrlResponse',
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
 
