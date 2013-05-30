@@ -21,7 +21,7 @@ The easist way is to use [Composer](http://doc.nette.org/en/composer)
 
 	$ composer require drahak/restful:@dev
 
-Then add following code to you app bootstrap file before creating container:
+Then add following code to your app bootstrap file before creating container:
 
 ```php
 Drahak\Restful\DI\Extension::install($configurator);
@@ -202,7 +202,7 @@ Note: every request method can be overridden if you specify `X-HTTP-Method-Overr
 
 Accessing input data
 --------------------
-If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parser, which reads data and parse it to an array. Data are fetched from query string or from request body and parsed by `IMapper`. Default mapper is `QueryMapper` but you can set e.g. `XmlMapper` to parse request body as XML.
+If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parser, which reads data and parse it to an array. Data are fetched from query string or from request body and parsed by `IMapper`. First the library looks for request body. If it's not empty it checks `Content-Type` header and determines correct mapper (e.g. for `application/json` -> `JsonMapper` etc.) Then, if request body is empty, try to get POST data and at the end even URL query data.
 
 ```php
 <?php
@@ -226,8 +226,6 @@ class SamplePresenter extends BasePresenter
 
 }
 ```
-First the library looks for request body. If it's not empty it checks `Content-Type` header and determines correct mapper (e.g. for `application/json` -> `JsonMapper` etc.) Then, if request body is empty, try to get POST data and at the end even URL query data.
-
 Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
 
 Security & authentication
