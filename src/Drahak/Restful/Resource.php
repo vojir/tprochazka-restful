@@ -12,36 +12,36 @@ use Nette\MemberAccessException;
  * @package Drahak\Restful
  * @author Drahomír Hanák
  *
- * @property string $mimeType Allowed result mime type
+ * @property string $contentType Allowed result content type
  * @property-read array $data
  */
 class Resource extends Object implements ArrayAccess, Serializable, IResource
 {
 
 	/** @var string */
-	private $mimeType = self::QUERY;
+	private $contentType = self::QUERY;
 
 	/** @var array */
 	private $data = array();
 
 	/**
 	 * @param array $data
-	 * @param string $mimeType
+	 * @param string $contentType
 	 */
-	public function __construct(array $data = array(), $mimeType = self::QUERY)
+	public function __construct(array $data = array(), $contentType = self::QUERY)
 	{
 		$this->data = $data;
-		$this->mimeType = $mimeType;
+		$this->contentType = $contentType;
 	}
 
 	/**
-	 * Set result mime type
+	 * Set result content type
 	 * @param string $mime
 	 * @return Resource
 	 */
-	public function setMimeType($mime)
+	public function setContentType($mime)
 	{
-		$this->mimeType = $mime;
+		$this->contentType = $mime;
 		return $this;
 	}
 
@@ -49,9 +49,9 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 * Get result mime type
 	 * @return string
 	 */
-	public function getMimeType()
+	public function getContentType()
 	{
-		return $this->mimeType;
+		return $this->contentType;
 	}
 
 	/**

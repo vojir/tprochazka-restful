@@ -24,7 +24,7 @@ class DataUrlMapper extends Object implements IMapper
 	public function parseResponse($data)
 	{
 		if (!isset($data['src']) || !isset($data['type'])) {
-			throw new InvalidArgumentException('DataUrlMapper expects array(src => \'\', mimeType => \'\')');
+			throw new InvalidArgumentException('DataUrlMapper expects array(src => \'\', contentType => \'\')');
 		}
 		$src = base64_encode($data['src']);
 		return 'data:' . $data['type'] . ';base64,'. $src;

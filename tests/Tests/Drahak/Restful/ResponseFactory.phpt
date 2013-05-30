@@ -35,7 +35,7 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateResponse()
 	{
-		$this->resource->expects('getMimeType')
+		$this->resource->expects('getContentType')
 			->once()
 			->andReturn(IResource::JSON);
 		$this->resource->expects('getData')
@@ -48,7 +48,7 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateCustomResponse()
 	{
-		$this->resource->expects('getMimeType')
+		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
 		$this->resource->expects('getData')
@@ -63,7 +63,7 @@ class ResponseFactoryTest extends TestCase
 
 	public function testThrowsExceptionWhenResponseTypeIsNotFound()
 	{
-		$this->resource->expects('getMimeType')
+		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('drahak/test');
 

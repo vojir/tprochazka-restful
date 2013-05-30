@@ -31,7 +31,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	);
 
 	/** @var string */
-	protected $defaultMimeType = IResource::JSON;
+	protected $defaultContentType = IResource::JSON;
 
 	/** @var IResource */
 	protected $resource;
@@ -87,15 +87,15 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected function startup()
 	{
 		parent::startup();
-		if ($this->defaultMimeType) {
-			$this->resource->setMimeType($this->defaultMimeType);
+		if ($this->defaultContentType) {
+			$this->resource->setContentType($this->defaultContentType);
 		}
 
 		$accept = explode(',', $this->getHttpRequest()->getHeader('Accept'));
 		foreach ($accept as $mimeType) {
 			foreach ($this->formats as $formatMime) {
 				if (Strings::contains($mimeType, $formatMime)) {
-					$this->resource->setMimeType($formatMime);
+					$this->resource->setContentType($formatMime);
 					break;
 				}
 			}
@@ -132,16 +132,16 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 	/**
 	 * Get REST API response
-	 * @param string $mimeType
+	 * @param string $contentType
 	 * @param int $code
 	 * @return IResponse
 	 *
 	 * @throws InvalidStateException
 	 */
-	public function sendResource($mimeType = NULL, $code = 200)
+	public function sendResource($contentType = NULL, $code = 200)
 	{
-		if ($mimeType !== NULL) {
-			$this->resource->setMimeType($mimeType);
+		if ($contentType !== NULL) {
+			$this->resource->setContentType($contentType);
 		}
 
 		$this->getHttpResponse()->setCode($code);
@@ -163,7 +163,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
 
-		$this->sendResource($this->defaultMimeType, $code);
+		$this->sendResource($this->defaultContentType, $code);
 	}
 
 }

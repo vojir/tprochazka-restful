@@ -17,10 +17,10 @@ interface IResource
 	const NULL = 'NULL';
 
 	/**
-	 * Get mime type
+	 * Get content type
 	 * @return string
 	 */
-	public function getMimeType();
+	public function getContentType();
 
 	/**
 	 * Get result set data

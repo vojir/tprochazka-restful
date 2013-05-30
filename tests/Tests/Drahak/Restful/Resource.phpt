@@ -45,8 +45,8 @@ class ResourceTest extends TestCase
 
 	public function testSettingMimeType()
 	{
-		$this->resource->setMimeType(IResource::JSON);
-		Assert::equal($this->resource->mimeType, IResource::JSON);
+		$this->resource->setContentType(IResource::JSON);
+		Assert::equal($this->resource->contentType, IResource::JSON);
 	}
 }
 \run(new ResourceTest());
