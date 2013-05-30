@@ -50,5 +50,4 @@ class DataUrlMapper extends Object implements IMapper
 		);
 	}
 
-
 }

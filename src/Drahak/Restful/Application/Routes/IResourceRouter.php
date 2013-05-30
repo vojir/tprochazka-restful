@@ -37,4 +37,11 @@ interface IResourceRouter extends IRouter
 	 */
 	public function getMethod(Http\IRequest $httpRequest);
 
+	/**
+	 * Get action dictionary
+	 * @return array methodFlag => presenterActionName
+	 */
+	public function getActionDictionary();
+
+
 }

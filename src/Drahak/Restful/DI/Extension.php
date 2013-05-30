@@ -126,6 +126,12 @@ class Extension extends CompilerExtension
 			$container->getDefinition('application')
 				->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@panel'), 'getTab')));
 		}
+
+		$container->addDefinition($this->prefix('methodHandler'))
+			->setClass('Drahak\Restful\Application\MethodHandler');
+
+		$container->getDefinition('application')
+			->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@methodHandler'), 'run')));
 	}
 
 
