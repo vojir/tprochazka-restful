@@ -57,16 +57,17 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	public function create(IResource $resource)
 	{
-		$contentType = $resource->getMimeType();
+		$contentType = $resource->getContentType();
 		if (!isset($this->responses[$contentType])) {
-			throw new InvalidStateException('Unregistred API response.');
+			throw new InvalidStateException('Unregistered API response.');
 		}
 
 		if (!class_exists($this->responses[$contentType])) {
 			throw new InvalidStateException('API response class does not exist.');
 		}
 
-		$response = new $this->responses[$contentType]($resource->getData());
+		$responseClass = $this->responses[$contentType];
+		$response = new $responseClass($resource->getData());
 		return $response;
 	}
 
