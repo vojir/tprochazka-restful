@@ -2,9 +2,6 @@
 namespace Drahak\Restful\Application\Responses;
 
 use Drahak\Restful\Mapping\DataUrlMapper;
-use Drahak\Restful\Mapping\IMapper;
-use Nette\Application\IResponse;
-use Nette\Object;
 use Nette\Http;
 
 /**
@@ -12,33 +9,21 @@ use Nette\Http;
  * @package Drahak\Restful\Application\Responses
  * @author Drahomír Hanák
  */
-class DataUrlResponse extends Object implements IResponse
+class DataUrlResponse extends BaseResponse
 {
-
-	/** @var IMapper */
-	private $mapper;
 
 	/** @var array|\stdClass|\Traversable */
 	private $data;
 
 	/**
-	 * @param array $data
+	 * @param string|null $data
+	 * @param string|null $contentType
 	 */
-	public function __construct($data)
+	public function __construct($data, $contentType = NULL)
 	{
+		parent::__construct($contentType);
 		$this->data = $data;
 		$this->mapper = new DataUrlMapper;
-	}
-
-	/**
-	 * Change XmlResponse mapper
-	 * @param IMapper $mapper
-	 * @return XmlResponse
-	 */
-	public function setMapper(IMapper $mapper)
-	{
-		$this->mapper = $mapper;
-		return $this;
 	}
 
 	/**
@@ -48,7 +33,7 @@ class DataUrlResponse extends Object implements IResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType('text/plain');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain');
 		echo $this->mapper->parseResponse($this->data);
 	}
 

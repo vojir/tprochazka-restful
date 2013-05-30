@@ -1,10 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
-use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\QueryMapper;
-use Nette\Application\IResponse;
-use Nette\Object;
 use Nette\Http;
 
 /**
@@ -12,30 +9,21 @@ use Nette\Http;
  * @package Drahak\Restful\Application\Responses
  * @author Drahomír Hanák
  */
-class QueryResponse extends Object implements IResponse
+class QueryResponse extends BaseResponse
 {
-
-	/** @var QueryMapper */
-	private $mapper;
 
 	/** @var array|\Traversable */
 	private $data;
 
-	public function __construct($data)
+	/**
+	 * @param $data
+	 * @param string|null $contentType
+	 */
+	public function __construct($data, $contentType = NULL)
 	{
+		parent::__construct($contentType);
 		$this->mapper = new QueryMapper;
 		$this->data = $data;
-	}
-
-	/**
-	 * Set response mapper
-	 * @param IMapper $mapper
-	 * @return QueryResponse
-	 */
-	public function setMapper(IMapper $mapper)
-	{
-		$this->mapper = $mapper;
-		return $this;
 	}
 
 	/**
@@ -45,7 +33,7 @@ class QueryResponse extends Object implements IResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType('text/plain');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain');
 		echo $this->mapper->parseResponse($this->data);
 	}
 
