@@ -65,6 +65,7 @@ class Input extends Object implements IteratorAggregate, IInput
 
 	/**
 	 * @return array|mixed|\Traversable
+	 * @throws InvalidStateException
 	 */
 	private function parseData()
 	{

@@ -55,5 +55,11 @@ class MapperContextTest extends TestCase
 		}, 'Drahak\Restful\InvalidStateException');
 	}
 
+	public function testGetMapperFromFullContentTypeSpecification()
+	{
+		$mapper = $this->context->getMapper('application/json; charset=utf8');
+		Assert::same($mapper, $this->json);
+	}
+
 }
 \run(new MapperContextTest());
