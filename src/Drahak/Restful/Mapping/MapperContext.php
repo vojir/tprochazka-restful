@@ -3,6 +3,7 @@ namespace Drahak\Restful\Mapping;
 
 use Drahak\Restful\InvalidStateException;
 use Nette\Object;
+use Nette\Utils\Strings;
 
 /**
  * MapperContext
@@ -27,13 +28,15 @@ class MapperContext extends Object
 
 	/**
 	 * Get mapper
-	 * @param string $contentType
+	 * @param string $contentType in format mimeType[; charset=utf8]
 	 * @return IMapper
 	 *
 	 * @throws \Drahak\Restful\InvalidStateException
 	 */
 	public function getMapper($contentType)
 	{
+		$contentType = explode(';', $contentType);
+		$contentType = Strings::trim($contentType[0]);
 		if (!isset($this->services[$contentType])) {
 			throw new InvalidStateException('There is no mapper for Content-Type: ' . $contentType);
 		}

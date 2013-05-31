@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\IInput;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
@@ -13,6 +14,7 @@ use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
 use Nette\Application\IResponse;
+use Nette\Http;
 
 /**
  * Base presenter for REST API presenters
@@ -143,8 +145,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		if ($contentType !== NULL) {
 			$this->resource->setContentType($contentType);
 		}
-
-		$this->getHttpResponse()->setCode($code);
 
 		$response = $this->responseFactory->create($this->resource, $code);
 		$this->sendResponse($response);
