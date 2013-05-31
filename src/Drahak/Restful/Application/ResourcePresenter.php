@@ -146,6 +146,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->resource->setContentType($contentType);
 		}
 
+		$this->getHttpResponse()->setCode($code);
 		$response = $this->responseFactory->create($this->resource, $code);
 		$this->sendResponse($response);
 	}
