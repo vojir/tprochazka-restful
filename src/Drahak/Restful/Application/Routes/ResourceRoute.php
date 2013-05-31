@@ -46,7 +46,6 @@ class ResourceRoute extends Route implements IResourceRouter
 		}
 	}
 
-
 	/**
 	 * Is this route mapped to given method
 	 * @param int $method

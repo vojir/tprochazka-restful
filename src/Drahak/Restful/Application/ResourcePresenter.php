@@ -1,8 +1,8 @@
 <?php
 namespace Drahak\Restful\Application;
 
-use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\IInput;
+use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
@@ -41,6 +41,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IInput */
 	protected $input;
 
+	/** @var IResourceFactory */
+	protected $resourceFactory;
+
 	/** @var IResponseFactory */
 	protected $responseFactory;
 
@@ -57,12 +60,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	}
 
 	/**
-	 * Inject resource
-	 * @param IResource $resource
+	 * Inject resource factory
+	 * @param IResourceFactory $resourceFactory
 	 */
-	public function injectResource(IResource $resource)
+	public function injectResourceFactory(IResourceFactory $resourceFactory)
 	{
-		$this->resource = $resource;
+		$this->resourceFactory = $resourceFactory;
 	}
 
 	/**
@@ -89,6 +92,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected function startup()
 	{
 		parent::startup();
+		$this->resource = $this->resourceFactory->create();
 		if ($this->defaultContentType) {
 			$this->resource->setContentType($this->defaultContentType);
 		}
@@ -159,7 +163,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	{
 		$code = $e->getCode() ? $e->getCode() : 500;
 
-		$this->resource->delete();
+		$this->resource = $this->resourceFactory->create();
 		$this->resource->code = $code;
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
