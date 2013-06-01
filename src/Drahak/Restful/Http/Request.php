@@ -35,4 +35,13 @@ class Request extends Nette\Http\Request
 		return $method;
 	}
 
+	/**
+	 * Get original method
+	 * @return string
+	 */
+	public function getOriginalMethod()
+	{
+		return parent::getMethod();
+	}
+
 }

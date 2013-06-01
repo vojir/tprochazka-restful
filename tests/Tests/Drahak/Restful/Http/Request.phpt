@@ -61,6 +61,18 @@ class RequestTest extends TestCase
 		Assert::equal($method, Nette\Http\IRequest::DELETE);
 	}
 
+	public function testGetOriginalMethod()
+	{
+		$this->request = $this->createRequest(array(
+			Request::METHOD_OVERRIDE_PARAM => Nette\Http\IRequest::PUT
+		), array(
+			Strings::lower(Request::METHOD_OVERRIDE_HEADER) => Nette\Http\IRequest::DELETE
+		));
+
+		$method = $this->request->getOriginalMethod();
+		Assert::equal($method, Nette\Http\IRequest::GET);
+	}
+
 	/**
 	 * @param array|null $query
 	 * @param array|null $headers
