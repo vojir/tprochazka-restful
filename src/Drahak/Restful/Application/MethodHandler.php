@@ -3,12 +3,12 @@ namespace Drahak\Restful\Application;
 
 use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
+use Drahak\Restful\Http\Request;
 use Nette\Application\Application;
 use Nette\Application\BadRequestException;
 use Nette\Application\IRouter;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
-use Nette\Http\Request;
 use Nette\Object;
 
 /**
@@ -113,7 +113,7 @@ class MethodHandler extends Object implements IErrorHandler
 	 */
 	private function removeOverrideHeader(array $headers)
 	{
-		unset($headers[ResourceRoute::HEADER_OVERRIDE]);
+		unset($headers[Request::METHOD_OVERRIDE_HEADER]);
 		return $headers;
 	}
 
@@ -124,7 +124,7 @@ class MethodHandler extends Object implements IErrorHandler
 	 */
 	private function removeOverrideParam(array $query)
 	{
-		unset($query[ResourceRoute::PARAM_OVERRIDE]);
+		unset($query[Request::METHOD_OVERRIDE_PARAM]);
 		return $query;
 	}
 

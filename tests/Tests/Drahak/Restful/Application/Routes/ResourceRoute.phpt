@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Application\Routes\IResourceRouter;
+use Drahak\Restful\Http\Request;
 use Mockista\MockInterface;
 use Nette;
 use Nette\Http\IRequest;
@@ -112,11 +113,6 @@ class ResourceRouteTest extends TestCase
 		$this->setupRequestMock();
 		$this->httpRequest->expects('getMethod')
 			->once()
-			->andReturn(IRequest::HEAD);
-
-		$this->httpRequest->expects('getHeader')
-			->once()
-			->with(ResourceRoute::HEADER_OVERRIDE)
 			->andReturn(IRequest::GET);
 
 		$appRequest = $this->route->match($this->httpRequest);

@@ -14,12 +14,6 @@ use Nette\Http;
 class ResourceRoute extends Route implements IResourceRouter
 {
 
-	/** Request method header override name */
-	const HEADER_OVERRIDE = 'X-HTTP-Method-Override';
-
-	/** Request method override query parameter name */
-	const PARAM_OVERRIDE = '__method';
-
 	/** @var array */
 	private $methodDictionary = array(
 		Http\IRequest::GET => self::GET,
@@ -63,17 +57,11 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function getMethod(Http\IRequest $httpRequest)
 	{
-		$method = $httpRequest->getQuery(self::PARAM_OVERRIDE);
-		if ($method && isset($this->methodDictionary[$method])) {
-			return $this->methodDictionary[$method];
-		}
-
-		$overrideMethod = $httpRequest->getHeader(self::HEADER_OVERRIDE);
-		$methodName = $overrideMethod ? $overrideMethod : $httpRequest->getMethod();
-		if (!isset($this->methodDictionary[$methodName])) {
+		$method = $httpRequest->getMethod();
+		if (!isset($this->methodDictionary[$method])) {
 			return NULL;
 		}
-		return $this->methodDictionary[$methodName];
+		return $this->methodDictionary[$method];
 	}
 
 	/**

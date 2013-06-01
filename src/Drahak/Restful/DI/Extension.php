@@ -130,6 +130,9 @@ class Extension extends CompilerExtension
 		$container->addDefinition($this->prefix('methodHandler'))
 			->setClass('Drahak\Restful\Application\MethodHandler');
 
+		$container->getDefinition('nette.httpRequestFactory')
+			->setClass('Drahak\Restful\Http\RequestFactory');
+
 		$container->getDefinition('application')
 			->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@methodHandler'), 'run')));
 	}
