@@ -25,10 +25,16 @@ class Request extends Nette\Http\Request
 	public function getMethod()
 	{
 		$method = parent::getMethod();
+		if ($method !== self::POST) {
+			return $method;
+		}
+
+		// Override request method with query param
 		if ($this->getQuery(self::METHOD_OVERRIDE_PARAM)) {
 			return $this->getQuery(self::METHOD_OVERRIDE_PARAM);
 		}
 
+		// Override request method with header
 		if ($this->getHeader(self::METHOD_OVERRIDE_HEADER)) {
 			return $this->getHeader(self::METHOD_OVERRIDE_HEADER);
 		}

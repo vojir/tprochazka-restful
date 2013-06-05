@@ -36,7 +36,7 @@ class RequestTest extends TestCase
     public function testDoesNotOverrideRequestMethod()
     {
 		$method = $this->request->getMethod();
-		Assert::equal($method, Nette\Http\IRequest::GET);
+		Assert::equal($method, Nette\Http\IRequest::POST);
     }
 
 	public function testOverrideRequestMethodWithQueryParameter()
@@ -70,7 +70,7 @@ class RequestTest extends TestCase
 		));
 
 		$method = $this->request->getOriginalMethod();
-		Assert::equal($method, Nette\Http\IRequest::GET);
+		Assert::equal($method, Nette\Http\IRequest::POST);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class RequestTest extends TestCase
 		$this->urlScript = $this->mockista->create('Nette\Http\UrlScript');
 		$this->urlScript->expects('freeze');
 		$this->urlScript->expects('__get');
-		return new Request($this->urlScript, $query, NULL, NULL, NULL, $headers, Nette\Http\IRequest::GET);
+		return new Request($this->urlScript, $query, NULL, NULL, NULL, $headers, Nette\Http\IRequest::POST);
 	}
 }
 \run(new RequestTest());
