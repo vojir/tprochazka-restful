@@ -5,7 +5,6 @@ use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
 use Nette\Application\Application;
-use Nette\Application\BadRequestException;
 use Nette\Application\IRouter;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
@@ -77,7 +76,7 @@ class MethodHandler extends Object implements IErrorHandler
 				}
 
 				if (in_array($route->getMethod($request), $acceptableMethods) && $route->match($request)) {
-					throw new BadRequestException('Method not supported. Available methods: ' . implode(', ', $methodNames), IResponse::S405_METHOD_NOT_ALLOWED);
+					throw BadRequestException::methodNotSupported('Method not supported. Available methods: ' . implode(', ', $methodNames), IResponse::S405_METHOD_NOT_ALLOWED);
 				}
 			}
 
