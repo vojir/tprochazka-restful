@@ -5,6 +5,7 @@ use Drahak\Restful\Mapping\MapperContext;
 use IteratorAggregate;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Mapping\IMapper;
+use Nette\Application\BadRequestException;
 use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;
@@ -54,6 +55,8 @@ class Input extends Object implements IteratorAggregate, IInput
 	/**
 	 * Get parsed input data
 	 * @return array
+	 *
+	 * @throws Application\BadRequestException when mapper for this Content-Type not found
 	 */
 	public function getData()
 	{
@@ -64,14 +67,17 @@ class Input extends Object implements IteratorAggregate, IInput
 	}
 
 	/**
+	 * Parse data from input
 	 * @return array|mixed|\Traversable
-	 * @throws InvalidStateException
+	 * @throws Application\BadRequestException
 	 */
 	private function parseData()
 	{
 		if ($input = file_get_contents('php://input')) {
 			if (!$this->mapper) {
-				throw new InvalidStateException('No mapper defined');
+				throw Application\BadRequestException::unsupportedMediaType(
+					'No mapper defined for Content-Type ' . $this->httpRequest->getHeader('Content-Type')
+				);
 			}
 			return $this->mapper->parseRequest($input);
 		} else if ($this->httpRequest->getPost()) {

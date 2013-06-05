@@ -17,7 +17,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function unauthorized($message = '', \Exception $previous)
+	public static function unauthorized($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 401, $previous);
 	}
@@ -28,7 +28,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function forbidden($message = '', \Exception $previous)
+	public static function forbidden($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 403, $previous);
 	}
@@ -39,7 +39,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function notFound($message = '', \Exception $previous)
+	public static function notFound($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 404, $previous);
 	}
@@ -50,7 +50,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function methodNotSupported($message = '', \Exception $previous)
+	public static function methodNotSupported($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 405, $previous);
 	}
@@ -61,7 +61,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function gone($message = '', \Exception $previous)
+	public static function gone($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 410, $previous);
 	}
@@ -72,7 +72,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function unsupportedMediaType($message = '', \Exception $previous)
+	public static function unsupportedMediaType($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 415, $previous);
 	}
@@ -83,7 +83,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function unprocessableEntity($message = '', \Exception $previous)
+	public static function unprocessableEntity($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 422, $previous);
 	}
@@ -94,7 +94,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function tooManyRequests($message = '', \Exception $previous)
+	public static function tooManyRequests($message = '', \Exception $previous = NULL)
 	{
 		return new self($message, 429, $previous);
 	}
