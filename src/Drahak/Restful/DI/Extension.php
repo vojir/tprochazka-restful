@@ -10,6 +10,12 @@ use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
 
+// Support newer Nette version
+if (class_exists('Nette\DI\CompilerExtension')) {
+	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\CompilerExtension');
+	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\Configuration');
+}
+
 /**
  * Drahak\Restful Extension
  * @package Drahak\Restful\DI
