@@ -3,9 +3,8 @@ namespace Drahak\Restful\Application;
 
 use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\InvalidArgumentException;
-use Nette\Http\IRequest;
+use Drahak\Restful\Http\IRequest;
 use Nette\Object;
-use Nette\Reflection\ClassType;
 use Nette\Reflection\Method;
 use Nette\Utils\Strings;
 
@@ -25,7 +24,8 @@ class RouteAnnotation extends Object implements IAnnotationParser
 		IRequest::POST => IResourceRouter::POST,
 		IRequest::PUT => IResourceRouter::PUT,
 		IRequest::DELETE => IResourceRouter::DELETE,
-		IRequest::HEAD => IResourceRouter::HEAD
+		IRequest::HEAD => IResourceRouter::HEAD,
+		IRequest::PATCH => IResourceRouter::PATCH
 	);
 
 	/**

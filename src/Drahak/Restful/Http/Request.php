@@ -8,7 +8,7 @@ use Nette;
  * @package Drahak\Restful\Http
  * @author Drahomír Hanák
  */
-class Request extends Nette\Http\Request
+class Request extends Nette\Http\Request implements IRequest
 {
 
 

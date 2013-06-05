@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Routes;
 
+use Drahak\Restful;
 use Nette\Application\Routers\Route;
 use Nette\Http;
 
@@ -20,7 +21,8 @@ class ResourceRoute extends Route implements IResourceRouter
 		Http\IRequest::POST => self::POST,
 		Http\IRequest::PUT => self::PUT,
 		Http\IRequest::HEAD => self::HEAD,
-		Http\IRequest::DELETE => self::DELETE
+		Http\IRequest::DELETE => self::DELETE,
+		Restful\Http\IRequest::PATCH => self::PATCH
 	);
 
 	/** @var array */

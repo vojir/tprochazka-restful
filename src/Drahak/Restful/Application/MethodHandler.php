@@ -4,9 +4,9 @@ namespace Drahak\Restful\Application;
 use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
+use Drahak\Restful\Http\IRequest;
 use Nette\Application\Application;
 use Nette\Application\IRouter;
-use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Object;
 
@@ -27,7 +27,8 @@ class MethodHandler extends Object implements IErrorHandler
 		IResourceRouter::POST => IRequest::POST,
 		IResourceRouter::PUT => IRequest::PUT,
 		IResourceRouter::DELETE => IRequest::DELETE,
-		IResourceRouter::HEAD => IRequest::HEAD
+		IResourceRouter::HEAD => IRequest::HEAD,
+		IResourceRouter::PATCH => IRequest::PATCH
 	);
 
 	public function __construct(IRequest $request)
@@ -76,7 +77,7 @@ class MethodHandler extends Object implements IErrorHandler
 				}
 
 				if (in_array($route->getMethod($request), $acceptableMethods) && $route->match($request)) {
-					throw BadRequestException::methodNotSupported('Method not supported. Available methods: ' . implode(', ', $methodNames), IResponse::S405_METHOD_NOT_ALLOWED);
+					throw BadRequestException::methodNotSupported('Method not supported. Available methods: ' . implode(', ', $methodNames));
 				}
 			}
 

@@ -13,7 +13,6 @@ use Nette\Loaders\RobotLoader;
 // Support newer Nette version
 if (class_exists('Nette\DI\CompilerExtension')) {
 	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\CompilerExtension');
-	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\Configuration');
 }
 
 /**
@@ -135,6 +134,9 @@ class Extension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('methodHandler'))
 			->setClass('Drahak\Restful\Application\MethodHandler');
+
+		$container->getDefinition('httpRequest')
+			->setClass('Drahak\Restful\Http\IRequest');
 
 		$container->getDefinition('nette.httpRequestFactory')
 			->setClass('Drahak\Restful\Http\RequestFactory');
