@@ -8,7 +8,7 @@ use Nette;
  * @package Drahak\Restful\Http
  * @author Drahomír Hanák
  *
- * @property-write string $jsonpParameterName
+ * @property-write string $jsonpKey
  */
 class Request extends Nette\Http\Request implements IRequest
 {
@@ -20,15 +20,15 @@ class Request extends Nette\Http\Request implements IRequest
 	const METHOD_OVERRIDE_PARAM = '__method';
 
 	/** @var string */
-	private $jsonpParameterName = 'jsonp';
+	private $jsonpKey = 'jsonp';
 
 	/**
 	 * Set JSONP parameter name in query string
 	 * @param string $name
 	 */
-	public function setJsonpParameterName($name)
+	public function setJsonpKey($name)
 	{
-		$this->jsonpParameterName = $name;
+		$this->jsonpKey = $name;
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Request extends Nette\Http\Request implements IRequest
 	 */
 	public function getJsonp()
 	{
-		return $this->getQuery($this->jsonpParameterName);
+		return $this->getQuery($this->jsonpKey);
 	}
 
 }
