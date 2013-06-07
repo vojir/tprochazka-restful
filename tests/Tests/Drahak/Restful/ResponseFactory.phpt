@@ -26,10 +26,18 @@ class ResponseFactoryTest extends TestCase
 	/** @var MockInterface */
 	private $resource;
 
+	/** @var MockInterface */
+	private $request;
+
+	/** @var MockInterface */
+	private $response;
+
     protected function setUp()
     {
 		parent::setUp();
-		$this->factory = new ResponseFactory();
+		$this->response = $this->mockista->create('Nette\Http\IResponse');
+		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
+		$this->factory = new ResponseFactory($this->response, $this->request);
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 	}
 
@@ -41,6 +49,7 @@ class ResponseFactoryTest extends TestCase
 		$this->resource->expects('getData')
 			->once()
 			->andReturn(array());
+		$this->request->expects('getQuery');
 
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof Nette\Application\Responses\JsonResponse);
@@ -54,6 +63,7 @@ class ResponseFactoryTest extends TestCase
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
+		$this->request->expects('getQuery');
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);

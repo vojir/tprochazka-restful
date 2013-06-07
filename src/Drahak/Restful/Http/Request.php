@@ -11,7 +11,6 @@ use Nette;
 class Request extends Nette\Http\Request implements IRequest
 {
 
-
 	/** Request method header override name */
 	const METHOD_OVERRIDE_HEADER = 'X-HTTP-Method-Override';
 
