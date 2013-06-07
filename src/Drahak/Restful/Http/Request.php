@@ -7,6 +7,8 @@ use Nette;
  * HTTP Request
  * @package Drahak\Restful\Http
  * @author Drahomír Hanák
+ *
+ * @property-write string $jsonpParameterName
  */
 class Request extends Nette\Http\Request implements IRequest
 {
@@ -16,6 +18,18 @@ class Request extends Nette\Http\Request implements IRequest
 
 	/** Request method override query parameter name */
 	const METHOD_OVERRIDE_PARAM = '__method';
+
+	/** @var string */
+	private $jsonpParameterName = 'jsonp';
+
+	/**
+	 * Set JSONP parameter name in query string
+	 * @param string $name
+	 */
+	public function setJsonpParameterName($name)
+	{
+		$this->jsonpParameterName = $name;
+	}
 
 	/**
 	 * Get request method
@@ -47,6 +61,24 @@ class Request extends Nette\Http\Request implements IRequest
 	public function getOriginalMethod()
 	{
 		return parent::getMethod();
+	}
+
+	/**
+	 * Is JSONP request
+	 * @return bool
+	 */
+	public function isJsonp()
+	{
+		return (bool)$this->getJsonp();
+	}
+
+	/**
+	 * Get JSONP value - callback function name
+	 * @return string|NULL
+	 */
+	public function getJsonp()
+	{
+		return $this->getQuery($this->jsonpParameterName);
 	}
 
 }

@@ -32,19 +32,25 @@ class JsonpResponseTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->httpRequest = $this->mockista->create('Nette\Http\IRequest');
+		$this->httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->httpResponse = $this->mockista->create('Nette\Http\IResponse');
 		$this->response = new JsonpResponse(array('test' => 'JSONP'));
     }
     
     public function testResponseWithJSONP()
     {
+		$headers = array('X-Testing' => true);
 		$this->httpResponse->expects('setContentType')
 			->once()
 			->with('application/javascript');
-		$this->httpRequest->expects('getQuery')
+		$this->httpResponse->expects('getCode')
 			->once()
-			->with('envelope')
+			->andReturn(200);
+		$this->httpResponse->expects('getHeaders')
+			->once()
+			->andReturn($headers);
+		$this->httpRequest->expects('getJsonp')
+			->once()
 			->andReturn('callbackFn');
 
 		ob_start();
@@ -52,8 +58,16 @@ class JsonpResponseTest extends TestCase
 		$content = ob_get_contents();
 		ob_end_flush();
 
-		Assert::same($content, 'callbackFn({"test":"JSONP"});');
+		Assert::same($content, 'callbackFn({"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}});');
     }
+
+	public function testThrowsExceptionWhenInvalidRequestIsGiven()
+	{
+		$request = $this->mockista->create('Nette\Http\IRequest');
+		Assert::throws(function() use($request) {
+			$this->response->send($request, $this->httpResponse);
+		}, 'Drahak\Restful\InvalidArgumentException');
+	}
 
 }
 \run(new JsonpResponseTest());

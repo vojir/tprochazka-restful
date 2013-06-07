@@ -1,9 +1,12 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
+use Drahak;
+use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\Mapping\JsonMapper;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
+use Nette\Utils\Strings;
 
 /**
  * JSONP response
@@ -27,12 +30,25 @@ class JsonpResponse extends BaseResponse
 	 * Send JSONP response to output
 	 * @param IRequest $httpRequest
 	 * @param IResponse $httpResponse
+	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
 	public function send(IRequest $httpRequest, IResponse $httpResponse)
 	{
-		$callback = $httpRequest->getQuery('envelope') ? $httpRequest->getQuery('envelope') : 'callback';
+		if (!$httpRequest instanceof Drahak\Restful\Http\IRequest) {
+			throw new InvalidArgumentException(
+				'JsonpResponse expects Drahak\Restful\Http\IRequest as a first parameter, ' . get_class($httpRequest) . ' given'
+			);
+		}
+
 		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/javascript');
-		echo $callback . '(' . $this->mapper->parseResponse($this->data) . ');';
+
+		$data = array();
+		$data['response'] = $this->data;
+		$data['status_code'] = $httpResponse->getCode();
+		$data['headers'] = $httpResponse->getHeaders();
+
+		$callback = $httpRequest->getJsonp() ? Strings::normalize($httpRequest->getJsonp('envelope')) : '';
+		echo $callback . '(' . $this->mapper->parseResponse($data) . ');';
 	}
 
 
