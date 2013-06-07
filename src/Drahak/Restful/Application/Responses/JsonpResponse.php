@@ -47,7 +47,7 @@ class JsonpResponse extends BaseResponse
 		$data['status_code'] = $httpResponse->getCode();
 		$data['headers'] = $httpResponse->getHeaders();
 
-		$callback = $httpRequest->getJsonp() ? Strings::normalize($httpRequest->getJsonp('envelope')) : '';
+		$callback = $httpRequest->getJsonp() ? Strings::webalize($httpRequest->getJsonp(), NULL, FALSE) : '';
 		echo $callback . '(' . $this->mapper->parseResponse($data) . ');';
 	}
 

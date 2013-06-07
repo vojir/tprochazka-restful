@@ -61,6 +61,31 @@ class JsonpResponseTest extends TestCase
 		Assert::same($content, 'callbackFn({"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}});');
     }
 
+
+	public function testWebalizeCallbackFunctionNameAndKeepUpperCase()
+	{
+		$headers = array('X-Testing' => true);
+		$this->httpResponse->expects('setContentType')
+			->once()
+			->with('application/javascript');
+		$this->httpResponse->expects('getCode')
+			->once()
+			->andReturn(200);
+		$this->httpResponse->expects('getHeaders')
+			->once()
+			->andReturn($headers);
+		$this->httpRequest->expects('getJsonp')
+			->once()
+			->andReturn('ěščřžýáíéAnd+_-! ?');
+
+		ob_start();
+		$this->response->send($this->httpRequest, $this->httpResponse);
+		$content = ob_get_contents();
+		ob_end_flush();
+
+		Assert::same($content, 'escrzyaieAnd({"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}});');
+	}
+
 	public function testThrowsExceptionWhenInvalidRequestIsGiven()
 	{
 		$request = $this->mockista->create('Nette\Http\IRequest');
