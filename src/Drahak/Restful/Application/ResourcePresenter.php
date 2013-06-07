@@ -144,10 +144,17 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	 *
 	 * @throws InvalidStateException
 	 */
-	public function sendResource($contentType = NULL, $code = 200)
+	public function sendResource($contentType = NULL, $code = NULL)
 	{
 		if ($contentType !== NULL) {
 			$this->resource->setContentType($contentType);
+		}
+
+		if ($code === NULL) {
+			$code = 200;
+			if (!$this->resource->getData()) {
+				$code = 204; // No content
+			}
 		}
 
 		$this->getHttpResponse()->setCode($code);
