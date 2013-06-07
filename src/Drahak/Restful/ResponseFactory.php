@@ -24,6 +24,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	/** @var array */
 	private $responses = array(
 		IResource::JSON => 'Nette\Application\Responses\JsonResponse',
+		IResource::JSONP => 'Drahak\Restful\Application\Responses\JsonpResponse',
 		IResource::QUERY => 'Drahak\Restful\Application\Responses\QueryResponse',
 		IResource::XML => 'Drahak\Restful\Application\Responses\XmlResponse',
 		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\DataUrlResponse',
@@ -80,23 +81,13 @@ class ResponseFactory extends Object implements IResponseFactory
 			throw new InvalidStateException('API response class does not exist.');
 		}
 
-		$responseClass = $this->responses[$contentType];
-		$response = new $responseClass($this->getResource($resource)->getData());
-		return $response;
-	}
-
-	/**
-	 * Get resource
-	 * @param IResource $resource
-	 * @return EnvelopeDecorator
-	 */
-	protected function getResource(IResource $resource)
-	{
-		$dataResource = $resource;
-		if ($this->request->getQuery('envelope')) {
-			$dataResource = new EnvelopeDecorator($resource, $this->response);
+		if ($this->request->isJsonp()) {
+			$contentType = IResource::JSONP;
 		}
-		return $dataResource;
+
+		$responseClass = $this->responses[$contentType];
+		$response = new $responseClass($resource->getData());
+		return $response;
 	}
 
 }

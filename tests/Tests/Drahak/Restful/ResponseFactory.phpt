@@ -3,6 +3,7 @@ namespace Tests\Drahak\Restful;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+use Drahak\Restful\Application\Responses\JsonpResponse;
 use Drahak\Restful\IResource;
 use Drahak\Restful\ResponseFactory;
 use Mockista\MockInterface;
@@ -49,7 +50,9 @@ class ResponseFactoryTest extends TestCase
 		$this->resource->expects('getData')
 			->once()
 			->andReturn(array());
-		$this->request->expects('getQuery');
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
 
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof Nette\Application\Responses\JsonResponse);
@@ -63,12 +66,32 @@ class ResponseFactoryTest extends TestCase
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
-		$this->request->expects('getQuery');
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);
 
 		Assert::true($response instanceof Nette\Application\Responses\TextResponse);
+	}
+
+	public function testCreateJsonpResponseWhenJsonpIsActive()
+	{
+		$this->resource->expects('getContentType')
+			->once()
+			->andReturn('text');
+		$this->resource->expects('getData')
+			->once()
+			->andReturn('test');
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(TRUE);
+
+		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
+		$response = $this->factory->create($this->resource);
+
+		Assert::true($response instanceof JsonpResponse);
 	}
 
 	public function testThrowsExceptionWhenResponseTypeIsNotFound()
@@ -89,5 +112,6 @@ class ResponseFactoryTest extends TestCase
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
 		}, 'Drahak\Restful\InvalidArgumentException');
     }
+
 }
 \run(new ResponseFactoryTest());

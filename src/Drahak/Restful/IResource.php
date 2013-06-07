@@ -12,6 +12,7 @@ interface IResource extends IDataResource
 	/** Result types */
 	const XML = 'application/xml';
 	const JSON = 'application/json';
+	const JSONP = 'application/javascript';
 	const QUERY = 'text/x-query';
 	const DATA_URL = 'application/x-data-url';
 	const NULL = 'NULL';

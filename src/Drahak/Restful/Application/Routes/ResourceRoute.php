@@ -2,8 +2,10 @@
 namespace Drahak\Restful\Application\Routes;
 
 use Drahak\Restful;
+use Nette\Application;
 use Nette\Application\Routers\Route;
 use Nette\Http;
+use Nette\Utils\Strings;
 
 /**
  * ResourceRoute
@@ -16,6 +18,9 @@ class ResourceRoute extends Route implements IResourceRouter
 {
 
 	/** @var array */
+	protected $actionDictionary;
+
+	/** @var array */
 	private $methodDictionary = array(
 		Http\IRequest::GET => self::GET,
 		Http\IRequest::POST => self::POST,
@@ -24,9 +29,6 @@ class ResourceRoute extends Route implements IResourceRouter
 		Http\IRequest::DELETE => self::DELETE,
 		Restful\Http\IRequest::PATCH => self::PATCH
 	);
-
-	/** @var array */
-	protected $actionDictionary;
 
 	/**
 	 * @param string $mask
@@ -49,7 +51,11 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function isMethod($method)
 	{
-		return ($this->flags & $method) == $method;
+		$common = array(self::CRUD, self::RESTFUL);
+		$isActionDefined = $this->actionDictionary && !in_array($method, $common) ?
+			isset($this->actionDictionary[$method]) :
+			TRUE;
+		return ($this->flags & $method) == $method && $isActionDefined;
 	}
 
 	/**
@@ -105,10 +111,6 @@ class ResourceRoute extends Route implements IResourceRouter
 
 		// If there is action dictionary, set method
 		if ($this->actionDictionary) {
-			if (!isset($this->actionDictionary[$methodFlag])) {
-				return NULL;
-			}
-
 			$parameters = $appRequest->getParameters();
 			$parameters['action'] = $this->actionDictionary[$methodFlag];
 			$appRequest->setParameters($parameters);
@@ -116,5 +118,19 @@ class ResourceRoute extends Route implements IResourceRouter
 
 		return $appRequest;
 	}
+
+	/**
+	 * @param Application\Request $appRequest
+	 * @param Http\Url $refUrl
+	 * @return NULL|string
+	 */
+	public function constructUrl(Application\Request $appRequest, Http\Url $refUrl)
+	{
+		$url = parent::constructUrl($appRequest, $refUrl);
+		$httpUrl = new Http\Url($url);
+		$httpUrl->query = Strings::replace($httpUrl->query, '/action=([a-zA-Z0-9_+%-]*)/i', '');
+		return $httpUrl->getBasePath() . $httpUrl->getRelativeUrl();
+	}
+
 
 }
