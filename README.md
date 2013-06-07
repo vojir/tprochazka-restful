@@ -286,7 +286,7 @@ class CrudPresenter extends BasePresenter
 
 JSONP support
 -------------
-If you want to access your API resources by JavaScript on remote host, you can't make normal AJAX request on API. So JSONP is alternative how to do it. In JSONP request you load your API resource as a JavaScript using standard <script> tag in HTML. API wraps JSON string to a callback function parameter. It's actually pretty simple but it needs special care. For example you can't access response headers or status code. You can wrap these headers and status code to all your resources but this is not good for normal API clients, which can access header information. The library allows you to add special query parameter `jsonp` (name depends on your configuration, this is default value). If you access resource with `?jsonp=callback` API automatically determines JSONP mode and wraps all resources to following JavaScript:
+If you want to access your API resources by JavaScript on remote host, you can't make normal AJAX request on API. So JSONP is alternative how to do it. In JSONP request you load your API resource as a JavaScript using standard `script` tag in HTML. API wraps JSON string to a callback function parameter. It's actually pretty simple but it needs special care. For example you can't access response headers or status code. You can wrap these headers and status code to all your resources but this is not good for normal API clients, which can access header information. The library allows you to add special query parameter `jsonp` (name depends on your configuration, this is default value). If you access resource with `?jsonp=callback` API automatically determines JSONP mode and wraps all resources to following JavaScript:
 
 ```javascript
 callback({
