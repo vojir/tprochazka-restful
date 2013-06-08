@@ -14,9 +14,13 @@ class RequestFactory extends Nette\Http\RequestFactory
 	/** @var string|null|bool */
 	private $jsonpKey;
 
-	public function __construct($jsonpKey)
+	/** @var string|null|bool */
+	private $prettyPrintKey;
+
+	public function __construct($jsonpKey, $prettyPrintKey)
 	{
 		$this->jsonpKey = $jsonpKey;
+		$this->prettyPrintKey = $prettyPrintKey;
 	}
 
 	/**
@@ -31,6 +35,7 @@ class RequestFactory extends Nette\Http\RequestFactory
 			$netteRequest->method, $netteRequest->remoteAddress, $netteRequest->remoteHost
 		);
 		$request->setJsonpKey($this->jsonpKey);
+		$request->setPrettyPrintKey($this->prettyPrintKey);
 		return $request;
 	}
 
