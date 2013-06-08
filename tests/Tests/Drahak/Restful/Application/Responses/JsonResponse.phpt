@@ -3,8 +3,7 @@ namespace Tests\Drahak\Restful\Application\Responses;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Drahak\Restful\Application\Responses\XmlResponse;
-use Drahak\Restful\IResource;
+use Drahak\Restful\Application\Responses\JsonResponse;
 use Mockista\MockInterface;
 use Nette;
 use Tester;
@@ -12,53 +11,55 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Application\Responses\XmlResponse.
+ * Test: Tests\Drahak\Restful\Application\Responses\JsonResponse.
  *
- * @testCase Tests\Drahak\Restful\Application\Responses\XmlResponseTest
+ * @testCase Tests\Drahak\Restful\Application\Responses\JsonResponseTest
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful\Application\Responses
  */
-class XmlResponseTest extends TestCase
+class JsonResponseTest extends TestCase
 {
 
 	/** @var MockInterface */
 	private $mapper;
 
-	/** @var XmlResponse */
+	/** @var JsonResponse */
 	private $response;
 
     protected function setUp()
     {
 		parent::setUp();
-		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\XmlMapper');
-		$this->response = new XmlResponse(array());
+		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
+		$this->response = new JsonResponse(array('hello' => 'world'));
 		$this->response->setMapper($this->mapper);
     }
     
-    public function testSendXmlResponse()
+    public function testResponseWithJson()
     {
+		$output = '{"hello":"world"}';
+
 		$this->mapper->expects('parseResponse')
 			->once()
-			->with(array(), FALSE)
-			->andReturn('Some XML');
+			->with(array('hello' => 'world'), FALSE)
+			->andReturn($output);
 
 		$httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$httpResponse = $this->mockista->create('Nette\Http\IResponse');
 
+		$httpResponse->expects('setContentType')
+			->once()
+			->with('application/json');
+
 		$httpRequest->expects('isPrettyPrint')
 			->once()
 			->andReturn(FALSE);
-		$httpResponse->expects('setContentType')
-			->once()
-			->with(IResource::XML);
-
 
 		ob_start();
 		$this->response->send($httpRequest, $httpResponse);
-		$result = ob_get_contents();
-		ob_end_clean();
+		$content = ob_get_clean();
 
-		Assert::equal($result, 'Some XML');
-	}
+		Assert::same($content, $output);
+    }
+
 }
-\run(new XmlResponseTest());
+\run(new JsonResponseTest());

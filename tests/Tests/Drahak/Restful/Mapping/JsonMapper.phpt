@@ -32,9 +32,16 @@ class JsonMapperTest extends TestCase
     public function testConvertArrayToJson()
     {
 		$array = array('node' => 'value');
-		$json = $this->mapper->parseResponse($array);
+		$json = $this->mapper->parseResponse($array, FALSE);
 		Assert::equal($json, '{"node":"value"}');
     }
+
+	public function testConvertArrayToJsonWithPrettyPrint()
+	{
+		$array = array('node' => 'value');
+		$json = $this->mapper->parseResponse($array);
+		Assert::equal($json, "{\n    \"node\": \"value\"\n}");
+	}
 
 	public function testConvertJsonToArray()
 	{

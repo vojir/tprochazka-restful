@@ -16,12 +16,12 @@ class DataUrlMapper extends Object implements IMapper
 	/**
 	 * Create DATA URL from file path
 	 * @param array $data (type => string, src => string)
+	 * @param bool $prettyPrint
 	 * @return string
 	 *
-	 * @throws MappingException
-	 * @throws InvalidArgumentException
+	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
-	public function parseResponse($data)
+	public function parseResponse($data, $prettyPrint = TRUE)
 	{
 		if (!isset($data['src']) || !isset($data['type'])) {
 			throw new InvalidArgumentException('DataUrlMapper expects array(src => \'\', contentType => \'\')');

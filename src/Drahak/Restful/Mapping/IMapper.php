@@ -12,11 +12,11 @@ interface IMapper
 	/**
 	 * Convert array or Traversable input to string output response
 	 * @param array|\Traversable $data
+	 * @param bool $prettyPrint
 	 * @return mixed
 	 *
-	 * @throws MappingException
 	 */
-	public function parseResponse($data);
+	public function parseResponse($data, $prettyPrint = TRUE);
 
 	/**
 	 * Convert client request data to array or traversable

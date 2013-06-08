@@ -4,6 +4,7 @@ namespace Tests\Drahak\Restful;
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Drahak\Restful\Application\Responses\JsonpResponse;
+use Drahak\Restful\Application\Responses\JsonResponse;
 use Drahak\Restful\IResource;
 use Drahak\Restful\ResponseFactory;
 use Mockista\MockInterface;
@@ -55,7 +56,7 @@ class ResponseFactoryTest extends TestCase
 			->andReturn(FALSE);
 
 		$response = $this->factory->create($this->resource);
-		Assert::true($response instanceof Nette\Application\Responses\JsonResponse);
+		Assert::true($response instanceof JsonResponse);
 	}
 
 	public function testCreateCustomResponse()

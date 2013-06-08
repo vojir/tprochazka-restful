@@ -58,11 +58,12 @@ class XmlMapper extends Object implements IMapper
 	/**
 	 * Parse traversable or array resource data to XML
 	 * @param array|\Traversable $data
-	 * @return string
+	 * @param bool $prettyPrint
+	 * @return mixed|string
 	 *
 	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
-	public function parseResponse($data)
+	public function parseResponse($data, $prettyPrint = TRUE)
 	{
 		if (!is_array($data) && !($data instanceof \Traversable)) {
 			throw new InvalidArgumentException('Data must be of type array or Traversable');
@@ -77,6 +78,8 @@ class XmlMapper extends Object implements IMapper
 		}
 
 		$this->toXml($data);
+		$this->xml->preserveWhiteSpace = $prettyPrint;
+		$this->xml->formatOutput = $prettyPrint;
 		return $this->xml->saveXML();
 	}
 

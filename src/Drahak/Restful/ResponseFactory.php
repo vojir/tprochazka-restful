@@ -23,7 +23,7 @@ class ResponseFactory extends Object implements IResponseFactory
 
 	/** @var array */
 	private $responses = array(
-		IResource::JSON => 'Nette\Application\Responses\JsonResponse',
+		IResource::JSON => 'Drahak\Restful\Application\Responses\JsonResponse',
 		IResource::JSONP => 'Drahak\Restful\Application\Responses\JsonpResponse',
 		IResource::QUERY => 'Drahak\Restful\Application\Responses\QueryResponse',
 		IResource::XML => 'Drahak\Restful\Application\Responses\XmlResponse',

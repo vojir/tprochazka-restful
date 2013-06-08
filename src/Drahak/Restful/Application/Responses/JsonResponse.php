@@ -1,16 +1,16 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
-use Drahak\Restful\InvalidArgumentException;
-use Drahak\Restful\Mapping\XmlMapper;
 use Nette\Http;
+use Drahak\Restful\Mapping\JsonMapper;
+use Drahak\Restful\InvalidArgumentException;
 
 /**
- * XmlResponse
- * @package Drahak\Restful\Responses
+ * JsonResponse with pretty print support
+ * @package Drahak\Restful\Application\Responses
  * @author Drahomír Hanák
  */
-class XmlResponse extends BaseResponse
+class JsonResponse extends BaseResponse
 {
 
 	/** @var array|\stdClass|\Traversable */
@@ -19,12 +19,11 @@ class XmlResponse extends BaseResponse
 	/**
 	 * @param null|string $data
 	 * @param string|null $contentType
-	 * @param string $rootElement
 	 */
-	public function __construct($data, $contentType = NULL, $rootElement = 'root')
+	public function __construct($data, $contentType = NULL)
 	{
 		parent::__construct($contentType);
-		$this->mapper = new XmlMapper($rootElement);
+		$this->mapper = new JsonMapper();
 		$this->data = $data;
 	}
 
@@ -37,7 +36,7 @@ class XmlResponse extends BaseResponse
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
 		$this->checkRequest($httpRequest);
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/xml');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/json');
 		echo $this->mapper->parseResponse($this->data, $httpRequest->isPrettyPrint());
 	}
 

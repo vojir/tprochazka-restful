@@ -16,11 +16,10 @@ class QueryMapper extends Object implements IMapper
 	/**
 	 * Convert array or Traversable input to string output response
 	 * @param array $data
+	 * @param bool $prettyPrint
 	 * @return mixed
-	 *
-	 * @throws MappingException
 	 */
-	public function parseResponse($data)
+	public function parseResponse($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
 			$data = iterator_to_array($data);

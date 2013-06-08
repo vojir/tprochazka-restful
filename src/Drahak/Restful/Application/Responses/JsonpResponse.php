@@ -34,12 +34,7 @@ class JsonpResponse extends BaseResponse
 	 */
 	public function send(IRequest $httpRequest, IResponse $httpResponse)
 	{
-		if (!$httpRequest instanceof Drahak\Restful\Http\IRequest) {
-			throw new InvalidArgumentException(
-				'JsonpResponse expects Drahak\Restful\Http\IRequest as a first parameter, ' . get_class($httpRequest) . ' given'
-			);
-		}
-
+		$this->checkRequest($httpRequest);
 		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/javascript');
 
 		$data = array();
@@ -48,7 +43,7 @@ class JsonpResponse extends BaseResponse
 		$data['headers'] = $httpResponse->getHeaders();
 
 		$callback = $httpRequest->getJsonp() ? Strings::webalize($httpRequest->getJsonp(), NULL, FALSE) : '';
-		echo $callback . '(' . $this->mapper->parseResponse($data) . ');';
+		echo $callback . '(' . $this->mapper->parseResponse($data, $httpRequest->isPrettyPrint()) . ');';
 	}
 
 

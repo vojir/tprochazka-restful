@@ -1,8 +1,11 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
+use Drahak;
+use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\Mapping\IMapper;
 use Nette\Application\IResponse;
+use Nette\Http\IRequest;
 use Nette\Object;
 
 /**
@@ -48,6 +51,20 @@ abstract class BaseResponse extends Object implements IResponse
 	{
 		$this->mapper = $mapper;
 		return $this;
+	}
+
+	/**
+	 * Check if given request is valid
+	 * @param IRequest $request
+	 * @throws InvalidArgumentException
+	 */
+	protected function checkRequest(IRequest $request)
+	{
+		if (!$request instanceof Drahak\Restful\Http\IRequest) {
+			throw new InvalidArgumentException(
+				get_class($this) . ' expects Drahak\Restful\Http\IRequest as a first parameter, ' . get_class($request) . ' given'
+			);
+		}
 	}
 
 }

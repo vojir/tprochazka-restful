@@ -22,6 +22,9 @@ class Request extends Nette\Http\Request implements IRequest
 	/** @var string */
 	private $jsonpKey = 'jsonp';
 
+	/** @var string */
+	private $prettyPrintKey = 'pretty';
+
 	/**
 	 * Set JSONP parameter name in query string
 	 * @param string $name
@@ -29,6 +32,15 @@ class Request extends Nette\Http\Request implements IRequest
 	public function setJsonpKey($name)
 	{
 		$this->jsonpKey = $name;
+	}
+
+	/**
+	 * Set pretty print parameter name in query string
+	 * @param string $name
+	 */
+	public function setPrettyPrintKey($name)
+	{
+		$this->prettyPrintKey = $name;
 	}
 
 	/**
@@ -79,6 +91,19 @@ class Request extends Nette\Http\Request implements IRequest
 	public function getJsonp()
 	{
 		return $this->getQuery($this->jsonpKey);
+	}
+
+	/**
+	 * Is pretty print enabled
+	 * @return bool
+	 */
+	public function isPrettyPrint()
+	{
+		$prettyPrint = $this->getQuery($this->prettyPrintKey);
+		if ($prettyPrint === 'false') {
+			return FALSE;
+		}
+		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
 	}
 
 }

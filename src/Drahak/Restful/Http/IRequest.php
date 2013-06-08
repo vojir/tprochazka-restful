@@ -32,4 +32,10 @@ interface IRequest extends Nette\Http\IRequest
 	 */
 	public function getJsonp();
 
+	/**
+	 * Is pretty print enabled
+	 * @return bool
+	 */
+	public function isPrettyPrint();
+
 }

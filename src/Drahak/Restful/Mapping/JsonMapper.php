@@ -16,18 +16,19 @@ class JsonMapper extends Object implements IMapper
 	/**
 	 * Convert array or Traversable input to string output response
 	 * @param array|\Traversable $data
+	 * @param bool $prettyPrint
 	 * @return mixed
 	 *
 	 * @throws MappingException
 	 */
-	public function parseResponse($data)
+	public function parseResponse($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
 			$data = iterator_to_array($data);
 		}
 
 		try {
-			return Json::encode($data);
+			return Json::encode($data, $prettyPrint ? Json::PRETTY : 0);
 		} catch(JsonException $e) {
 			throw new MappingException('Error in parsing response: ' .$e->getMessage());
 		}

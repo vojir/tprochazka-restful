@@ -28,18 +28,30 @@ class JsonpResponseTest extends TestCase
 
 	/** @var JsonpResponse */
 	private $response;
-    
+
+	/** @var MockInterface */
+	private $mapper;
+
     protected function setUp()
     {
 		parent::setUp();
 		$this->httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->httpResponse = $this->mockista->create('Nette\Http\IResponse');
+		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 		$this->response = new JsonpResponse(array('test' => 'JSONP'));
+		$this->response->setMapper($this->mapper);
     }
     
     public function testResponseWithJSONP()
     {
+		$output = '{"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}}';
 		$headers = array('X-Testing' => true);
+
+		$data = array();
+		$data['response'] = array('test' => 'JSONP');
+		$data['status_code'] = 200;
+		$data['headers'] = $headers;
+
 		$this->httpResponse->expects('setContentType')
 			->once()
 			->with('application/javascript');
@@ -52,19 +64,37 @@ class JsonpResponseTest extends TestCase
 		$this->httpRequest->expects('getJsonp')
 			->once()
 			->andReturn('callbackFn');
+		$this->httpRequest->expects('isPrettyPrint')
+			->once()
+			->andReturn(FALSE);
+
+		$this->mapper->expects('parseResponse')
+			->once()
+			->with($data, FALSE)
+			->andReturn($output);
 
 		ob_start();
 		$this->response->send($this->httpRequest, $this->httpResponse);
-		$content = ob_get_contents();
-		ob_end_flush();
+		$content = ob_get_clean();
 
-		Assert::same($content, 'callbackFn({"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}});');
+		Assert::same($content, 'callbackFn(' . $output . ');');
     }
-
 
 	public function testWebalizeCallbackFunctionNameAndKeepUpperCase()
 	{
+		$output = '{"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}}';
 		$headers = array('X-Testing' => true);
+
+		$data = array();
+		$data['response'] = array('test' => 'JSONP');
+		$data['status_code'] = 200;
+		$data['headers'] = $headers;
+
+		$this->mapper->expects('parseResponse')
+			->once()
+			->with($data, FALSE)
+			->andReturn($output);
+
 		$this->httpResponse->expects('setContentType')
 			->once()
 			->with('application/javascript');
@@ -77,13 +107,16 @@ class JsonpResponseTest extends TestCase
 		$this->httpRequest->expects('getJsonp')
 			->once()
 			->andReturn('ěščřžýáíéAnd+_-! ?');
+		$this->httpRequest->expects('isPrettyPrint')
+			->once()
+			->andReturn(FALSE);
 
 		ob_start();
 		$this->response->send($this->httpRequest, $this->httpResponse);
 		$content = ob_get_contents();
 		ob_end_flush();
 
-		Assert::same($content, 'escrzyaieAnd({"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}});');
+		Assert::same($content, 'escrzyaieAnd(' . $output . ');');
 	}
 
 	public function testThrowsExceptionWhenInvalidRequestIsGiven()
