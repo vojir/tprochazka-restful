@@ -26,7 +26,7 @@ class RequestFactoryTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->factory = new RequestFactory('jsonp');
+		$this->factory = new RequestFactory('jsonp', NULL);
     }
     
     public function testCreateApiRequest()
