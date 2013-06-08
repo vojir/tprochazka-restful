@@ -4,11 +4,11 @@ namespace Drahak\Restful\Application;
 use Nette\Application\Application;
 
 /**
- * IErrorHandler
+ * IApplicationEvent
  * @package Drahak\Restful\Application
  * @author Drahomír Hanák
  */
-interface IErrorHandler
+interface IApplicationEvent
 {
 
 	/**

@@ -13,7 +13,7 @@ interface IResource
 	const XML = 'application/xml';
 	const JSON = 'application/json';
 	const JSONP = 'application/javascript';
-	const QUERY = 'text/x-query';
+	const QUERY = 'application/x-www-form-urlencoded';
 	const DATA_URL = 'application/x-data-url';
 	const NULL = 'NULL';
 

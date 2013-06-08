@@ -33,7 +33,7 @@ class QueryResponse extends BaseResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/x-www-form-urlencoded');
 		echo $this->mapper->parseResponse($this->data);
 	}
 
