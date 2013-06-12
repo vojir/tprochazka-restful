@@ -44,12 +44,12 @@ class JsonpResponseTest extends TestCase
     
     public function testResponseWithJSONP()
     {
-		$output = '{"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}}';
+		$output = '{"response":{"test":"JSONP"},"status":200,"headers":{"X-Testing":true}}';
 		$headers = array('X-Testing' => true);
 
 		$data = array();
 		$data['response'] = array('test' => 'JSONP');
-		$data['status_code'] = 200;
+		$data['status'] = 200;
 		$data['headers'] = $headers;
 
 		$this->httpResponse->expects('setContentType')
@@ -82,12 +82,12 @@ class JsonpResponseTest extends TestCase
 
 	public function testWebalizeCallbackFunctionNameAndKeepUpperCase()
 	{
-		$output = '{"response":{"test":"JSONP"},"status_code":200,"headers":{"X-Testing":true}}';
+		$output = '{"response":{"test":"JSONP"},"status":200,"headers":{"X-Testing":true}}';
 		$headers = array('X-Testing' => true);
 
 		$data = array();
 		$data['response'] = array('test' => 'JSONP');
-		$data['status_code'] = 200;
+		$data['status'] = 200;
 		$data['headers'] = $headers;
 
 		$this->mapper->expects('parseResponse')

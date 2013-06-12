@@ -39,7 +39,7 @@ class JsonpResponse extends BaseResponse
 
 		$data = array();
 		$data['response'] = $this->data;
-		$data['status_code'] = $httpResponse->getCode();
+		$data['status'] = $httpResponse->getCode();
 		$data['headers'] = $httpResponse->getHeaders();
 
 		$callback = $httpRequest->getJsonp() ? Strings::webalize($httpRequest->getJsonp(), NULL, FALSE) : '';
