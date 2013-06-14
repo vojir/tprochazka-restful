@@ -1,5 +1,5 @@
-Simple Nette REST API
-=====================
+Nette REST API
+==============
 This repository is being developed. Project is for study purposes. Do not use it on production.
 
 ### Content
@@ -254,7 +254,7 @@ Default `AuthenticationProcess` is `NullAuthentication` so all requests are unse
 <?php
 namespace ResourcesModule;
 
-use Drahak\Restful\Security\SecuredAuthentication;
+use Drahak\Restful\Security\Process\SecuredAuthentication;
 
 /**
  * CRUD resource presenter

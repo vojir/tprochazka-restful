@@ -2,6 +2,7 @@
 namespace Drahak\Restful\Security;
 
 use Drahak\Restful\IInput;
+use Drahak\Restful\Security\Process\AuthenticationProcess;
 use Nette\Object;
 
 /**

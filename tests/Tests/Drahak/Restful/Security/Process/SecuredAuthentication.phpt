@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Drahak\Restful\Security;
+namespace Tests\Drahak\Restful\Security\Process;
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Drahak\Restful\Security\SecuredAuthentication;
+use Drahak\Restful\Security\Process\SecuredAuthentication;
 use Mockista\MockInterface;
 use Nette;
 use Tester;
@@ -11,11 +11,11 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Security\SecuredAuthentication.
+ * Test: Tests\Drahak\Restful\Security\Process\Process\SecuredAuthentication.
  *
- * @testCase Tests\Drahak\Restful\Security\SecuredAuthenticationTest
+ * @testCase Tests\Drahak\Restful\Security\Process\Process\SecuredAuthenticationTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful\Security
+ * @package Tests\Drahak\Restful\Security\Process
  */
 class SecuredAuthenticationTest extends TestCase
 {

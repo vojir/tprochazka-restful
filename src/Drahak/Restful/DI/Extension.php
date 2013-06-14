@@ -10,11 +10,6 @@ use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
 
-// Support newer Nette version
-if (!class_exists('Nette\DI\CompilerExtension')) {
-	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\CompilerExtension');
-}
-
 /**
  * Drahak\Restful Extension
  * @package Drahak\Restful\DI
@@ -101,9 +96,9 @@ class Extension extends CompilerExtension
 			->setArguments(array($config['security']['requestTimeKey'], $config['security']['requestTimeout']));
 
 		$container->addDefinition($this->prefix('nullAuthentication'))
-			->setClass('Drahak\Restful\Security\NullAuthentication');
+			->setClass('Drahak\Restful\Security\Process\NullAuthentication');
 		$container->addDefinition($this->prefix('securedAuthentication'))
-			->setClass('Drahak\Restful\Security\SecuredAuthentication');
+			->setClass('Drahak\Restful\Security\Process\SecuredAuthentication');
 
 		$container->addDefinition($this->prefix('authentication'))
 			->setClass('Drahak\Restful\Security\AuthenticationContext')

@@ -1,12 +1,12 @@
 <?php
-namespace Drahak\Restful\Security;
+namespace Drahak\Restful\Security\Process;
 
 use Drahak\Restful\IInput;
 use Nette\Object;
 
 /**
  * Request AuthenticationProcess template
- * @package Drahak\Restful\Security
+ * @package Drahak\Restful\Security\Process
  * @author Drahomír Hanák
  */
 abstract class AuthenticationProcess extends Object

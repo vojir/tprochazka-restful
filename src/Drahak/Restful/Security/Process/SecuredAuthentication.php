@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Security;
+namespace Drahak\Restful\Security\Process;
 
 use Drahak\Restful\IInput;
 use Drahak\Restful\Security\Authentication\HashAuthenticator;
@@ -7,7 +7,7 @@ use Drahak\Restful\Security\Authentication\TimeoutAuthenticator;
 
 /**
  * SecuredAuthentication process
- * @package Drahak\Restful\Security
+ * @package Drahak\Restful\Security\Process
  * @author Drahomír Hanák
  */
 class SecuredAuthentication extends AuthenticationProcess

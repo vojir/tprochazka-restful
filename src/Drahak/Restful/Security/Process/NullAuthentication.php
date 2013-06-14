@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Restful\Security;
+namespace Drahak\Restful\Security\Process;
 
 use Drahak\Restful\IInput;
 
 /**
  * NullAuthentication for non-secured API requests
- * @package Drahak\Restful\Security
+ * @package Drahak\Restful\Security\Process
  * @author Drahomír Hanák
  */
 class NullAuthentication extends AuthenticationProcess
