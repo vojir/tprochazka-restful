@@ -4,14 +4,14 @@ namespace Drahak\Restful\DI;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\IResource;
 use Nette\Caching\Storages\FileStorage;
-use Nette\Config\CompilerExtension;
-use Nette\Config\Configurator;
+use Nette\DI\CompilerExtension;
+use Nette\Configurator;
 use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
 
 // Support newer Nette version
-if (class_exists('Nette\DI\CompilerExtension')) {
+if (!class_exists('Nette\DI\CompilerExtension')) {
 	class_alias('Nette\DI\CompilerExtension', 'Nette\Config\CompilerExtension');
 }
 
