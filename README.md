@@ -297,7 +297,7 @@ callback({
 	"response": {
 		"yourResourceData": "here"
 	},
-	"status_code": 200,
+	"status": 200,
 	"headers": {
 		"X-Powered-By": "Nette framework",
 		...
