@@ -11,14 +11,15 @@ This repository is being developed. Project is for study purposes. Do not use it
 - [Accessing input data](#accessing-input-data)
 - [Security & authentication](#security--authentication)
 - [JSONP support](#jsonp-support)
+- [Secure your resources with OAuth2](#secure-your-resources-with-oauth2)
 
 Requirements
 ------------
-Drahak/Restful requires PHP version 5.3.0 or higher. The only production dependency is [Nette framework 2.0.x](http://www.nette.org).
+Drahak/Restful requires PHP version 5.3.0 or higher. The only production dependency is [Nette framework 2.0.x](http://www.nette.org). The Restful also works well with my Drahak\OAuth2 provider (see [Secure your resources with OAuth2](#secure-your-resources-with-oauth2))
 
 Installation & setup
 --------------------
-The easist way is to use [Composer](http://doc.nette.org/en/composer)
+The easiest way is to use [Composer](http://doc.nette.org/en/composer)
 
 	$ composer require drahak/restful:@dev
 
@@ -307,6 +308,53 @@ callback({
 **Note** : the function name. This is name from `jsonp` query parameter. This string is "webalized" by `Nette\Utils\Strings::webalize(jsonp, NULL, FALSE)`. If you set `jsonpKey` to `FALSE` or `NULL` in configuration, you totally disable JSONP mode for all your API resources. Then you can trigger it manually. Just set `IResource` `$contentType` property to `IResource::JSONP`.
 
 **Also note** : if this option is enabled and client adds `jsonp` parameter to query string, no matter what you set to `$presenter->resource->contentType` it will produce `JsonpResponse`.
+
+Secure your resources with OAuth2
+---------------------------------
+If you want to secure your API resource with OAuth2, you will need some OAuth2 provider. I've implemented [OAuth2 provider](https://github.com/drahak/OAuth2) bundle for Nette framework so you can use it with Restful. To do so just add dependency `"drahak/oauth2": "dev-master"` to your composer and then use `OAuth2Authentication` which is `AuthenticationProcess`. If you wish to use any other OAuth2 provider, you can write your own `AuthenticationProcess`.
+
+```php
+<?php
+namespace Restful\Api;
+
+use Drahak\Restful\IResource;
+use Drahak\Restful\Security\Process\AuthenticationProcess;
+use Drahak\Restful\Security\Process\OAuth2Authentication;
+
+/**
+ * CRUD resource presenter
+ * @package Restful\Api
+ * @author Drahomír Hanák
+ */
+class CrudPresenter extends BasePresenter
+{
+
+	/** @var AuthenticationProcess */
+	private $authenticationProcess;
+
+	/**
+	 * Inject authentication process
+	 * @param OAuth2Authentication $auth
+	 */
+	public function injectSecuredAuthentication(OAuth2Authentication $auth)
+	{
+		$this->authenticationProcess = $auth;
+	}
+
+	/**
+	 * Check presenter requirements
+	 * @param $element
+	 */
+	public function checkRequirements($element)
+	{
+		parent::checkRequirements($element);
+		$this->authentication->setAuthProcess($this->authenticationProcess);
+	}
+
+	// ...
+
+}
+```
 
 ___
 
