@@ -40,7 +40,7 @@ class SecuredAuthentication extends AuthenticationProcess
 	 * @param IInput $input
 	 * @return bool
 	 */
-	protected function authRequestTime(IInput $input)
+	protected function authRequestTimeout(IInput $input)
 	{
 		return $this->timeAuth->authenticate($input);
 	}

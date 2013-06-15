@@ -25,7 +25,7 @@ class NullAuthentication extends AuthenticationProcess
 	 * @param IInput $input
 	 * @return bool
 	 */
-	protected function authRequestTime(IInput $input)
+	protected function authRequestTimeout(IInput $input)
 	{
 		return TRUE;
 	}

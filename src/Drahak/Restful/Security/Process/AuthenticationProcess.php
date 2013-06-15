@@ -20,7 +20,7 @@ abstract class AuthenticationProcess extends Object
 	public final function authenticate(IInput $input)
 	{
 		$this->authRequestData($input);
-		$this->authRequestTime($input);
+		$this->authRequestTimeout($input);
 		return TRUE;
 	}
 
@@ -32,10 +32,10 @@ abstract class AuthenticationProcess extends Object
 	abstract protected function authRequestData(IInput $input);
 
 	/**
-	 * Authenticate request time
+	 * Authenticate request timeout
 	 * @param IInput $input
 	 * @return bool
 	 */
-	abstract protected function authRequestTime(IInput $input);
+	abstract protected function authRequestTimeout(IInput $input);
 
 }

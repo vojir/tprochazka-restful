@@ -22,7 +22,7 @@ class OAuth2AuthenticationTest extends TestCase
 {
 
 	/** @var MockInterface */
-	private $storage;
+	private $token;
 
 	/** @var MockInterface */
 	private $input;
@@ -36,10 +36,10 @@ class OAuth2AuthenticationTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->storage = $this->mockista->create('Drahak\OAuth2\Storage\AccessTokens\IAccessTokenStorage');
+		$this->token = $this->mockista->create('Drahak\OAuth2\Token\AccessToken');
 		$this->input = $this->mockista->create('Drahak\OAuth2\Http\IInput');
 		$this->inputFake = $this->mockista->create('Drahak\Restful\IInput');
-		$this->process = new OAuth2Authentication($this->storage, $this->input);
+		$this->process = new OAuth2Authentication($this->token, $this->input);
     }
     
     public function testSuccessfullyAuthenticateAccessToken()
@@ -50,7 +50,7 @@ class OAuth2AuthenticationTest extends TestCase
 			->once()
 			->andReturn($token);
 
-		$this->storage->expects('getValidAccessToken')
+		$this->token->expects('getEntity')
 			->once()
 			->with($token)
 			->andReturn(array('access_token' => $token));
@@ -78,7 +78,7 @@ class OAuth2AuthenticationTest extends TestCase
 			->once()
 			->andReturn($token);
 
-		$this->storage->expects('getValidAccessToken')
+		$this->token->expects('getEntity')
 			->once()
 			->with($token)
 			->andReturn(NULL)
