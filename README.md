@@ -356,6 +356,8 @@ class CrudPresenter extends BasePresenter
 }
 ```
 
+Note: this is only Resource server so it handles access token authorization. To generate access token you'll need to create OAuth2 presenter (Resource owner and authorization server - see [Drahak\OAuth2 documentation](https://github.com/drahak/OAuth2)).
+
 ___
 
 TODO list
