@@ -26,6 +26,7 @@ class Extension extends CompilerExtension
 	 */
 	protected $defaults = array(
 		'convention' => 'camelCase',
+		'datetime' => 'c',
 		'cacheDir' => '%tempDir%/cache',
 		'jsonpKey' => 'jsonp',
 		'prettyPrintKey' => 'pretty',
@@ -55,7 +56,7 @@ class Extension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Drahak\Restful\ResourceFactory')
-			->setArguments(array($config['convention']));
+			->setArguments(array($config['convention'], $config['datetime']));
 		$container->addDefinition($this->prefix('resource'))
 			->setFactory($this->prefix('@resourceFactory') . '::create');
 

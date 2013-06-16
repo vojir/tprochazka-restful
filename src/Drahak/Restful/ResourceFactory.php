@@ -2,6 +2,7 @@
 namespace Drahak\Restful;
 
 use Drahak\Restful\Resource\CamelCaseDecorator;
+use Drahak\Restful\Resource\DateTimeDecorator;
 use Drahak\Restful\Resource\SnakeCaseDecorator;
 use Nette\Object;
 
@@ -21,9 +22,13 @@ class ResourceFactory extends Object implements IResourceFactory
 	/** @var string */
 	private $convention = self::CAMEL_CASE;
 
-	public function __construct($convention)
+	/** @var string */
+	private $datetimeFormat;
+
+	public function __construct($convention, $datetimeFormat)
 	{
 		$this->convention = $convention;
+		$this->datetimeFormat = $datetimeFormat;
 	}
 
 	/**
@@ -32,12 +37,17 @@ class ResourceFactory extends Object implements IResourceFactory
 	 */
 	public function create()
 	{
+		// TODO: refactor
 		$resource = new Resource;
+		$resource = new DateTimeDecorator($resource, $this->datetimeFormat);
+
+		// Conventions
 		if ($this->convention === self::SNAKE_CASE) {
 			$resource = new SnakeCaseDecorator($resource);
 		} else if ($this->convention === self::CAMEL_CASE) {
 			$resource = new CamelCaseDecorator($resource);
 		}
+
 		return $resource;
 	}
 
