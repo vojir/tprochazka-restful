@@ -88,7 +88,6 @@ class RequestFilterTest extends TestCase
 
 	public function testThrowsExceptionWhenOffsetOrLimitNotProvided()
 	{
-
 		$this->request->expects('getQuery')
 			->once()
 			->with('offset')

@@ -25,15 +25,6 @@ use Nette\Http;
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter
 {
 
-	/** @var array */
-	protected $formats = array(
-		'json' => IResource::JSON,
-		'xml' => IResource::XML,
-		'jsonp' => IResource::JSONP,
-		'query' => IResource::QUERY,
-		'data_url' => IResource::DATA_URL
-	);
-
 	/** @var string */
 	protected $defaultContentType = IResource::JSON;
 
@@ -110,16 +101,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		if ($this->defaultContentType) {
 			$this->resource->setContentType($this->defaultContentType);
 		}
-
-		$accept = explode(',', $this->getHttpRequest()->getHeader('Accept'));
-		foreach ($accept as $mimeType) {
-			foreach ($this->formats as $formatMime) {
-				if (Strings::contains($mimeType, $formatMime)) {
-					$this->resource->setContentType($formatMime);
-					break;
-				}
-			}
-		}
+		$this->resource->setContentType($this->getHttpRequest()->getPreferredContentType());
 	}
 
 	/**

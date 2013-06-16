@@ -1,7 +1,9 @@
 <?php
 namespace Drahak\Restful\Http;
 
+use Drahak\Restful\IResource;
 use Nette;
+use Nette\Utils\Strings;
 
 /**
  * HTTP Request
@@ -9,6 +11,7 @@ use Nette;
  * @author Drahomír Hanák
  *
  * @property-write string $jsonpKey
+ * @property-read array $formats
  */
 class Request extends Nette\Http\Request implements IRequest
 {
@@ -24,6 +27,24 @@ class Request extends Nette\Http\Request implements IRequest
 
 	/** @var string */
 	private $prettyPrintKey = 'pretty';
+
+	/** @var array */
+	protected $formats = array(
+		'json' => IResource::JSON,
+		'xml' => IResource::XML,
+		'jsonp' => IResource::JSONP,
+		'query' => IResource::QUERY,
+		'data_url' => IResource::DATA_URL
+	);
+
+	/**
+	 * Get formats map
+	 * @return array
+	 */
+	public function getFormats()
+	{
+		return $this->formats;
+	}
 
 	/**
 	 * Set JSONP parameter name in query string
@@ -105,5 +126,22 @@ class Request extends Nette\Http\Request implements IRequest
 		}
 		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
 	}
+
+	/**
+	 * Get preferred request content type
+	 * @return string
+	 */
+	public function getPreferredContentType()
+	{
+		$accept = explode(',', $this->getHeader('Accept'));
+		foreach ($accept as $mimeType) {
+			foreach ($this->formats as $formatMime) {
+				if (Strings::contains($mimeType, $formatMime)) {
+					return $formatMime;
+				}
+			}
+		}
+	}
+
 
 }

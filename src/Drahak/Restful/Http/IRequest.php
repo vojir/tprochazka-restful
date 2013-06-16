@@ -38,4 +38,10 @@ interface IRequest extends Nette\Http\IRequest
 	 */
 	public function isPrettyPrint();
 
+	/**
+	 * Get preferred request content type
+	 * @return string
+	 */
+	public function getPreferredContentType();
+
 }
