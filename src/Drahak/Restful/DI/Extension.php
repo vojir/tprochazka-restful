@@ -7,6 +7,7 @@ use Nette\Caching\Storages\FileStorage;
 use Nette\DI\CompilerExtension;
 use Nette\Configurator;
 use Nette\DI\ContainerBuilder;
+use Nette\DI\ServiceDefinition;
 use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
@@ -143,6 +144,10 @@ class Extension extends CompilerExtension
 
 		$container->getDefinition('httpRequest')
 			->setClass('Drahak\Restful\Http\IRequest');
+
+		$container->addDefinition($this->prefix('requestFilter'))
+			->setClass('Drahak\Restful\Utils\RequestFilter')
+			->setArguments(array('@httpRequest', array($config['jsonpKey'], $config['prettyPrintKey'])));
 
 		$container->getDefinition('nette.httpRequestFactory')
 			->setClass('Drahak\Restful\Http\RequestFactory')

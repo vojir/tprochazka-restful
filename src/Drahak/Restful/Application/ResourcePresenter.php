@@ -10,6 +10,7 @@ use Drahak\Restful\Resource;
 use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
+use Drahak\Restful\Utils\RequestFilter;
 use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
@@ -41,6 +42,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 	/** @var IInput */
 	protected $input;
+
+	/** @var RequestFilter */
+	protected $requestFilter;
 
 	/** @var IResourceFactory */
 	protected $resourceFactory;
@@ -85,6 +89,15 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	public function injectInput(IInput $input)
 	{
 		$this->input = $input;
+	}
+
+	/**
+	 * Inject request filter
+	 * @param RequestFilter $requestFilter
+	 */
+	public function injectRequestFilter(RequestFilter $requestFilter)
+	{
+		$this->requestFilter = $requestFilter;
 	}
 
 	/**
