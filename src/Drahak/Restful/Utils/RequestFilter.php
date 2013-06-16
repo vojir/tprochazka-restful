@@ -4,7 +4,6 @@ namespace Drahak\Restful\Utils;
 use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\InvalidStateException;
 use Nette\Object;
-use Nette\Utils\Paginator;
 
 /**
  * RequestFilter
