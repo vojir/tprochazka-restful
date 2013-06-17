@@ -146,14 +146,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->resource->setContentType($contentType);
 		}
 
-		if ($code === NULL) {
-			$code = 200;
-			if (!$this->resource->getData()) {
-				$code = 204; // No content
-			}
-		}
-
-		$this->getHttpResponse()->setCode($code);
 		$response = $this->responseFactory->create($this->resource, $code);
 		$this->sendResponse($response);
 	}
@@ -171,7 +163,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
 
-		$this->sendResource($this->defaultContentType, $code);
+		$this->sendResource(NULL, $code);
 	}
 
 }

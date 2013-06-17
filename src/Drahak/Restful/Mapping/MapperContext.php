@@ -31,7 +31,7 @@ class MapperContext extends Object
 	 * @param string $contentType in format mimeType[; charset=utf8]
 	 * @return IMapper
 	 *
-	 * @throws \Drahak\Restful\InvalidStateException
+	 * @throws InvalidStateException
 	 */
 	public function getMapper($contentType)
 	{

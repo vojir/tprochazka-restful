@@ -34,26 +34,28 @@ class ResponseFactoryTest extends TestCase
 	/** @var MockInterface */
 	private $response;
 
+	/** @var MockInterface */
+	private $filter;
+
     protected function setUp()
     {
 		parent::setUp();
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
-		$this->factory = new ResponseFactory($this->response, $this->request);
+		$this->filter = $this->mockista->create('Drahak\Restful\Utils\RequestFilter');
+		$this->factory = new ResponseFactory($this->response, $this->request, $this->filter);
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 	}
 
 	public function testCreateResponse()
 	{
+		$this->mockResponseFactory(204);
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn(IResource::JSON);
 		$this->resource->expects('getData')
 			->once()
 			->andReturn(array());
-		$this->request->expects('isJsonp')
-			->once()
-			->andReturn(FALSE);
 
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof JsonResponse);
@@ -61,15 +63,13 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateCustomResponse()
 	{
+		$this->mockResponseFactory();
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
-		$this->request->expects('isJsonp')
-			->once()
-			->andReturn(FALSE);
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);
@@ -79,6 +79,7 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateJsonpResponseWhenJsonpIsActive()
 	{
+		$this->mockResponseFactory();
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
@@ -113,6 +114,32 @@ class ResponseFactoryTest extends TestCase
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
 		}, 'Drahak\Restful\InvalidArgumentException');
     }
+
+	private function mockResponseFactory($code = 200)
+	{
+		$url = 'http://localhost/test';
+
+		$paginator = $this->mockista->create('Drahak\Restful\Utils\Paginator');
+		$paginator->expects('setUrl')->once()->with($url);
+		$paginator->expects('getNextPageUrl')->once()->andReturn($url . '?offset=10&limit=10');
+		$paginator->expects('getLastPageUrl')->once()->andReturn($url . '?offset=90&limit=10');
+		$paginator->expects('getItemCount')->once()->andReturn(100);
+
+		$this->response->expects('setHeader')->atLeastOnce();
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
+		$this->request->expects('getUrl')
+			->once()
+			->andReturn($url);
+
+		$this->response->expects('setCode')
+			->once()
+			->with($code);
+		$this->filter->expects('getPaginator')
+			->once()
+			->andReturn($paginator);
+	}
 
 }
 \run(new ResponseFactoryTest());

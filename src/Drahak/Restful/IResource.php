@@ -15,6 +15,7 @@ interface IResource
 	const JSONP = 'application/javascript';
 	const QUERY = 'application/x-www-form-urlencoded';
 	const DATA_URL = 'application/x-data-url';
+	const FORM = 'multipart/form-data';
 	const NULL = 'NULL';
 
 	/**

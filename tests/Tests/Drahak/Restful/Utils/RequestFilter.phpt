@@ -72,11 +72,11 @@ class RequestFilterTest extends TestCase
 	{
 		$this->request->expects('getQuery')
 			->once()
-			->with('offset')
+			->with('offset', NULL)
 			->andReturn(20);
 		$this->request->expects('getQuery')
 			->once()
-			->with('limit')
+			->with('limit', NULL)
 			->andReturn(10);
 
 		$paginator = $this->filter->getPaginator();
@@ -90,11 +90,11 @@ class RequestFilterTest extends TestCase
 	{
 		$this->request->expects('getQuery')
 			->once()
-			->with('offset')
+			->with('offset', NULL)
 			->andReturn(20);
 		$this->request->expects('getQuery')
 			->once()
-			->with('limit')
+			->with('limit', NULL)
 			->andReturn(NULL);
 
 		Assert::throws(function() {

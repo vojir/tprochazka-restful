@@ -73,15 +73,15 @@ class Input extends Object implements IteratorAggregate, IInput
 	 */
 	private function parseData()
 	{
-		if ($input = file_get_contents('php://input')) {
+		if ($this->httpRequest->getPost()) {
+			return $this->httpRequest->getPost();
+		} else if ($input = file_get_contents('php://input')) {
 			if (!$this->mapper) {
 				throw Application\BadRequestException::unsupportedMediaType(
 					'No mapper defined for Content-Type ' . $this->httpRequest->getHeader('Content-Type')
 				);
 			}
 			return $this->mapper->parseRequest($input);
-		} else if ($this->httpRequest->getPost()) {
-			return $this->httpRequest->getPost();
 		}
 		return $this->httpRequest->getQuery();
 	}

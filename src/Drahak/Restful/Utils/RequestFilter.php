@@ -74,13 +74,13 @@ class RequestFilter extends Object
 	 * @return Paginator
 	 * @throws InvalidStateException
 	 */
-	public function getPaginator()
+	public function getPaginator($offset = NULL, $limit = NULL)
 	{
 		if (!$this->paginator) {
-			$offset = $this->request->getQuery('offset');
-			$limit = $this->request->getQuery('limit');
+			$offset = $this->request->getQuery('offset', $offset);
+			$limit = $this->request->getQuery('limit', $limit);
 
-			if (!$offset || !$limit) {
+			if ($offset === NULL || $limit === NULL) {
 				throw new InvalidStateException(
 					'To create paginator add offset and query parameter to request URL'
 				);
