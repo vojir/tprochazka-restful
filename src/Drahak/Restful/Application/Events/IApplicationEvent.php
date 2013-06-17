@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Restful\Application;
+namespace Drahak\Restful\Application\Events;
 
 use Nette\Application\Application;
 
 /**
  * IApplicationEvent
- * @package Drahak\Restful\Application
+ * @package Drahak\Restful\Application\Events
  * @author Drahomír Hanák
  */
 interface IApplicationEvent

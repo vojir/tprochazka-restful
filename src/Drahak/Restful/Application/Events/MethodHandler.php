@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Application;
+namespace Drahak\Restful\Application\Events;
 
 use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
