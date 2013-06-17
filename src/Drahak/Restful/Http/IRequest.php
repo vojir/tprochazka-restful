@@ -11,7 +11,7 @@ use Nette;
 interface IRequest extends Nette\Http\IRequest
 {
 
-	/** Patch request method */
+	/** Patch request method for partial updates */
 	const PATCH = 'PATCH';
 
 	/**

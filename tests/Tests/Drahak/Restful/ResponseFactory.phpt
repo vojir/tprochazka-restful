@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Drahak\Restful\Application\Responses\JsonpResponse;
 use Drahak\Restful\Application\Responses\JsonResponse;
+use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\IResource;
 use Drahak\Restful\ResponseFactory;
 use Mockista\MockInterface;
@@ -127,6 +128,7 @@ class ResponseFactoryTest extends TestCase
 		$this->request->expects('getUrl')
 			->once()
 			->andReturn($url);
+		$this->request->expects('getMethod')->once()->andReturn(IRequest::GET);
 
 		$this->response->expects('setCode')
 			->once()

@@ -37,6 +37,16 @@ class ResponseFactory extends Object implements IResponseFactory
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
 
+	/** @var array Default response code for each request method */
+	protected $defaultCodes = array(
+		IRequest::GET => 200,
+		IRequest::POST => 201,
+		IRequest::PUT => 200,
+		IRequest::PATCH => 200,
+		IRequest::HEAD => 200,
+		IRequest::DELETE => 200,
+	);
+
 	public function __construct(IResponse $response, IRequest $request, RequestFilter $filter)
 	{
 		$this->response = $response;
@@ -110,7 +120,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	protected function setupCode(IResource $resource, $code = NULL)
 	{
 		if ($code === NULL) {
-			$code = 200;
+			$code = $this->defaultCodes[$this->request->getMethod()];
 			if (!$resource->getData()) {
 				$code = 204; // No content
 			}
