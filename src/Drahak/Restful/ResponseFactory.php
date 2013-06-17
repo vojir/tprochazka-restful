@@ -6,7 +6,9 @@ use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\Resource\EnvelopeDecorator;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
+use Nette\Http\Url;
 use Nette\Object;
+use Nette\Utils\Paginator;
 
 /**
  * REST ResponseFactory
@@ -125,18 +127,45 @@ class ResponseFactory extends Object implements IResponseFactory
 	{
 		try {
 			$paginator = $this->filter->getPaginator();
-			$paginator->setUrl($this->request->getUrl());
 
-			$link = '<' . $paginator->getNextPageUrl() . '>; rel="next"';
-
+			$link = '<' . $this->getNextPageUrl($paginator) . '>; rel="next"';
 			if ($paginator->getItemCount()) {
-				$link .= ', <' . $paginator->getLastPageUrl() . '>; rel="last"';
-				$this->response->setHeader('X-Total-Count', $paginator->getItemCount());
+				$link .= ', <' . $this->getLastPageUrl($paginator) . '>; rel="last"';
 			}
+			$this->response->setHeader('X-Total-Count', $paginator->getItemCount() ? $paginator->getItemCount() : NULL);
 			$this->response->setHeader('Link', $link);
 		} catch (InvalidStateException $e) {
 			// Don't use paginator
 		}
+	}
+
+	/**
+	 * Get next page URL
+	 * @param Paginator $paginator
+	 * @return Url
+	 */
+	private function getNextPageUrl(Paginator $paginator)
+	{
+		$url = $this->request->getUrl();
+		parse_str($url->getQuery(), $query);
+		$paginator->setPage($paginator->getPage()+1);
+		$query['offset'] = $paginator->getOffset();
+		$query['limit'] = $paginator->getItemsPerPage();
+		return $url->appendQuery($query);
+	}
+
+	/**
+	 * Get last page URL
+	 * @param Paginator $paginator
+	 * @return Url
+	 */
+	private function getLastPageUrl(Paginator $paginator)
+	{
+		$url = $this->request->getUrl();
+		parse_str($url->getQuery(), $query);
+		$query['offset'] = $paginator->getLastPage() * $paginator->getItemsPerPage() - $paginator->getItemsPerPage();
+		$query['limit'] = $paginator->getItemsPerPage();
+		return $url->appendQuery($query);
 	}
 
 }

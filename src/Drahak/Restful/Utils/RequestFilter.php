@@ -4,6 +4,7 @@ namespace Drahak\Restful\Utils;
 use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\InvalidStateException;
 use Nette\Object;
+use Nette\Utils\Paginator;
 
 /**
  * RequestFilter
@@ -71,7 +72,10 @@ class RequestFilter extends Object
 
 	/**
 	 * Get paginator
+	 * @param string|NULL $offset default value
+	 * @param string|NULL $limit default value
 	 * @return Paginator
+	 *
 	 * @throws InvalidStateException
 	 */
 	public function getPaginator($offset = NULL, $limit = NULL)
