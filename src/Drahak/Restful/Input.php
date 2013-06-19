@@ -2,10 +2,11 @@
 namespace Drahak\Restful;
 
 use Drahak\Restful\Mapping\MapperContext;
+use Drahak\Restful\Validation\IValidationSchema;
+use Drahak\Restful\Validation\IValidationSchemaAggregate;
 use IteratorAggregate;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Mapping\IMapper;
-use Nette\Application\BadRequestException;
 use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;
@@ -28,18 +29,29 @@ class Input extends Object implements IteratorAggregate, IInput
 	/** @var array */
 	private $data;
 
+	/** @var IValidationSchema */
+	private $validationSchema;
+
 	/** @var IMapper */
 	protected $mapper;
 
-	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext)
+	/**
+	 * @param Http\IRequest $httpRequest
+	 * @param MapperContext $mapperContext
+	 * @param IValidationSchema $validationSchema
+	 */
+	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext, IValidationSchema $validationSchema)
 	{
 		$this->httpRequest = $httpRequest;
+		$this->validationSchema = $validationSchema;
 		try {
 			$this->mapper = $mapperContext->getMapper($httpRequest->getHeader('Content-Type'));
 		} catch (InvalidStateException $e) {
 			// No mapper for this content type - ignore in this step
 		}
 	}
+
+	/******************** IInput ********************/
 
 	/**
 	 * Set input mapper
@@ -132,5 +144,34 @@ class Input extends Object implements IteratorAggregate, IInput
 		return new InputIterator($this);
 	}
 
+	/******************** Aggregate validation schema interface ********************/
+
+	/**
+	 * Get validation field
+	 * @param string $name
+	 * @return Validation\IField
+	 */
+	public function field($name)
+	{
+		return $this->getValidationSchema()->field($name);
+	}
+
+	/**
+	 * Validate input data
+	 * @return array
+	 */
+	public function validate()
+	{
+		return $this->getValidationSchema()->validate($this->getData());
+	}
+
+	/**
+	 * Get validation scope
+	 * @return IValidationSchema
+	 */
+	public function getValidationSchema()
+	{
+		return $this->validationSchema;
+	}
 
 }

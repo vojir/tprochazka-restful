@@ -41,7 +41,7 @@ class RouteAnnotation extends Object implements IAnnotationParser
 	 * @param Method $reflection
 	 * @return array
 	 *
-	 * @throws \Drahak\Restful\InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function parse($reflection)
 	{
