@@ -177,7 +177,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource = $this->resourceFactory->create();
 		$this->resource->errors = $errors;
 
-		$this->sendResource(IResource::JSON);
+		$this->sendResource(NULL);
 	}
 
 }
