@@ -21,7 +21,7 @@ class DataUrlMapper extends Object implements IMapper
 	 *
 	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
-	public function parseResponse($data, $prettyPrint = TRUE)
+	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if (!isset($data['src']) || !isset($data['type'])) {
 			throw new InvalidArgumentException('DataUrlMapper expects array(src => \'\', contentType => \'\')');
@@ -37,7 +37,7 @@ class DataUrlMapper extends Object implements IMapper
 	 *
 	 * @throws MappingException
 	 */
-	public function parseRequest($data)
+	public function parse($data)
 	{
 		$matches = Strings::match($data, "@^data:([\w/]+?);(\w+?),(.*)$@si");
 		if (!$matches) {

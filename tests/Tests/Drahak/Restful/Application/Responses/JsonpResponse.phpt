@@ -68,7 +68,7 @@ class JsonpResponseTest extends TestCase
 			->once()
 			->andReturn(FALSE);
 
-		$this->mapper->expects('parseResponse')
+		$this->mapper->expects('stringify')
 			->once()
 			->with($data, FALSE)
 			->andReturn($output);
@@ -90,7 +90,7 @@ class JsonpResponseTest extends TestCase
 		$data['status'] = 200;
 		$data['headers'] = $headers;
 
-		$this->mapper->expects('parseResponse')
+		$this->mapper->expects('stringify')
 			->once()
 			->with($data, FALSE)
 			->andReturn($output);

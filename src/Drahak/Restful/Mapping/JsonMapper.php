@@ -21,7 +21,7 @@ class JsonMapper extends Object implements IMapper
 	 *
 	 * @throws MappingException
 	 */
-	public function parseResponse($data, $prettyPrint = TRUE)
+	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
 			$data = iterator_to_array($data);
@@ -41,7 +41,7 @@ class JsonMapper extends Object implements IMapper
 	 *
 	 * @throws MappingException
 	 */
-	public function parseRequest($data)
+	public function parse($data)
 	{
 		try {
 			return (array)Json::decode($data);

@@ -30,7 +30,7 @@ class XmlMapperTest extends TestCase
     
     public function testConvertDataArrayToXml()
     {
-		$xml = $this->mapper->parseResponse(array('node' => 'value'));
+		$xml = $this->mapper->stringify(array('node' => 'value'));
 		$dom = Tester\DomQuery::fromXml($xml);
 		Assert::true($dom->has('root'));
 		Assert::true($dom->has('root node'));
@@ -38,7 +38,7 @@ class XmlMapperTest extends TestCase
 
 	public function testConvertXmlToDataArray()
 	{
-		$array = $this->mapper->parseRequest('<?xml version="1.0" encoding="utf-8" ?><root><node>value</node></root>');
+		$array = $this->mapper->parse('<?xml version="1.0" encoding="utf-8" ?><root><node>value</node></root>');
 		Assert::equal($array['node'], 'value');
 	}
 

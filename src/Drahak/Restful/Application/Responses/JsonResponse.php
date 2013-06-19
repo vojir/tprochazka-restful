@@ -37,7 +37,7 @@ class JsonResponse extends BaseResponse
 	{
 		$this->checkRequest($httpRequest);
 		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/json');
-		echo $this->mapper->parseResponse($this->data, $httpRequest->isPrettyPrint());
+		echo $this->mapper->stringify($this->data, $httpRequest->isPrettyPrint());
 	}
 
 }

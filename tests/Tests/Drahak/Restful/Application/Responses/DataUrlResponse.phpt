@@ -45,7 +45,7 @@ class DataUrlResponseTest extends TestCase
     {
 		$url = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
 		$data = array('src' => 'Hello world', 'type' => 'text/plain');
-		$this->mapper->expects('parseResponse')
+		$this->mapper->expects('stringify')
 			->once()
 			->with($data)
 			->andReturn($url);

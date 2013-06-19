@@ -66,7 +66,7 @@ class HashCalculator extends Object implements IAuthTokenCalculator
 			throw new InvalidStateException('Private key is not set');
 		}
 
-		$dataString = $this->mapper->parseResponse($input->getData());
+		$dataString = $this->mapper->stringify($input->getData());
 		return hash_hmac(self::HASH, $dataString, $this->privateKey);
 	}
 

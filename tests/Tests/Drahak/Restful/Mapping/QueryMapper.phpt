@@ -31,7 +31,7 @@ class QueryMapperTest extends TestCase
     public function testParseRequest()
     {
 		$query = 'message=Follow+me+on+Twitter&sender=%40drahomir_hanak';
-		$data = $this->mapper->parseRequest($query);
+		$data = $this->mapper->parse($query);
 		Assert::equal($data['message'], 'Follow me on Twitter');
 		Assert::equal($data['sender'], '@drahomir_hanak');
     }
@@ -41,7 +41,7 @@ class QueryMapperTest extends TestCase
 		$data['message'] = 'Follow me on Twitter';
 		$data['sender'] = '@drahomir_hanak';
 		$data['specialChars'] = '+_-!@*()';
-		$query = $this->mapper->parseResponse($data);
+		$query = $this->mapper->stringify($data);
 		Assert::equal($query, 'message=Follow+me+on+Twitter&sender=%40drahomir_hanak&specialChars=%2B_-%21%40%2A%28%29');
 	}
 

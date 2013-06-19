@@ -3,7 +3,7 @@ namespace Tests\Drahak\Restful\Mapping;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\IMapper;
+use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\JsonMapper;
 use Nette;
 use Tester;
@@ -32,27 +32,27 @@ class JsonMapperTest extends TestCase
     public function testConvertArrayToJson()
     {
 		$array = array('node' => 'value');
-		$json = $this->mapper->parseResponse($array, FALSE);
+		$json = $this->mapper->stringify($array, FALSE);
 		Assert::equal($json, '{"node":"value"}');
     }
 
 	public function testConvertArrayToJsonWithPrettyPrint()
 	{
 		$array = array('node' => 'value');
-		$json = $this->mapper->parseResponse($array);
+		$json = $this->mapper->stringify($array);
 		Assert::equal($json, "{\n    \"node\": \"value\"\n}");
 	}
 
 	public function testConvertJsonToArray()
 	{
-		$array = $this->mapper->parseRequest('{"node":"value"}');
+		$array = $this->mapper->parse('{"node":"value"}');
 		Assert::equal($array['node'], 'value');
 	}
 
 	public function testThrowsExceptionWhenJsonIsInvalid()
 	{
 		Assert::throws(function() {
-			$this->mapper->parseRequest('{"node: "invalid JSON"}');
+			$this->mapper->parse('{"node: "invalid JSON"}');
 		}, 'Drahak\Restful\Mapping\MappingException');
 	}
 

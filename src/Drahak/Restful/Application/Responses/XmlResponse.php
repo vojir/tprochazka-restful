@@ -38,7 +38,7 @@ class XmlResponse extends BaseResponse
 	{
 		$this->checkRequest($httpRequest);
 		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/xml');
-		echo $this->mapper->parseResponse($this->data, $httpRequest->isPrettyPrint());
+		echo $this->mapper->stringify($this->data, $httpRequest->isPrettyPrint());
 	}
 
 }

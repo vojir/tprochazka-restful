@@ -63,7 +63,7 @@ class XmlMapper extends Object implements IMapper
 	 *
 	 * @throws \Drahak\Restful\InvalidArgumentException
 	 */
-	public function parseResponse($data, $prettyPrint = TRUE)
+	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if (!is_array($data) && !($data instanceof \Traversable)) {
 			throw new InvalidArgumentException('Data must be of type array or Traversable');
@@ -88,7 +88,7 @@ class XmlMapper extends Object implements IMapper
 	 * @param string $data
 	 * @return array
 	 */
-	public function parseRequest($data)
+	public function parse($data)
 	{
 		return $this->fromXml($data);
 	}

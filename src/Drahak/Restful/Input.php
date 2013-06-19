@@ -93,7 +93,7 @@ class Input extends Object implements IteratorAggregate, IInput
 					'No mapper defined for Content-Type ' . $this->httpRequest->getHeader('Content-Type')
 				);
 			}
-			return $this->mapper->parseRequest($input);
+			return $this->mapper->parse($input);
 		}
 		return $this->httpRequest->getQuery();
 	}

@@ -37,7 +37,7 @@ class XmlResponseTest extends TestCase
     
     public function testSendXmlResponse()
     {
-		$this->mapper->expects('parseResponse')
+		$this->mapper->expects('stringify')
 			->once()
 			->with(array(), FALSE)
 			->andReturn('Some XML');

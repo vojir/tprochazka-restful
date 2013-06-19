@@ -19,7 +19,7 @@ class QueryMapper extends Object implements IMapper
 	 * @param bool $prettyPrint
 	 * @return mixed
 	 */
-	public function parseResponse($data, $prettyPrint = TRUE)
+	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
 			$data = iterator_to_array($data);
@@ -34,7 +34,7 @@ class QueryMapper extends Object implements IMapper
 	 *
 	 * @throws MappingException
 	 */
-	public function parseRequest($data)
+	public function parse($data)
 	{
 		$result = array();
 		parse_str($data, $result);

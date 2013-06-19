@@ -38,7 +38,7 @@ class JsonResponseTest extends TestCase
     {
 		$output = '{"hello":"world"}';
 
-		$this->mapper->expects('parseResponse')
+		$this->mapper->expects('stringify')
 			->once()
 			->with(array('hello' => 'world'), FALSE)
 			->andReturn($output);

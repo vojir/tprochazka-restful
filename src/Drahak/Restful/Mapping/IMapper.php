@@ -16,7 +16,7 @@ interface IMapper
 	 * @return mixed
 	 *
 	 */
-	public function parseResponse($data, $prettyPrint = TRUE);
+	public function stringify($data, $prettyPrint = TRUE);
 
 	/**
 	 * Convert client request data to array or traversable
@@ -25,6 +25,6 @@ interface IMapper
 	 *
 	 * @throws MappingException
 	 */
-	public function parseRequest($data);
+	public function parse($data);
 
 }
