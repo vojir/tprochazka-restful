@@ -166,4 +166,18 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->sendResource(NULL, $code);
 	}
 
+	/**
+	 * Validate input
+	 */
+	public function validateInput()
+	{
+		$errors = $this->input->validate();
+		if (!$errors) return;
+
+		$this->resource = $this->resourceFactory->create();
+		$this->resource->errors = $errors;
+
+		$this->sendResource(IResource::JSON);
+	}
+
 }

@@ -50,7 +50,11 @@ class ValidationSchema extends Object implements IValidationSchema
 		/** @var IField $field */
 		foreach ($this->fields as $field) {
 			$value = isset($data[$field->getName()]) ? $data[$field->getName()] : NULL;
-			$errors[$field->getName()] = $field->validate($value);
+			$fieldErrors = $field->validate($value);
+			if (!$fieldErrors) {
+				continue;
+			}
+			$errors[$field->getName()] = $fieldErrors;
 		}
 		return $errors;
 	}
