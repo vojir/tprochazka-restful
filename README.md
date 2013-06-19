@@ -289,26 +289,6 @@ class CrudPresenter extends BasePresenter
 
 ##### Never send private key!
 
-JSONP support
--------------
-If you want to access your API resources by JavaScript on remote host, you can't make normal AJAX request on API. So JSONP is alternative how to do it. In JSONP request you load your API resource as a JavaScript using standard `script` tag in HTML. API wraps JSON string to a callback function parameter. It's actually pretty simple but it needs special care. For example you can't access response headers or status code. You can wrap these headers and status code to all your resources but this is not good for normal API clients, which can access header information. The library allows you to add special query parameter `jsonp` (name depends on your configuration, this is default value). If you access resource with `?jsonp=callback` API automatically determines JSONP mode and wraps all resources to following JavaScript:
-
-```javascript
-callback({
-	"response": {
-		"yourResourceData": "here"
-	},
-	"status": 200,
-	"headers": {
-		"X-Powered-By": "Nette framework",
-		...
-	}
-})
-```
-**Note** : the function name. This is name from `jsonp` query parameter. This string is "webalized" by `Nette\Utils\Strings::webalize(jsonp, NULL, FALSE)`. If you set `jsonpKey` to `FALSE` or `NULL` in configuration, you totally disable JSONP mode for all your API resources. Then you can trigger it manually. Just set `IResource` `$contentType` property to `IResource::JSONP`.
-
-**Also note** : if this option is enabled and client adds `jsonp` parameter to query string, no matter what you set to `$presenter->resource->contentType` it will produce `JsonpResponse`.
-
 Secure your resources with OAuth2
 ---------------------------------
 If you want to secure your API resource with OAuth2, you will need some OAuth2 provider. I've implemented [OAuth2 provider](https://github.com/drahak/OAuth2) bundle for Nette framework so you can use it with Restful. To do so just add dependency `"drahak/oauth2": "dev-master"` to your composer and then use `OAuth2Authentication` which is `AuthenticationProcess`. If you wish to use any other OAuth2 provider, you can write your own `AuthenticationProcess`.
@@ -357,6 +337,26 @@ class CrudPresenter extends BasePresenter
 ```
 
 Note: this is only Resource server so it handles access token authorization. To generate access token you'll need to create OAuth2 presenter (Resource owner and authorization server - see [Drahak\OAuth2 documentation](https://github.com/drahak/OAuth2)).
+
+JSONP support
+-------------
+If you want to access your API resources by JavaScript on remote host, you can't make normal AJAX request on API. So JSONP is alternative how to do it. In JSONP request you load your API resource as a JavaScript using standard `script` tag in HTML. API wraps JSON string to a callback function parameter. It's actually pretty simple but it needs special care. For example you can't access response headers or status code. You can wrap these headers and status code to all your resources but this is not good for normal API clients, which can access header information. The library allows you to add special query parameter `jsonp` (name depends on your configuration, this is default value). If you access resource with `?jsonp=callback` API automatically determines JSONP mode and wraps all resources to following JavaScript:
+
+```javascript
+callback({
+	"response": {
+		"yourResourceData": "here"
+	},
+	"status": 200,
+	"headers": {
+		"X-Powered-By": "Nette framework",
+		...
+	}
+})
+```
+**Note** : the function name. This is name from `jsonp` query parameter. This string is "webalized" by `Nette\Utils\Strings::webalize(jsonp, NULL, FALSE)`. If you set `jsonpKey` to `FALSE` or `NULL` in configuration, you totally disable JSONP mode for all your API resources. Then you can trigger it manually. Just set `IResource` `$contentType` property to `IResource::JSONP`.
+
+**Also note** : if this option is enabled and client adds `jsonp` parameter to query string, no matter what you set to `$presenter->resource->contentType` it will produce `JsonpResponse`.
 
 ___
 
