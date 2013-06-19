@@ -3,7 +3,7 @@ namespace Tests\Drahak\Restful\Security\Process;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Drahak\OAuth2\Token\InvalidAccessTokenException;
+use Drahak\OAuth2\Storage\InvalidAccessTokenException;
 use Drahak\Restful\Security\Process\OAuth2Authentication;
 use Mockista\MockInterface;
 use Nette;
@@ -36,7 +36,7 @@ class OAuth2AuthenticationTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->token = $this->mockista->create('Drahak\OAuth2\Token\AccessToken');
+		$this->token = $this->mockista->create('Drahak\OAuth2\Storage\AccessTokens\AccessTokenFacade');
 		$this->input = $this->mockista->create('Drahak\OAuth2\Http\IInput');
 		$this->inputFake = $this->mockista->create('Drahak\Restful\IInput');
 		$this->process = new OAuth2Authentication($this->token, $this->input);

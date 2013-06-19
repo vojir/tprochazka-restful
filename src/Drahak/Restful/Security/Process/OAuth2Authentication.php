@@ -2,8 +2,8 @@
 namespace Drahak\Restful\Security\Process;
 
 use Drahak\OAuth2;
-use Drahak\OAuth2\Token\AccessToken;
-use Drahak\OAuth2\Token\InvalidAccessTokenException;
+use Drahak\OAuth2\Storage\AccessTokens\AccessTokenFacade;
+use Drahak\OAuth2\Storage\InvalidAccessTokenException;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Security\AuthenticationException;
 
@@ -15,13 +15,13 @@ use Drahak\Restful\Security\AuthenticationException;
 class OAuth2Authentication extends AuthenticationProcess
 {
 
-	/** @var AccessToken */
+	/** @var AccessTokenFacade */
 	private $storage;
 
 	/** @var OAuth2\Http\IInput */
 	private $oauthInput;
 
-	public function __construct(AccessToken $storage, OAuth2\Http\IInput $oauthInput)
+	public function __construct(AccessTokenFacade $storage, OAuth2\Http\IInput $oauthInput)
 	{
 		$this->storage = $storage;
 		$this->oauthInput = $oauthInput;
