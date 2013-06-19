@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful;
 
+use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\Resource\CamelCaseDecorator;
 use Drahak\Restful\Resource\DateTimeDecorator;
 use Drahak\Restful\Resource\SnakeCaseDecorator;
@@ -25,8 +26,12 @@ class ResourceFactory extends Object implements IResourceFactory
 	/** @var string */
 	private $datetimeFormat;
 
-	public function __construct($convention, $datetimeFormat)
+	/** @var IRequest */
+	private $request;
+
+	public function __construct($convention, $datetimeFormat, IRequest $request)
 	{
+		$this->request = $request;
 		$this->convention = $convention;
 		$this->datetimeFormat = $datetimeFormat;
 	}
@@ -39,6 +44,8 @@ class ResourceFactory extends Object implements IResourceFactory
 	{
 		// TODO: refactor
 		$resource = new Resource;
+		$resource->setContentType($this->request->getPreferredContentType());
+
 		$resource = new DateTimeDecorator($resource, $this->datetimeFormat);
 
 		// Conventions

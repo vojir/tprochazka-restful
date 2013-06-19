@@ -25,9 +25,6 @@ use Nette\Http;
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter
 {
 
-	/** @var string */
-	protected $defaultContentType = IResource::JSON;
-
 	/** @var IResource */
 	protected $resource;
 
@@ -98,10 +95,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	{
 		parent::startup();
 		$this->resource = $this->resourceFactory->create();
-		if ($this->defaultContentType) {
-			$this->resource->setContentType($this->defaultContentType);
-		}
-		$this->resource->setContentType($this->getHttpRequest()->getPreferredContentType());
 	}
 
 	/**

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d4c56935ef2d8578ba9c3b366827f567",
+    "hash": "03769a050093c74974b7bbc97c98e5e3",
     "packages": [
         {
             "name": "drahak/oauth2",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drahak/OAuth2.git",
-                "reference": "1617df43b77f7dfbdfb31820e2859011c129bed8"
+                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drahak/OAuth2/zipball/1617df43b77f7dfbdfb31820e2859011c129bed8",
-                "reference": "1617df43b77f7dfbdfb31820e2859011c129bed8",
+                "url": "https://api.github.com/repos/drahak/OAuth2/zipball/dea68e43b0193dced59b1591ad5f979295cd1199",
+                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199",
                 "shasum": ""
             },
             "require": {
@@ -35,7 +35,7 @@
                 "classmap": [
                     "src/Drahak/OAuth2/exceptions.php",
                     "src/Drahak/OAuth2/Grant/exceptions.php",
-                    "src/Drahak/OAuth2/Token/exceptions.php"
+                    "src/Drahak/OAuth2/Storage/exceptions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -59,7 +59,7 @@
                 "provider",
                 "server"
             ],
-            "time": "2013-06-15 17:01:33"
+            "time": "2013-06-15 19:59:30"
         },
         {
             "name": "nette/nette",
@@ -67,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "edd9943f48bc20150d5cb9882f3586a7f7ee0746"
+                "reference": "628b90d251b3fbd9544de258b01960d15f730b23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/edd9943f48bc20150d5cb9882f3586a7f7ee0746",
-                "reference": "edd9943f48bc20150d5cb9882f3586a7f7ee0746",
+                "url": "https://api.github.com/repos/nette/nette/zipball/628b90d251b3fbd9544de258b01960d15f730b23",
+                "reference": "628b90d251b3fbd9544de258b01960d15f730b23",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "neon",
                 "templating"
             ],
-            "time": "2013-06-13 23:57:35"
+            "time": "2013-06-19 00:30:21"
         }
     ],
     "packages-dev": [
