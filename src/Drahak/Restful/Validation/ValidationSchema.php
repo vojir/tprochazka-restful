@@ -54,7 +54,7 @@ class ValidationSchema extends Object implements IValidationSchema
 			if (!$fieldErrors) {
 				continue;
 			}
-			$errors[$field->getName()] = $fieldErrors;
+			$errors += $fieldErrors;
 		}
 		return $errors;
 	}

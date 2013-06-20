@@ -9,9 +9,11 @@ This repository is being developed. Project is for study purposes. Do not use it
 - [Sample usage](#sample-usage)
 - [Simple CRUD resources](#simple-crud-resources)
 - [Accessing input data](#accessing-input-data)
+- [Input data validation](#input-data-validation)
+- [Error presenter](#error-presenter)
 - [Security & authentication](#security--authentication)
-- [JSONP support](#jsonp-support)
 - [Secure your resources with OAuth2](#secure-your-resources-with-oauth2)
+- [JSONP support](#jsonp-support)
 
 Requirements
 ------------
@@ -235,6 +237,69 @@ class SamplePresenter extends BasePresenter
 }
 ```
 Good thing about it is that you don't care of request method. Nette Drahak REST API library will choose correct Input parser for you but it's still up to you, how to handle it. There is available `InputIterator` so you can iterate through input in presenter or use it in your own input parser as iterator.
+
+Input data validation
+---------------------
+First rule of access to input data: **never trust client**! Really this is very important since it is key feature for security. So how to do it right? You may already know Nette Forms and its validation. Lets do the same in Restful! You can define validation rules for each input data field. To get field (exactly `Drahak\Restful\Validation\IField`), just call `field` method with field name in argument on `Input` (in presenter: `$this->input`). And then define rules (almost) like in Nette:
+
+```php
+/**
+ * SamplePresenter resource
+ * @package Restful\Api
+ * @author Drahomír Hanák
+ */
+class SamplePresenter extends BasePresenter
+{
+
+	public function validateCreate()
+	{
+    	$this->input->field('password')
+    		->addRule(IValidator::MIN_LENGTH, NULL, 3)
+    		->addRule(IValidator::PATTERN, 'Please add at least one number to password', '/.*[0-9].*/');
+	}
+
+    public function actionCreate()
+    {
+    	// some save data insertion
+	}
+
+}
+```
+
+That's it! It is not exact the way like Nette but it's pretty similar. At least the base public interface.
+
+**Note**: the validation method `validateCreate`. This new lifecycle method `validate<Action>()` will be processed for each action before the action method `action<Action>()`. It's not required but it's good to use for defining some validation rules or validate data. In case if validation failed throws exception BadRequestException with code HTT/1.1 422 (UnproccessableEntity) that can be handled by error presenter.
+
+Error presenter
+---------------
+The simplest but yet powerful way to provide readable error response for clients is to use `$presenter->sendErrorResponse(Exception $e)` method. The simplest error presenter could look like as follows:
+
+```php
+<?php
+namespace Restful\Api;
+
+use Drahak\Restful\Application\ResourcePresenter;
+
+/**
+ * Base API ErrorPresenter
+ * @package Restful\Api
+ * @author Drahomír Hanák
+ */
+class ErrorPresenter extends ResourcePresenter
+{
+
+	/**
+	 * Provide error to client
+	 * @param \Exception $exception
+	 */
+	public function actionDefault($exception)
+	{
+		$this->sendErrorResource($exception);
+	}
+
+}
+```
+Clients can determine preferred format just like in normal API resource. Actually it only adds data from exception to resource and send it to output.
 
 Security & authentication
 -------------------------

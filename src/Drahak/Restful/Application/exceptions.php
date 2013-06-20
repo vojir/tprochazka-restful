@@ -7,9 +7,16 @@ use Nette;
  * BadRequestException
  * @package Drahak\Restful\Application
  * @author Drahomír Hanák
+ *
+ * @property array $errors
  */
 class BadRequestException extends Nette\Application\BadRequestException
 {
+
+	/** @var array Some other errors appear in request */
+	public $errors = array();
+
+	/****************** Simple factories ******************/
 
 	/**
 	 * Is thrown when trying to reach secured resource without authentication
@@ -79,13 +86,16 @@ class BadRequestException extends Nette\Application\BadRequestException
 
 	/**
 	 * Is thrown when validation problem appears
+	 * @param array $errors during validation
 	 * @param string $message
 	 * @param \Exception $previous
 	 * @return BadRequestException
 	 */
-	public static function unprocessableEntity($message = '', \Exception $previous = NULL)
+	public static function unprocessableEntity(array $errors, $message = '', \Exception $previous = NULL)
 	{
-		return new self($message, 422, $previous);
+		$e = new self($message, 422, $previous);
+		$e->errors = $errors;
+		return $e;
 	}
 
 	/**

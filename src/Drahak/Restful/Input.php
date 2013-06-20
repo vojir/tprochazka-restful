@@ -166,6 +166,15 @@ class Input extends Object implements IteratorAggregate, IInput
 	}
 
 	/**
+	 * Is input valid
+	 * @return bool
+	 */
+	public function isValid()
+	{
+		return !$this->validate();
+	}
+
+	/**
 	 * Get validation scope
 	 * @return IValidationSchema
 	 */

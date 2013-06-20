@@ -56,8 +56,8 @@ class ValidationSchemaTest extends TestCase
 			->andThrow($exception);
 
 		$errors = $this->schema->validate(array('test' => 'Hello world'));
-		Assert::equal($errors['test'][0]['field'], 'test');
-		Assert::equal($errors['test'][0]['message'], 'Please add integer');
+		Assert::equal($errors[0]['field'], 'test');
+		Assert::equal($errors[0]['message'], 'Please add integer');
 	}
 
 }

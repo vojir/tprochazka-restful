@@ -11,6 +11,9 @@ use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;
+use Drahak\Restful\Validation\ValidationException;
+use Nette\Caching\Cache;
+use Nette\Callback;
 use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
@@ -24,6 +27,9 @@ use Nette\Http;
  */
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter
 {
+
+	/** @internal */
+	const VALIDATE_ACTION_PREFIX = 'validate';
 
 	/** @var IResource */
 	protected $resource;
@@ -44,61 +50,45 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected $authentication;
 
 	/**
-	 * Inject response factory
+	 * Inject Drahak Restful
 	 * @param IResponseFactory $responseFactory
+	 * @param IResourceFactory $resourceFactory
+	 * @param AuthenticationContext $authentication
+	 * @param IInput $input
+	 * @param RequestFilter $requestFilter
 	 */
-	public function injectResponseFactory(IResponseFactory $responseFactory)
+	public final function injectDrahakRestful(
+		IResponseFactory $responseFactory, IResourceFactory $resourceFactory,
+		AuthenticationContext $authentication, IInput $input, RequestFilter $requestFilter)
 	{
 		$this->responseFactory = $responseFactory;
-	}
-
-	/**
-	 * Inject resource factory
-	 * @param IResourceFactory $resourceFactory
-	 */
-	public function injectResourceFactory(IResourceFactory $resourceFactory)
-	{
 		$this->resourceFactory = $resourceFactory;
-	}
-
-	/**
-	 * Inject authentication strategy context
-	 * @param AuthenticationContext $authentication
-	 */
-	public function injectRequestAuthenticator(AuthenticationContext $authentication)
-	{
 		$this->authentication = $authentication;
-	}
-
-	/**
-	 * Inject input
-	 * @param IInput $input
-	 */
-	public function injectInput(IInput $input)
-	{
+		$this->requestFilter = $requestFilter;
 		$this->input = $input;
 	}
 
 	/**
-	 * Inject request filter
-	 * @param RequestFilter $requestFilter
-	 */
-	public function injectRequestFilter(RequestFilter $requestFilter)
-	{
-		$this->requestFilter = $requestFilter;
-	}
-
-	/**
 	 * Presenter startup
+	 * @throws BadRequestException
 	 */
 	protected function startup()
 	{
 		parent::startup();
 		$this->resource = $this->resourceFactory->create();
+
+		// calls $this->validate<Action>()
+		$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
+
+		// Check if input is validate
+		if (!$this->input->isValid() && $validationProcessed) {
+			$errors = $this->input->validate();
+			throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]['message']);
+		}
 	}
 
 	/**
-	 * Check security requirements
+	 * Check security and other presenter requirements
 	 * @param $element
 	 */
 	public function checkRequirements($element)
@@ -109,6 +99,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->sendErrorResource($e);
 		}
 
+		// Try to authenticate client
 		try {
 			$this->authentication->authenticate($this->input);
 		} catch (SecurityException $e) {
@@ -156,21 +147,21 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
 
+		if (isset($e->errors) && $e->errors) {
+			$this->resource->errors = $e->errors;
+		}
+
 		$this->sendResource(NULL, $code);
 	}
 
+	/****************** Format methods ******************/
+
 	/**
-	 * Validate input
+	 * Validate action method
 	 */
-	public function validateInput(IInput $input)
+	public static function formatValidateMethod($action)
 	{
-		$errors = $input->validate();
-		if (!$errors) return;
-
-		$this->resource = $this->resourceFactory->create();
-		$this->resource->errors = $errors;
-
-		$this->sendResource(NULL);
+		return self::VALIDATE_ACTION_PREFIX . $action;
 	}
 
 }
