@@ -150,8 +150,11 @@ class Extension extends CompilerExtension
 		$container->addDefinition($this->prefix('methodHandler'))
 			->setClass('Drahak\Restful\Application\Events\MethodHandler');
 
+		// Http
 		$container->getDefinition('httpRequest')
 			->setClass('Drahak\Restful\Http\IRequest');
+		$container->getDefinition('httpResponse')
+			->setClass('Drahak\Restful\Http\ResponseProxy');
 
 		$container->addDefinition($this->prefix('requestFilter'))
 			->setClass('Drahak\Restful\Utils\RequestFilter')
