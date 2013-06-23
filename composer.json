@@ -20,6 +20,7 @@
 		"nette/nette": "@dev"
 	},
 	"require-dev": {
+		"drahak/oauth2": "dev-master",
 		"nette/tester": "dev-master",
 		"janmarek/mockista": "dev-master"
 	},

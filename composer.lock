@@ -3,76 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "03769a050093c74974b7bbc97c98e5e3",
+    "hash": "38a7a733aac115d058b04c83937f087e",
     "packages": [
-        {
-            "name": "drahak/oauth2",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drahak/OAuth2.git",
-                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drahak/OAuth2/zipball/dea68e43b0193dced59b1591ad5f979295cd1199",
-                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199",
-                "shasum": ""
-            },
-            "require": {
-                "nette/nette": "@dev",
-                "php": ">= 5.3.0"
-            },
-            "require-dev": {
-                "janmarek/mockista": "dev-master",
-                "nette/tester": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Drahak\\OAuth2": "src/"
-                },
-                "classmap": [
-                    "src/Drahak/OAuth2/exceptions.php",
-                    "src/Drahak/OAuth2/Grant/exceptions.php",
-                    "src/Drahak/OAuth2/Storage/exceptions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Drahomír Hanák",
-                    "homepage": "http://www.drahak.eu"
-                }
-            ],
-            "description": "Nette OAuth2 Provider bundle",
-            "homepage": "http://www.drahak.eu",
-            "keywords": [
-                "drahak",
-                "nette",
-                "oauth2",
-                "provider",
-                "server"
-            ],
-            "time": "2013-06-15 19:59:30"
-        },
         {
             "name": "nette/nette",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "628b90d251b3fbd9544de258b01960d15f730b23"
+                "reference": "dbb649fa0d708608e5f33ed79ea059c09147d0c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/628b90d251b3fbd9544de258b01960d15f730b23",
-                "reference": "628b90d251b3fbd9544de258b01960d15f730b23",
+                "url": "https://api.github.com/repos/nette/nette/zipball/dbb649fa0d708608e5f33ed79ea059c09147d0c4",
+                "reference": "dbb649fa0d708608e5f33ed79ea059c09147d0c4",
                 "shasum": ""
             },
             "require": {
@@ -133,10 +77,66 @@
                 "neon",
                 "templating"
             ],
-            "time": "2013-06-19 00:30:21"
+            "time": "2013-06-22 09:57:18"
         }
     ],
     "packages-dev": [
+        {
+            "name": "drahak/oauth2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drahak/OAuth2.git",
+                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drahak/OAuth2/zipball/dea68e43b0193dced59b1591ad5f979295cd1199",
+                "reference": "dea68e43b0193dced59b1591ad5f979295cd1199",
+                "shasum": ""
+            },
+            "require": {
+                "nette/nette": "@dev",
+                "php": ">= 5.3.0"
+            },
+            "require-dev": {
+                "janmarek/mockista": "dev-master",
+                "nette/tester": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Drahak\\OAuth2": "src/"
+                },
+                "classmap": [
+                    "src/Drahak/OAuth2/exceptions.php",
+                    "src/Drahak/OAuth2/Grant/exceptions.php",
+                    "src/Drahak/OAuth2/Storage/exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Drahomír Hanák",
+                    "homepage": "http://www.drahak.eu"
+                }
+            ],
+            "description": "Nette OAuth2 Provider bundle",
+            "homepage": "http://www.drahak.eu",
+            "keywords": [
+                "drahak",
+                "nette",
+                "oauth2",
+                "provider",
+                "server"
+            ],
+            "time": "2013-06-15 19:59:30"
+        },
         {
             "name": "janmarek/mockista",
             "version": "dev-master",
@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "7ff0af99a7bf7b7fb4577d2094ecc3b87e286ba3"
+                "reference": "472ac22fbece4e86e34e711b586031e80a21f0d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/7ff0af99a7bf7b7fb4577d2094ecc3b87e286ba3",
-                "reference": "7ff0af99a7bf7b7fb4577d2094ecc3b87e286ba3",
+                "url": "https://api.github.com/repos/nette/tester/zipball/472ac22fbece4e86e34e711b586031e80a21f0d9",
+                "reference": "472ac22fbece4e86e34e711b586031e80a21f0d9",
                 "shasum": ""
             },
             "require": {
@@ -239,7 +239,7 @@
                 "testing",
                 "unit"
             ],
-            "time": "2013-06-14 00:03:49"
+            "time": "2013-06-19 19:18:33"
         }
     ],
     "aliases": [
