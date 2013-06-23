@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Resource;
 
-use Nette\Utils\Strings;
+use Drahak\Restful\Utils\Strings;
 
 /**
  * SnakeCaseDecorator
@@ -36,7 +36,7 @@ class SnakeCaseDecorator extends Decorator
 			$value = &$array[$key];
 			unset($array[$key]);
 
-			$transformedKey = Strings::trim(Strings::lower(Strings::replace(ltrim($key, '!'), '/([a-z -]{1})([A-Z])/', '$1_$2')));
+			$transformedKey = Strings::toSnakeCase($key);
 			if (is_array($value) || $value instanceof \Traversable) {
 				$this->convertToSnake($value);
 			}

@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Resource;
-use Nette\Utils\Strings;
+
+use Drahak\Restful\Utils\Strings;
 
 /**
  * CamelCaseDecorator
@@ -27,10 +28,6 @@ class CamelCaseDecorator extends Decorator
 	 */
 	private function convertToCamel(&$array)
 	{
-		$func = function($matches) {
-			return Strings::upper($matches[2]);
-		};
-
 		if ($array instanceof \Traversable) {
 			$array = iterator_to_array($array);
 		}
@@ -39,7 +36,7 @@ class CamelCaseDecorator extends Decorator
 			$value = &$array[$key];
 			unset($array[$key]);
 
-			$transformedKey = Strings::replace($key, '/(_| |-)([a-z])/', $func);
+			$transformedKey = Strings::toCamelCase($key);
 			if (is_array($value) || $value instanceof \Traversable) {
 				$this->convertToCamel($value);
 			}
