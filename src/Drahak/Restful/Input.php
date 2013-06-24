@@ -2,6 +2,7 @@
 namespace Drahak\Restful;
 
 use Drahak\Restful\Mapping\MapperContext;
+use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\IValidationSchema;
 use Drahak\Restful\Validation\IValidationSchemaAggregate;
 use IteratorAggregate;
@@ -20,7 +21,7 @@ use Nette\Utils\Strings;
  *
  * @property-read array $data
  */
-class Input extends Object implements IteratorAggregate, IInput
+class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 {
 
 	/** @var \Nette\Http\IRequest */
@@ -144,7 +145,7 @@ class Input extends Object implements IteratorAggregate, IInput
 		return new InputIterator($this);
 	}
 
-	/******************** Aggregate validation schema interface ********************/
+	/******************** Validation data provider interface ********************/
 
 	/**
 	 * Get validation field
