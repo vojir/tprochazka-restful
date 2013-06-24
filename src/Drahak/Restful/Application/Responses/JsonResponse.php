@@ -13,9 +13,6 @@ use Drahak\Restful\InvalidArgumentException;
 class JsonResponse extends BaseResponse
 {
 
-	/** @var array|\stdClass|\Traversable */
-	private $data;
-
 	/**
 	 * @param null|string $data
 	 * @param string|null $contentType

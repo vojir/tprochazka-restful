@@ -16,9 +16,6 @@ use Nette\Utils\Strings;
 class JsonpResponse extends BaseResponse
 {
 
-	/** @var array|\stdClass|\Traversable */
-	private $data;
-
 	public function __construct($data, $contentType = NULL)
 	{
 		parent::__construct($contentType);

@@ -19,6 +19,9 @@ use Nette\Object;
 abstract class BaseResponse extends Object implements IResponse
 {
 
+	/** @var array|\stdClass|\Traversable */
+	protected $data;
+
 	/** @var IMapper */
 	protected $mapper;
 
@@ -40,6 +43,15 @@ abstract class BaseResponse extends Object implements IResponse
 	public function getContentType()
 	{
 		return $this->contentType;
+	}
+
+	/**
+	 * Get response data
+	 * @return array|\stdClass|\Traversable
+	 */
+	public function getData()
+	{
+		return $this->data;
 	}
 
 	/**

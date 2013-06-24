@@ -13,9 +13,6 @@ use Nette\Http;
 class XmlResponse extends BaseResponse
 {
 
-	/** @var array|\stdClass|\Traversable */
-	private $data;
-
 	/**
 	 * @param null|string $data
 	 * @param string|null $contentType

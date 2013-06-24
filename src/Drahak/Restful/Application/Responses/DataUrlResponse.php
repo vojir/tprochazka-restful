@@ -12,9 +12,6 @@ use Nette\Http;
 class DataUrlResponse extends BaseResponse
 {
 
-	/** @var array|\stdClass|\Traversable */
-	private $data;
-
 	/**
 	 * @param string|null $data
 	 * @param string|null $contentType

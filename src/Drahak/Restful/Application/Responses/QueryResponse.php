@@ -12,9 +12,6 @@ use Nette\Http;
 class QueryResponse extends BaseResponse
 {
 
-	/** @var array|\Traversable */
-	private $data;
-
 	/**
 	 * @param $data
 	 * @param string|null $contentType
