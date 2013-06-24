@@ -11,6 +11,7 @@ use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;
+use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\ValidationException;
 use Nette\Caching\Cache;
 use Nette\Callback;
@@ -34,7 +35,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResource */
 	protected $resource;
 
-	/** @var IInput */
+	/** @var IInput|IDataProvider */
 	protected $input;
 
 	/** @var RequestFilter */
@@ -81,7 +82,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
 		// Check if input is validate
-		if (!$this->input->isValid() && $validationProcessed) {
+		if (!$this->input->isValid() && $validationProcessed === TRUE) {
 			$errors = $this->input->validate();
 			throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]['message']);
 		}
@@ -141,6 +142,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected function sendErrorResource(\Exception $e)
 	{
 		$code = $e->getCode() ? $e->getCode() : 500;
+		if ($code < 100 || $code > 599) {
+			$code = 400;
+		}
 
 		$this->resource = $this->resourceFactory->create();
 		$this->resource->code = $code;

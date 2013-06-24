@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "38a7a733aac115d058b04c83937f087e",
+    "hash": "62d429e4d55387cc6c3f53b0bf685f0c",
     "packages": [
         {
             "name": "nette/nette",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "dbb649fa0d708608e5f33ed79ea059c09147d0c4"
+                "reference": "3b007087cfad240567b9e5656ef3c23c41af8089"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/dbb649fa0d708608e5f33ed79ea059c09147d0c4",
-                "reference": "dbb649fa0d708608e5f33ed79ea059c09147d0c4",
+                "url": "https://api.github.com/repos/nette/nette/zipball/3b007087cfad240567b9e5656ef3c23c41af8089",
+                "reference": "3b007087cfad240567b9e5656ef3c23c41af8089",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                 "neon",
                 "templating"
             ],
-            "time": "2013-06-22 09:57:18"
+            "time": "2013-06-24 16:41:01"
         }
     ],
     "packages-dev": [

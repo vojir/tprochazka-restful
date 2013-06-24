@@ -96,7 +96,18 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 			}
 			return $this->mapper->parse($input);
 		}
-		return $this->httpRequest->getQuery();
+		return (array)$this->httpRequest->getQuery();
+	}
+
+	/**
+	 * Set input data
+	 * @param array $data
+	 * @return Input
+	 */
+	public function setData(array $data)
+	{
+		$this->data = $data;
+		return $this;
 	}
 
 	/******************** Magic methods ********************/

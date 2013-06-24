@@ -96,6 +96,7 @@ class ResponseFactory extends Object implements IResponseFactory
 			throw new InvalidStateException('Unregistered API response.');
 		}
 
+
 		if (!class_exists($this->responses[$contentType])) {
 			throw new InvalidStateException('API response class does not exist.');
 		}

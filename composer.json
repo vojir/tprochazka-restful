@@ -33,7 +33,8 @@
 			"src/Drahak/Restful/Application/exceptions.php",
 			"src/Drahak/Restful/Mapping/exceptions.php",
 			"src/Drahak/Restful/Security/exceptions.php",
-			"src/Drahak/Restful/Validation/exceptions.php"
+			"src/Drahak/Restful/Validation/exceptions.php",
+			"src/Drahak/Restful/Tools/Documentation/exceptions.php"
 		]
 	}
 }
