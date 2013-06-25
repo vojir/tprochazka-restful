@@ -61,6 +61,8 @@ class Generator extends Object implements IDocGenerator
 
 		$this->presenterLoader->tryLoad('Drahak\Restful\Application\IResourcePresenter');
 		foreach ($this->presenterLoader->getIndexedClasses() as $class => $file) {
+			if (!method_exists($class, 'getReflection')) continue;
+
 			/** @var ClassType $classReflection */
 			$classReflection = $class::getReflection();
 			$annotations = $classReflection->getAnnotations();
