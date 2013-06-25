@@ -45,6 +45,8 @@ class ResourceFactory extends Object
 
 		$data = (array)$method->getAnnotation('example-data');
 		$headers = (array)$method->getAnnotation('example-header');
+		$description = $method->getAnnotations();
+		$description = $description['description'];
 
 		$input = $this->serviceSpy->on('Drahak\Restful\IInput', 'Drahak\Restful\Tools\Documentation\Spies\InputSpy');
 		$response = $this->serviceSpy->on('Nette\Http\IResponse', 'Drahak\Restful\Tools\Documentation\Spies\ResponseSpy');
@@ -57,7 +59,7 @@ class ResourceFactory extends Object
 
 		// Create resource entity
 		$resource = new Resource;
-		$resource->title = $method->getDescription();
+		$resource->title = isset($description[0]) ? $description[0] : NULL;
 		$resource->description = $method->getDescription();
 		$resource->method = $exampleRequest[0];
 		$resource->path = $exampleRequest[1];
