@@ -63,15 +63,24 @@ class Generator extends Object implements IDocGenerator
 		foreach ($this->presenterLoader->getIndexedClasses() as $class => $file) {
 			/** @var ClassType $classReflection */
 			$classReflection = $class::getReflection();
+			$annotations = $classReflection->getAnnotations();
+			$title = isset($annotations['description']) ? $annotations['description'][0] : NULL;
+
+			$data = array();
+			$data['title'] = $title;
+			$data['description'] = $classReflection->getDescription();
+			$data['resources'] = array();
+
 			foreach ($classReflection->getMethods() as $method) {
 				if (Strings::substring($method->getName(), 0, 6) !== 'action') {
 					continue;
 				}
 
 				try {
-					$resources[] = $this->resourceFactory->createResourceDoc($method);
+					$data['resources'][] = $this->resourceFactory->createResourceDoc($method);
 				} catch (InvalidExampleRequestException $e) { /** so don't generate doc */ }
 			}
+			if (count($data['resources'])) $resources[] = $data;
 		}
 		return $resources;
 	}
