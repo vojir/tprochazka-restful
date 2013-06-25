@@ -16,7 +16,7 @@ class ServiceSpy extends Object
 	private $container;
 
 	/** @var array */
-	private $spies = array();
+	private $replacedServices = array();
 
 	/**
 	 * @param Container $container
@@ -38,29 +38,24 @@ class ServiceSpy extends Object
 		$spy = $this->container->createInstance($spyClass, $arguments);
 		$name = $this->container->findByType($serviceClass);
 		$name = $name[0];
+		$service = $this->container->getService($name);
+
 		$this->container->removeService($name);
 		$this->container->addService($name, $spy);
 
-		$this->spies[$serviceClass] = $spy;
+		$this->replacedServices[$name] = $service;
 		return $spy;
 	}
 
 	/**
-	 * @param string $serviceClass
-	 * @return mixed
+	 * Remove all spies
 	 */
-	public final function getSpy($serviceClass)
+	public function removeAll()
 	{
-		return $this->spies[$serviceClass];
-	}
-
-	/**
-	 * Get all service spies
-	 * @return array
-	 */
-	public final function getSpies()
-	{
-		return $this->spies;
+		foreach ($this->replacedServices as $name => $service) {
+			$this->container->removeService($name);
+			$this->container->addService($name, $service);
+		}
 	}
 
 }

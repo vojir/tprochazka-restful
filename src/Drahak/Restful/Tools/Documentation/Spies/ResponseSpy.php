@@ -56,6 +56,14 @@ class ResponseSpy extends ResponseProxy
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getCode()
+	{
+		return $this->code;
+	}
+
+	/**
 	 * Set content type
 	 * @param string $type
 	 * @param string|null $charset

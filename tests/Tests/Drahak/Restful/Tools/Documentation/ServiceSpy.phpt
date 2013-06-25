@@ -38,6 +38,31 @@ class ServiceSpyTest extends TestCase
 		$service = new \stdClass;
 		$args = array('hello', 'world');
 
+		$this->mockApplySpy($service, $args);
+		$result = $this->serviceSpy->on('Nette\Object', 'stdClass', $args);
+		Assert::same($result, $service);
+    }
+
+	public function testRemoveAllReplacedServices()
+	{
+
+		$service = new \stdClass;
+		$args = array('hello', 'world');
+
+		$this->mockApplySpy($service, $args);
+
+		$this->container->expects('removeService');
+
+		$this->serviceSpy->on('Nette\Object', 'stdClass', $args);
+		$this->serviceSpy->removeAll();
+	}
+
+	/**
+	 * @param string $service
+	 * @param array $args
+	 */
+	private function mockApplySpy($service, $args = array())
+	{
 		$this->container->expects('findByType')
 			->once()
 			->with('Nette\Object')
@@ -56,9 +81,12 @@ class ServiceSpyTest extends TestCase
 			->once()
 			->with('nette.object', $service);
 
-		$result = $this->serviceSpy->on('Nette\Object', 'stdClass', $args);
-		Assert::same($result, $service);
-    }
+		$this->container->expects('getService')
+			->once()
+			->with('nette.object')
+			->andReturn($service);
+
+	}
 
 }
 \run(new ServiceSpyTest());

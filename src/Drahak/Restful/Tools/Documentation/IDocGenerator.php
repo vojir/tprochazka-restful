@@ -15,4 +15,6 @@ interface IDocGenerator
 	 */
 	public function generate();
 
+
+
 }

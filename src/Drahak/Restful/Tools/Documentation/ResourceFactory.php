@@ -47,12 +47,13 @@ class ResourceFactory extends Object
 		$headers = (array)$method->getAnnotation('example-header');
 
 		$input = $this->serviceSpy->on('Drahak\Restful\IInput', 'Drahak\Restful\Tools\Documentation\Spies\InputSpy');
-		$request = $this->serviceSpy->on('Drahak\Restful\Http\IRequest', 'Drahak\Restful\Tools\Documentation\Spies\RequestSpy');
 		$response = $this->serviceSpy->on('Nette\Http\IResponse', 'Drahak\Restful\Tools\Documentation\Spies\ResponseSpy');
+		$request = $this->serviceSpy->on('Drahak\Restful\Http\IRequest', 'Drahak\Restful\Tools\Documentation\Spies\RequestSpy');
 		if ($data) $input->setData($data);
 		if ($headers) $request->setHeaders($headers);
 
 		$responseData = $this->requestRunner->run(implode(' ', $exampleRequest), $data);
+		$this->serviceSpy->removeAll();
 
 		// Create resource entity
 		$resource = new Resource;
@@ -100,6 +101,5 @@ class ResourceFactory extends Object
 
 		return $exampleRequest;
 	}
-
 
 }

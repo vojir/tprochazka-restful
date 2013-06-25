@@ -82,6 +82,17 @@ class ResponseFactory extends Object implements IResponseFactory
 	}
 
 	/**
+	 * Set HTTP response
+	 * @param IResponse $response
+	 * @return ResponseFactory
+	 */
+	public function setHttpResponse(IResponse $response)
+	{
+		$this->response = $response;
+		return $this;
+	}
+
+	/**
 	 * Create new api response
 	 * @param IResource $resource
 	 * @param int|null $code
@@ -95,7 +106,6 @@ class ResponseFactory extends Object implements IResponseFactory
 		if (!isset($this->responses[$contentType])) {
 			throw new InvalidStateException('Unregistered API response.');
 		}
-
 
 		if (!class_exists($this->responses[$contentType])) {
 			throw new InvalidStateException('API response class does not exist.');
