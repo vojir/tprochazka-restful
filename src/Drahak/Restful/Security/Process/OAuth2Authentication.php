@@ -28,6 +28,18 @@ class OAuth2Authentication extends AuthenticationProcess
 	}
 
 	/**
+	 * Get access token
+	 * @return OAuth2\Storage\AccessTokens\IAccessToken|NULL
+	 *
+	 * @throws InvalidAccessTokenException
+	 */
+	public function getAccessToken()
+	{
+		$token = $this->oauthInput->getAuthorization();
+		return $this->storage->getEntity($token);
+	}
+
+	/**
 	 * Authenticate request data
 	 * @param IInput $input
 	 * @return bool|void
@@ -52,8 +64,7 @@ class OAuth2Authentication extends AuthenticationProcess
 	protected function authRequestTimeout(IInput $input)
 	{
 		try {
-			$token = $this->oauthInput->getAuthorization();
-			$this->storage->getEntity($token);
+			$this->getAccessToken();
 		} catch (InvalidAccessTokenException $e) {
 			throw new AuthenticationException('Invalid or expired access token.', 0, $e);
 		}
