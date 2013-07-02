@@ -4,13 +4,13 @@ namespace Drahak\Restful\Validation;
 use Nette\Object;
 
 /**
- * ValidationSchema
+ * ValidationScope
  * @package Drahak\Restful\Validation
  * @author Drahomír Hanák
  *
  * @property-read IValidator $validator
  */
-class ValidationSchema extends Object implements IValidationSchema
+class ValidationScope extends Object implements IValidationScope
 {
 
 	/** @var IValidator */

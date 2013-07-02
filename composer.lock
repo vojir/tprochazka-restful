@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "3b007087cfad240567b9e5656ef3c23c41af8089"
+                "reference": "44e25529cd7cd54a86cfce78a42e6fddb858cfbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/3b007087cfad240567b9e5656ef3c23c41af8089",
-                "reference": "3b007087cfad240567b9e5656ef3c23c41af8089",
+                "url": "https://api.github.com/repos/nette/nette/zipball/44e25529cd7cd54a86cfce78a42e6fddb858cfbc",
+                "reference": "44e25529cd7cd54a86cfce78a42e6fddb858cfbc",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                 "neon",
                 "templating"
             ],
-            "time": "2013-06-24 16:41:01"
+            "time": "2013-07-02 16:08:44"
         }
     ],
     "packages-dev": [
@@ -143,13 +143,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/janmarek/mockista.git",
-                "reference": "e53eb003525f57b3cd3c48b5630a898b5a078251"
+                "reference": "300c8bc71256cf04c426a5a37c0608577a7908b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/janmarek/mockista/zipball/e53eb003525f57b3cd3c48b5630a898b5a078251",
-                "reference": "e53eb003525f57b3cd3c48b5630a898b5a078251",
+                "url": "https://api.github.com/repos/janmarek/mockista/zipball/300c8bc71256cf04c426a5a37c0608577a7908b4",
+                "reference": "300c8bc71256cf04c426a5a37c0608577a7908b4",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "autoload": {
@@ -188,7 +191,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2013-02-25 22:33:22"
+            "time": "2013-06-24 12:24:03"
         },
         {
             "name": "nette/tester",
@@ -196,12 +199,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "472ac22fbece4e86e34e711b586031e80a21f0d9"
+                "reference": "99dfe7a8ec2e8a6ca18b9ca0cb2ce63536b466f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/472ac22fbece4e86e34e711b586031e80a21f0d9",
-                "reference": "472ac22fbece4e86e34e711b586031e80a21f0d9",
+                "url": "https://api.github.com/repos/nette/tester/zipball/99dfe7a8ec2e8a6ca18b9ca0cb2ce63536b466f7",
+                "reference": "99dfe7a8ec2e8a6ca18b9ca0cb2ce63536b466f7",
                 "shasum": ""
             },
             "require": {
@@ -239,7 +242,7 @@
                 "testing",
                 "unit"
             ],
-            "time": "2013-06-19 19:18:33"
+            "time": "2013-06-24 23:00:16"
         }
     ],
     "aliases": [

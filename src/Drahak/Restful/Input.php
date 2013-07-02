@@ -3,8 +3,9 @@ namespace Drahak\Restful;
 
 use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Validation\IDataProvider;
-use Drahak\Restful\Validation\IValidationSchema;
+use Drahak\Restful\Validation\IValidationScope;
 use Drahak\Restful\Validation\IValidationSchemaAggregate;
+use Drahak\Restful\Validation\ValidationScopeFactory;
 use IteratorAggregate;
 use Drahak\Restful\IInput;
 use Drahak\Restful\Mapping\IMapper;
@@ -30,8 +31,11 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	/** @var array */
 	private $data;
 
-	/** @var IValidationSchema */
-	private $validationSchema;
+	/** @var IValidationScope */
+	private $validationScope;
+
+	/** @var ValidationScopeFactory */
+	private $validationScopeFactory;
 
 	/** @var IMapper */
 	protected $mapper;
@@ -39,12 +43,12 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	/**
 	 * @param Http\IRequest $httpRequest
 	 * @param MapperContext $mapperContext
-	 * @param IValidationSchema $validationSchema
+	 * @param ValidationScopeFactory $validationScopeFactory
 	 */
-	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext, IValidationSchema $validationSchema)
+	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext, ValidationScopeFactory $validationScopeFactory)
 	{
 		$this->httpRequest = $httpRequest;
-		$this->validationSchema = $validationSchema;
+		$this->validationScopeFactory = $validationScopeFactory;
 		try {
 			$this->mapper = $mapperContext->getMapper($httpRequest->getHeader('Content-Type'));
 		} catch (InvalidStateException $e) {
@@ -165,7 +169,7 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	 */
 	public function field($name)
 	{
-		return $this->getValidationSchema()->field($name);
+		return $this->getValidationScope()->field($name);
 	}
 
 	/**
@@ -174,7 +178,7 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	 */
 	public function validate()
 	{
-		return $this->getValidationSchema()->validate($this->getData());
+		return $this->getValidationScope()->validate($this->getData());
 	}
 
 	/**
@@ -188,11 +192,14 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 
 	/**
 	 * Get validation scope
-	 * @return IValidationSchema
+	 * @return IValidationScope
 	 */
-	public function getValidationSchema()
+	public function getValidationScope()
 	{
-		return $this->validationSchema;
+		if (!$this->validationScope) {
+			$this->validationScope = $this->validationScopeFactory->create();
+		}
+		return $this->validationScope;
 	}
 
 }

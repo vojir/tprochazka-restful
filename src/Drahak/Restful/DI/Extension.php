@@ -85,8 +85,9 @@ class Extension extends CompilerExtension
 		$container->addDefinition($this->prefix('validator'))
 			->setClass('Drahak\Restful\Validation\Validator');
 
-		$container->addDefinition($this->prefix('validationSchema'))
-			->setClass('Drahak\Restful\Validation\ValidationSchema');
+		$container->addDefinition($this->prefix('validationScope'))
+			->setClass('Drahak\Restful\Validation\ValidationScope')
+			->setImplement('Drahak\Restful\Validation\ValidationScopeFactory');
 
 		// Http
 		$container->getDefinition('httpRequest')
@@ -181,8 +182,10 @@ class Extension extends CompilerExtension
 			->addSetup('$service->setAuthProcess(?)', array($this->prefix('@security.nullAuthentication')));
 
 		// enable OAuth2 in Restful
-		$container->addDefinition($this->prefix('security.oauth2Authentication'))
-			->setClass('Drahak\Restful\Security\Process\OAuth2Authentication');
+		if ($this->getByType($container, 'Drahak\OAuth2\KeyGenerator')) {
+			$container->addDefinition($this->prefix('security.oauth2Authentication'))
+				->setClass('Drahak\Restful\Security\Process\OAuth2Authentication');
+		}
 	}
 
 	/**

@@ -29,6 +29,7 @@ final class InputSpy extends Input
 		IValidator::RANGE => 'in range from %d to %d',
 		IValidator::PATTERN => 'matches %s',
 		IValidator::IS_IN => 'one of given values',
+		IValidator::UUID => 'a valid UUID',
 	);
 
 	/** @var array */

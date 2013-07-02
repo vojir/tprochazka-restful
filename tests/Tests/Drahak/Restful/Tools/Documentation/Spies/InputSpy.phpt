@@ -29,7 +29,10 @@ class InputSpyTest extends TestCase
 	private $mapperContext;
 
 	/** @var MockInterface */
-	private $validationSchema;
+	private $validationScope;
+
+	/** @var MockInterface */
+	private $validationScopeFactory;
 
 	/** @var InputSpy */
 	private $spy;
@@ -39,11 +42,12 @@ class InputSpyTest extends TestCase
 		parent::setUp();
 		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
-		$this->validationSchema = $this->mockista->create('Drahak\Restful\Validation\IValidationSchema');
+		$this->validationScope = $this->mockista->create('Drahak\Restful\Validation\IValidationScope');
+		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\ValidationScopeFactory');
 
 		$this->request->expects('getHeader');
 		$this->mapperContext->expects('getMapper');
-		$this->spy = new InputSpy($this->request, $this->mapperContext, $this->validationSchema);
+		$this->spy = new InputSpy($this->request, $this->mapperContext, $this->validationScopeFactory);
     }
     
     public function testAddAccessedFieldByGetter()
@@ -55,7 +59,11 @@ class InputSpyTest extends TestCase
 
 	public function testAddAccessedFiledByFieldMethod()
 	{
-		$this->validationSchema->expects('field')
+		$this->validationScopeFactory->expects('create')
+			->once()
+			->andReturn($this->validationScope);
+
+		$this->validationScope->expects('field')
 			->once()
 			->with('some');
 
@@ -73,7 +81,11 @@ class InputSpyTest extends TestCase
 			->once()
 			->andReturn(array($rule));
 
-		$this->validationSchema->expects('field')
+		$this->validationScopeFactory->expects('create')
+			->once()
+			->andReturn($this->validationScope);
+
+		$this->validationScope->expects('field')
 			->once()
 			->with('some')
 			->andReturn($field);

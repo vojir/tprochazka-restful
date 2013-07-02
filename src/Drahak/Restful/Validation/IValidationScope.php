@@ -2,11 +2,11 @@
 namespace Drahak\Restful\Validation;
 
 /**
- * IValidationSchema
+ * IValidationScope
  * @package Drahak\Restful\Validation
  * @author Drahomír Hanák
  */
-interface IValidationSchema
+interface IValidationScope
 {
 
 	/**

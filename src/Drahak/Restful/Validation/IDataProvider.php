@@ -30,8 +30,8 @@ interface IDataProvider
 
 	/**
 	 * Get validation schema
-	 * @return IValidationSchema
+	 * @return IValidationScope
 	 */
-	public function getValidationSchema();
+	public function getValidationScope();
 
 }

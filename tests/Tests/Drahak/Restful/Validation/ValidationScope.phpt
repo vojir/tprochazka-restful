@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 use Drahak\Restful\Validation\IField;
 use Drahak\Restful\Validation\IValidator;
 use Drahak\Restful\Validation\ValidationException;
-use Drahak\Restful\Validation\ValidationSchema;
+use Drahak\Restful\Validation\ValidationScope;
 use Mockista\MockInterface;
 use Nette;
 use Tester;
@@ -14,26 +14,26 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Validation\ValidationSchema.
+ * Test: Tests\Drahak\Restful\Validation\ValidationScope.
  *
- * @testCase Tests\Drahak\Restful\Validation\ValidationSchemaTest
+ * @testCase Tests\Drahak\Restful\Validation\ValidationScopeTest
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful\Validation
  */
-class ValidationSchemaTest extends TestCase
+class ValidationScopeTest extends TestCase
 {
 
 	/** @var MockInterface */
 	private $validator;
 
-	/** @var ValidationSchema */
+	/** @var ValidationScope */
 	private $schema;
 
     protected function setUp()
     {
 		parent::setUp();
 		$this->validator = $this->mockista->create('Drahak\Restful\Validation\Validator');
-		$this->schema = new ValidationSchema($this->validator);
+		$this->schema = new ValidationScope($this->validator);
     }
     
     public function testCreateField()
@@ -61,4 +61,4 @@ class ValidationSchemaTest extends TestCase
 	}
 
 }
-\run(new ValidationSchemaTest());
+\run(new ValidationScopeTest());

@@ -36,7 +36,8 @@ class InputTest extends TestCase
     {
 		parent::setUp();
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
-		$this->validation = $this->mockista->create('Drahak\Restful\Validation\ValidationSchema');
+		$this->validation = $this->mockista->create('Drahak\Restful\Validation\ValidationScope');
+		$this->validationFactory = $this->mockista->create('Drahak\Restful\Validation\ValidationScopeFactory');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
 		$this->request->expects('getHeader')
 			->once()
@@ -46,7 +47,7 @@ class InputTest extends TestCase
 			->with('application/json')
 			->andReturn(NULL);
 
-		$this->input = new Input($this->request, $this->mapperContext, $this->validation);
+		$this->input = new Input($this->request, $this->mapperContext, $this->validationFactory);
     }
     
     public function testObtainDataFromPost()
