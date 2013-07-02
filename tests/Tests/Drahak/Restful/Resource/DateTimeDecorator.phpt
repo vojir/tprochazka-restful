@@ -36,14 +36,18 @@ class DateTimeDecoratorTest extends TestCase
     public function testGetDecoratedData()
     {
 		$data = array(
-			'date' => new \DateTime('19.1.1996')
+			array(
+				'date' => new \DateTime('19.1.1996'),
+				'modified' => new \DateTime('19.1.1996'),
+			)
 		);
 		$this->resource->expects('getData')
 			->once()
 			->andReturn($data);
 
 		$data = $this->decorator->getData();
-		Assert::equal($data['date'], '1996-01-19T00:00:00+01:00');
+		Assert::equal($data[0]['date'], '1996-01-19T00:00:00+01:00');
+		Assert::equal($data[0]['modified'], '1996-01-19T00:00:00+01:00');
     }
 
 }

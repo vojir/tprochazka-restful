@@ -48,9 +48,13 @@ class DateTimeDecorator extends Decorator
 			$array = iterator_to_array($array);
 		}
 
+		if (!is_array($array)) {
+			return $array instanceof DateTime ? $array->format($this->format) : $array;
+		}
+
 		foreach ($array as $key => $value) {
-			if ($value instanceof DateTime) {
-				$array[$key] = $value->format($this->format);
+			if ($value instanceof Traversable || is_array($array)) {
+				$array[$key] = $this->parseDateTime($value);
 			}
 		}
 		return $array;
