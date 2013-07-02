@@ -21,7 +21,8 @@ class Validator extends Object implements IValidator
 		self::EMAIL => array(__CLASS__, 'validateEmail'),
 		self::URL => array(__CLASS__, 'validateUrl'),
 		self::REGEXP => array(__CLASS__, 'validateRegexp'),
-		self::EQUAL => array(__CLASS__, 'validateEquality')
+		self::EQUAL => array(__CLASS__, 'validateEquality'),
+		self::UUID => array(__CLASS__, 'validateUuid')
 	);
 
 	/**
@@ -117,6 +118,20 @@ class Validator extends Object implements IValidator
 	public static function validateUrl($value, Rule $rule)
 	{
 		if (!Validators::isUrl($value)) {
+			throw ValidationException::createFromRule($rule);
+		}
+	}
+
+	/**
+	 * Validate UUID
+	 * @param string $value
+	 * @param Rule $rule
+	 * @throws ValidationException
+	 */
+	public static function validateUuid($value, Rule $rule)
+	{
+		$isUuid = (bool)preg_match("/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i", $value);
+		if (!$isUuid) {
 			throw ValidationException::createFromRule($rule);
 		}
 	}

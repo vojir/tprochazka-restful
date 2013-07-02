@@ -28,6 +28,9 @@ interface IValidator
 	const FLOAT = 'float';
 	const RANGE = 'numeric:%d..%d';
 
+	// Special
+	const UUID = 'uuid';
+
 	/**
 	 * Validate value with rule
 	 * @param mixed $value

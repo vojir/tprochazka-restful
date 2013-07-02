@@ -184,5 +184,19 @@ class ValidatorTest extends TestCase
 		}, 'Drahak\Restful\Validation\ValidationException');
 	}
 
+	public function testValidateUuid()
+	{
+		$this->rule->expression = IValidator::UUID;
+		$this->validator->validate('bfc5b0f9-a33a-4bf5-8745-0701114ce4f3', $this->rule);
+	}
+
+	public function testThrowsExceptionWhenValueIsNotValidUUID()
+	{
+		$this->rule->expression = IValidator::UUID;
+		Assert::throws(function() {
+			$this->validator->validate('bfc5b0f9-a33a-4bf5-8745', $this->rule);
+		}, 'Drahak\Restful\Validation\ValidationException');
+	}
+
 }
 \run(new ValidatorTest());

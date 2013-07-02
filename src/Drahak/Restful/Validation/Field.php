@@ -26,7 +26,8 @@ class Field extends Object implements IField
 		IValidator::URL => 'Please enter a valid URL.',
 		IValidator::INTEGER => 'Please enter a numeric value.',
 		IValidator::FLOAT => 'Please enter a numeric value.',
-		IValidator::RANGE => 'Please enter a value between %d and %d.'
+		IValidator::RANGE => 'Please enter a value between %d and %d.',
+		IValidator::UUID => 'Please enter a valid UUID.',
 	);
 
 	/** @var array Numeric expressions that needs to convert value from string (because of x-www-form-urlencoded) */
