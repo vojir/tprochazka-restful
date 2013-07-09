@@ -2,24 +2,25 @@
 namespace Drahak\Restful\Resource;
 
 use Drahak\Restful\Utils\Strings;
+use Nette\Object;
 
 /**
- * CamelCaseDecorator
+ * CamelCaseConverter
  * @package Drahak\Restful\Resource
  * @author Drahomír Hanák
  */
-class CamelCaseDecorator extends Decorator
+class CamelCaseConverter extends Object implements IConverter
 {
 
-	/**
-	 * Get data with converted keys to camel case
-	 * @return array|\stdClass|\Traversable|void
-	 */
-	public function getData()
+    /**
+     * Converts resource data keys to camelCase
+     * @param array $resource
+     * @return array
+     */
+	public function convert(array $resource)
 	{
-		$data = parent::getData();
-		$this->convertToCamel($data);
-		return $data;
+		$this->convertToCamel($resource);
+		return $resource;
 	}
 
 	/**

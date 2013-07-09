@@ -26,12 +26,11 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 
 	/**
 	 * @param array $data
-	 * @param string $contentType
 	 */
-	public function __construct(array $data = array(), $contentType = self::QUERY)
+	public function __construct(array $data = array())
 	{
 		$this->data = $data;
-		$this->contentType = $contentType;
+		$this->contentType = self::QUERY;
 	}
 
 	/**

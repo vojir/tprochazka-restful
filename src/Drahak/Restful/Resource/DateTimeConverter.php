@@ -1,40 +1,37 @@
 <?php
 namespace Drahak\Restful\Resource;
 
-use Drahak\Restful\IResource;
+use Nette\Object;
 use Traversable;
 use DateTime;
 
 /**
- * DateTimeDecorator
+ * DateTimeConverter
  * @package Drahak\Restful\Resource
  * @author Drahomír Hanák
  */
-class DateTimeDecorator extends Decorator
+class DateTimeConverter extends Object implements IConverter
 {
 
 	/** DateTime format */
 	private $format = 'c';
 
 	/**
-	 * @param IResource $resource
 	 * @param string $format of date time
 	 */
-	public function __construct(IResource $resource, $format = 'c')
+	public function __construct($format = 'c')
 	{
-		parent::__construct($resource);
 		$this->format = $format;
 	}
 
-
-	/**
-	 * Get data
-	 * @return array|\stdClass|\Traversable
-	 */
-	public function getData()
+    /**
+     * Converts DateTime objects in resource to string
+     * @param array $resource
+     * @return array
+     */
+	public function convert(array $resource)
 	{
-		$data = parent::getData();
-		$data = $this->parseDateTime($data);
+		$data = $this->parseDateTime($resource);
 		return $data;
 	}
 

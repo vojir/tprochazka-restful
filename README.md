@@ -29,7 +29,7 @@ The easiest way is to use [Composer](http://doc.nette.org/en/composer)
 Then add following code to your app bootstrap file before creating container:
 
 ```php
-Drahak\Restful\DI\Extension::install($configurator);
+Drahak\Restful\DI\RestfulExtension::install($configurator);
 ```
 
 Neon configuration

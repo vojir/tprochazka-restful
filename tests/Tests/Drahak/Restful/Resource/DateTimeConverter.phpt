@@ -3,34 +3,29 @@ namespace Tests\Drahak\Restful\Resource;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Resource\DateTimeDecorator;
-use Mockista\MockInterface;
+use Drahak\Restful\Resource\DateTimeConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\DateTimeDecorator.
+ * Test: Tests\Drahak\Restful\Resource\DateTimeConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\DateTimeDecoratorTest
+ * @testCase Tests\Drahak\Restful\Resource\DateTimeConverterTest
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful\Resource
  */
-class DateTimeDecoratorTest extends TestCase
+class DateTimeConverterTest extends TestCase
 {
 
-	/** @var MockInterface */
-	private $resource;
-
-	/** @var DateTimeDecorator */
-	private $decorator;
+	/** @var DateTimeConverter */
+	private $converter;
 
     protected function setUp()
     {
 		parent::setUp();
-		$this->resource = $this->mockista->create('Drahak\Restful\IResource');
-		$this->decorator = new DateTimeDecorator($this->resource);
+		$this->converter = new DateTimeConverter('c');
     }
     
     public function testGetDecoratedData()
@@ -41,14 +36,11 @@ class DateTimeDecoratorTest extends TestCase
 				'modified' => new \DateTime('19.1.1996'),
 			)
 		);
-		$this->resource->expects('getData')
-			->once()
-			->andReturn($data);
 
-		$data = $this->decorator->getData();
+		$data = $this->converter->convert($data);
 		Assert::equal($data[0]['date'], '1996-01-19T00:00:00+01:00');
 		Assert::equal($data[0]['modified'], '1996-01-19T00:00:00+01:00');
     }
 
 }
-\run(new DateTimeDecoratorTest());
+\run(new DateTimeConverterTest());

@@ -3,7 +3,6 @@ namespace Drahak\Restful;
 
 use Drahak\Restful\IResource;
 use Drahak\Restful\Http\IRequest;
-use Drahak\Restful\Resource\EnvelopeDecorator;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
 use Nette\Http\Url;
@@ -47,6 +46,11 @@ class ResponseFactory extends Object implements IResponseFactory
 		IRequest::DELETE => 200,
 	);
 
+	/**
+	 * @param IResponse $response
+	 * @param IRequest $request
+	 * @param RequestFilter $filter
+	 */
 	public function __construct(IResponse $response, IRequest $request, RequestFilter $filter)
 	{
 		$this->response = $response;
@@ -73,7 +77,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	}
 
 	/**
-	 * Unregister API response fro mfactory
+	 * Unregister API response from factory
 	 * @param string $mimeType
 	 */
 	public function unregisterResponse($mimeType)
@@ -118,8 +122,9 @@ class ResponseFactory extends Object implements IResponseFactory
 		$this->setupCode($resource, $code);
 		$this->setupPaginator($resource, $code);
 
+		$data = $resource->getData();
 		$responseClass = $this->responses[$contentType];
-		$response = new $responseClass($resource->getData());
+		$response = new $responseClass($data);
 		return $response;
 	}
 

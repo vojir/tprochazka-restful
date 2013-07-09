@@ -2,24 +2,25 @@
 namespace Drahak\Restful\Resource;
 
 use Drahak\Restful\Utils\Strings;
+use Nette\Object;
 
 /**
- * SnakeCaseDecorator
+ * SnakeCaseConverter
  * @package Drahak\Restful\Resource
  * @author Drahomír Hanák
  */
-class SnakeCaseDecorator extends Decorator
+class SnakeCaseConverter extends Object implements IConverter
 {
 
-	/**
-	 * Get data with converted keys to snake case
-	 * @return array|\stdClass|\Traversable|void
-	 */
-	public function getData()
+    /**
+     * Converts resource data keys to snake_case
+     * @param array $resource
+     * @return array
+     */
+    public function convert(array $resource)
 	{
-		$data = parent::getData();
-		$this->convertToSnake($data);
-		return $data;
+		$this->convertToSnake($resource);
+		return $resource;
 	}
 
 	/**
