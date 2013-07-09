@@ -1,19 +1,18 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Http;
 
-use Drahak\Restful\IInput;
 use Iterator;
 use Nette\Object;
 
 /**
  * InputIterator
- * @package Drahak\Restful\Input
+ * @package Drahak\Restful\Http
  * @author Drahomír Hanák
  */
 class InputIterator extends Object implements Iterator
 {
 
-	/** @var \Drahak\Restful\IInput */
+	/** @var IInput */
 	protected $input;
 
 	/** @var array|\Traversable */

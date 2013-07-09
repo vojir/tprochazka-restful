@@ -1,14 +1,11 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Http;
 
-use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Validation\IDataProvider;
+use Drahak\Restful\Validation\IField;
 use Drahak\Restful\Validation\IValidationScope;
-use Drahak\Restful\Validation\IValidationSchemaAggregate;
 use Drahak\Restful\Validation\ValidationScopeFactory;
 use IteratorAggregate;
-use Drahak\Restful\IInput;
-use Drahak\Restful\Mapping\IMapper;
 use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;
@@ -17,16 +14,13 @@ use Nette\Utils\Strings;
 
 /**
  * Request Input parser
- * @package Drahak\Restful\Input
+ * @package Drahak\Restful\Http
  * @author Drahomír Hanák
  *
- * @property-read array $data
+ * @property array $data
  */
 class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 {
-
-	/** @var \Nette\Http\IRequest */
-	private $httpRequest;
 
 	/** @var array */
 	private $data;
@@ -37,70 +31,25 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	/** @var ValidationScopeFactory */
 	private $validationScopeFactory;
 
-	/** @var IMapper */
-	protected $mapper;
-
 	/**
-	 * @param Http\IRequest $httpRequest
-	 * @param MapperContext $mapperContext
 	 * @param ValidationScopeFactory $validationScopeFactory
+	 * @param array $data
 	 */
-	public function __construct(Http\IRequest $httpRequest, MapperContext $mapperContext, ValidationScopeFactory $validationScopeFactory)
+	public function __construct(ValidationScopeFactory $validationScopeFactory, array $data = array())
 	{
-		$this->httpRequest = $httpRequest;
+		$this->data = $data;
 		$this->validationScopeFactory = $validationScopeFactory;
-		try {
-			$this->mapper = $mapperContext->getMapper($httpRequest->getHeader('Content-Type'));
-		} catch (InvalidStateException $e) {
-			// No mapper for this content type - ignore in this step
-		}
 	}
 
 	/******************** IInput ********************/
 
 	/**
-	 * Set input mapper
-	 * @param IMapper $mapper
-	 * @return IInput
-	 */
-	public function setMapper(IMapper $mapper)
-	{
-		$this->mapper = $mapper;
-		return $this;
-	}
-
-	/**
 	 * Get parsed input data
 	 * @return array
-	 *
-	 * @throws Application\BadRequestException when mapper for this Content-Type not found
 	 */
 	public function getData()
 	{
-		if (!$this->data) {
-			$this->data = $this->parseData();
-		}
 		return $this->data;
-	}
-
-	/**
-	 * Parse data from input
-	 * @return array|mixed|\Traversable
-	 * @throws Application\BadRequestException
-	 */
-	private function parseData()
-	{
-		if ($this->httpRequest->getPost()) {
-			return $this->httpRequest->getPost();
-		} else if ($input = file_get_contents('php://input')) {
-			if (!$this->mapper) {
-				throw Application\BadRequestException::unsupportedMediaType(
-					'No mapper defined for Content-Type ' . $this->httpRequest->getHeader('Content-Type')
-				);
-			}
-			return $this->mapper->parse($input);
-		}
-		return (array)$this->httpRequest->getQuery();
 	}
 
 	/**
@@ -165,7 +114,7 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	/**
 	 * Get validation field
 	 * @param string $name
-	 * @return Validation\IField
+	 * @return IField
 	 */
 	public function field($name)
 	{

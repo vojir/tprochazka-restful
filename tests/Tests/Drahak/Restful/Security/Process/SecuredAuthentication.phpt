@@ -35,7 +35,7 @@ class SecuredAuthenticationTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->input = $this->mockista->create('Drahak\Restful\IInput');
+		$this->input = $this->mockista->create('Drahak\Restful\Http\IInput');
 		$this->hashAuth = $this->mockista->create('Drahak\Restful\Security\Authentication\HashAuthenticator');
 		$this->timeAuth = $this->mockista->create('Drahak\Restful\Security\Authentication\TimeoutAuthenticator');
 		$this->process = new SecuredAuthentication($this->hashAuth, $this->timeAuth);

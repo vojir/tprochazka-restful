@@ -1,10 +1,9 @@
 <?php
 namespace Drahak\Restful\Security;
 
-use Drahak\Restful\IInput;
+use Drahak\Restful\Http\IInput;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Mapping\IMapper;
-use Drahak\Restful\Mapping\QueryMapper;
 use Nette\Object;
 
 /**

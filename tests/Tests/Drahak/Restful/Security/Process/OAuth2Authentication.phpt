@@ -38,7 +38,7 @@ class OAuth2AuthenticationTest extends TestCase
 		parent::setUp();
 		$this->token = $this->mockista->create('Drahak\OAuth2\Storage\AccessTokens\AccessTokenFacade');
 		$this->input = $this->mockista->create('Drahak\OAuth2\Http\IInput');
-		$this->inputFake = $this->mockista->create('Drahak\Restful\IInput');
+		$this->inputFake = $this->mockista->create('Drahak\Restful\Http\IInput');
 		$this->process = new OAuth2Authentication($this->token, $this->input);
     }
     

@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Security\Authentication;
 
-use Drahak\Restful\IInput;
+use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Security\IAuthTokenCalculator;
 use Drahak\Restful\Security\AuthenticationException;
 use Drahak\Restful\Http\IRequest;
@@ -9,7 +9,7 @@ use Nette\Object;
 
 /**
  * Verify request hashing data and comparing the results
- * @package Drahak\Restful\Security
+ * @package Drahak\Restful\Security\Authentication
  * @author Drahomír Hanák
  */
 class HashAuthenticator extends Object implements IRequestAuthenticator

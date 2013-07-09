@@ -29,7 +29,7 @@ class TimeoutAuthenticatorTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->input = $this->mockista->create('Drahak\Restful\IInput');
+		$this->input = $this->mockista->create('Drahak\Restful\Http\IInput');
 		$this->authenticator = new TimeoutAuthenticator('timestamp', 600);
     }
     

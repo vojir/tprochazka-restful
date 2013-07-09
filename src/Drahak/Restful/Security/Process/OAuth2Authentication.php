@@ -4,7 +4,7 @@ namespace Drahak\Restful\Security\Process;
 use Drahak\OAuth2;
 use Drahak\OAuth2\Storage\AccessTokens\AccessTokenFacade;
 use Drahak\OAuth2\Storage\InvalidAccessTokenException;
-use Drahak\Restful\IInput;
+use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Security\AuthenticationException;
 
 /**

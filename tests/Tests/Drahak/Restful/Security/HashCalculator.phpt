@@ -33,7 +33,7 @@ class HashCalculatorTest extends TestCase
     {
 		parent::setUp();
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\QueryMapper');
-		$this->input = $this->mockista->create('Drahak\Restful\IInput');
+		$this->input = $this->mockista->create('Drahak\Restful\Http\IInput');
 		$this->calculator = new HashCalculator($this->mapper);
     }
     

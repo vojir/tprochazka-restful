@@ -1,11 +1,11 @@
 <?php
 namespace Drahak\Restful\Security\Authentication;
 
-use Drahak\Restful\IInput;
+use Drahak\Restful\Http\IInput;
 
 /**
  * IRequestAuthenticator
- * @package Drahak\Restful
+ * @package Drahak\Restful\Security\Authentication
  * @author Drahomír Hanák
  */
 interface IRequestAuthenticator
