@@ -25,6 +25,17 @@ class ResourceConverter extends Object
 	}
 
 	/**
+	 * Add resource data converter to list
+	 * @param IConverter $converter
+	 * @return ResourceConverter
+	 */
+	public function addConverter(IConverter $converter)
+	{
+		$this->converters[] = $converter;
+		return $this;
+	}
+
+	/**
 	 * Converts data from resource using converters
 	 * @param array $data
 	 * @return array
