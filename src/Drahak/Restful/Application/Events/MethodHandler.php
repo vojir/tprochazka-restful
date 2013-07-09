@@ -31,6 +31,9 @@ class MethodHandler extends Object implements IApplicationEvent
 		IResourceRouter::PATCH => IRequest::PATCH
 	);
 
+	/**
+	 * @param IRequest $request
+	 */
 	public function __construct(IRequest $request)
 	{
 		$this->request = $request;
@@ -77,7 +80,8 @@ class MethodHandler extends Object implements IApplicationEvent
 				}
 
 				if (in_array($route->getMethod($request), $acceptableMethods) && $route->match($request)) {
-					throw BadRequestException::methodNotSupported('Method not supported. Available methods: ' . implode(', ', $methodNames));
+					throw BadRequestException::methodNotSupported(
+						'Method not supported. Available methods: ' . implode(', ', $methodNames));
 				}
 			}
 

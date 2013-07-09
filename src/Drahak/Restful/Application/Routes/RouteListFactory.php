@@ -3,12 +3,12 @@ namespace Drahak\Restful\Application\Routes;
 
 use Drahak\Restful\Application\RouteAnnotation;
 use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Utils\Strings;
 use Nette\Caching\IStorage;
 use Nette\DI\Container;
 use Nette\Loaders\RobotLoader;
 use Nette\Object;
 use Nette\Reflection\ClassType;
-use Nette\Utils\Strings;
 
 /**
  * RouteListFactory
@@ -70,7 +70,7 @@ class RouteListFactory extends Object implements IRouteListFactory
 				$annotations = $this->routeAnnotation->parse($method);
 				foreach ($annotations as $requestMethod => $mask) {
 					$action = str_replace('action', '', $method->getName());
-					$action = Strings::lower(Strings::substring($action, 0, 1)) . Strings::substring($action, 1);
+					$action = Strings::firstLower($action);
 
 					$pattern = $this->routeConfig['prefix'] ?
 						$this->routeConfig['prefix'] . '/' .  $mask :

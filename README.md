@@ -71,46 +71,19 @@ It is enabled by default but you can disable it by setting `restful.routes.panel
 
 Sample usage
 ------------
-
-Create `BasePresenter`:
-
-```php
-<?php
-namespace ResourcesModule;
-
-use Drahak\Restful\Application\ResourcePresenter;
-use Drahak\Restful\IResource;
-
-/**
- * BasePresenter
- * @package ResourcesModule
- * @author Drahomír Hanák
- */
-abstract class BasePresenter extends ResourcePresenter
-{
-
-    /** @var string */
-    protected $defaultContentType = IResource::JSON;
-
-}
-```
-
-The `defaultContentType` property determines how to generate response from your resource. Can be overridden by request `Accept` header. Library checks the header for `application/xml`, `application/json`, `application/x-data-url` and `text/x-query` and keep an order in `Accept` header.
-
-Note: If you call `$presenter->sendResource()` method with a mime type in first parameter, API will accept only this one.
-
 ```php
 <?php
 namespace ResourcesModule;
 
 use Drahak\Restful\IResource;
+use Drahak\Restful\Application\ResourcePresenter
 
 /**
  * SamplePresenter resource
  * @package ResourcesModule
  * @author Drahomír Hanák
  */
-class SamplePresenter extends BasePresenter
+class SamplePresenter extends ResourcePresenter
 {
 
    protected $typeMap = array(
@@ -139,7 +112,12 @@ class SamplePresenter extends BasePresenter
 }
 ```
 
-See `@GET` annotation. There are also available annotations `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manualy. But it's not neccessary! You can define your routes using `IResourceRoute` or its default implementation such as:
+Resource output is determined by `Accept` header. Library checks the header for `application/xml`, `application/json`, `application/x-data-url` and `application/www-form-urlencoded` and keep an order in `Accept` header.
+
+**Note**: If you call `$presenter->sendResource()` method with a mime type in first parameter, API will accept only this one.
+
+**Also note:*** There are available annotations `@GET`, `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manually. But it's not necessary! You can define your routes using `IResourceRoute` or its default implementation such as:
+
 ```php
 <?php
 use Drahak\Restful\Application\Routes\ResourceRoute;
@@ -149,7 +127,7 @@ $anyRouteList[] = new ResourceRoute('sample[.<type xml|json>]', 'Resources:Sampl
 
 There is only one more parameter unlike the Nette default Route, the request method. This allows you to generate same URL for e.g. GET and POST method. You can pass this parameter to route as a flag so you can combine more request methods such as `ResourceRoute::GET | ResourceRoute::POST` to listen on GET and POST request method in the same route.
 
-You can also define action names dictionary for each reqest method:
+You can also define action names dictionary for each request method:
 
 ```php
 <?php
@@ -164,13 +142,13 @@ new ResourceRoute('myResourceName', array(
 
 Simple CRUD resources
 ---------------------
-Well it's nice but in many cases I define only CRUD operations so how can I do it more intuitively? Use `CrudRoute`! This child of `ResourceRoute` predefines base CRUD operations for you. Namely, it is `Presenter:create` for POST method, `Presenter:read` for GET, `Presenter:update` for PUT and `Presenter:delete` for DELETE. Then your router will look like this:
+Well it's nice but in many cases I define only CRUD operations so how can I do it more intuitively? Use `CrudRoute`! This child of `ResourceRoute` pre-defines base CRUD operations for you. Namely, it is `Presenter:create` for POST method, `Presenter:read` for GET, `Presenter:update` for PUT and `Presenter:delete` for DELETE. Then your router will look like this:
 
 ```php
 <?php
 new CrudRoute('<module>/crud', 'MyResourcePresenter');
 ```
-Note the second parameter, metadata. You can define only Presenter not action name. This is because the action name will be replaced by value from actionDictionary (`[CrudRoute::POST => 'create', CrudRoute::GET => 'read', CrudRoute::PUT => 'update', CrudRoute::DELETE => 'delete']`) which is property of `ResourceRoute` so even of `CrudRoute` since it is its child. Also note that we don't have to set flags. Default flags are setted to `CrudRoute::CRUD` so the route will match all request methods.
+Note the second parameter, metadata. You can define only Presenter not action name. This is because the action name will be replaced by value from actionDictionary (`[CrudRoute::POST => 'create', CrudRoute::GET => 'read', CrudRoute::PUT => 'update', CrudRoute::DELETE => 'delete']`) which is property of `ResourceRoute` so even of `CrudRoute` since it is its child. Also note that we don't have to set flags. Default flags are set to `CrudRoute::CRUD` so the route will match all request methods.
 
 Then you can simple define your CRUD resource presenter:
 

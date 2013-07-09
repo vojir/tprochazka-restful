@@ -1,14 +1,13 @@
 <?php
 namespace Drahak\Restful\Application;
 
-use Drahak\Restful\IInput;
+use Drahak\Restful\Http\IInput;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;
 use Drahak\Restful\Security\AuthenticationContext;
-use Drahak\Restful\Security\RequestAuthenticator;
 use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;
 use Drahak\Restful\Validation\IDataProvider;

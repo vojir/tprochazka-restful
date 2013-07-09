@@ -39,6 +39,7 @@ class RestfulExtension extends CompilerExtension
 	 */
 	protected $defaults = array(
 		'convention' => NULL,
+		'timeFormat' => 'c',
 		'cacheDir' => '%tempDir%/cache',
 		'jsonpKey' => 'jsonp',
 		'prettyPrintKey' => 'pretty',
@@ -93,8 +94,11 @@ class RestfulExtension extends CompilerExtension
 			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')));
 
 		// Input & validation
+		$container->addDefinition($this->prefix('inputFactory'))
+			->setClass('Drahak\Restful\Http\InputFactory');
 		$container->addDefinition($this->prefix('input'))
-			->setClass('Drahak\Restful\Input');
+			->setClass('Drahak\Restful\Http\Input')
+			->setFactory($this->prefix('@inputFactory') . '::create');
 
 		$container->addDefinition($this->prefix('validator'))
 			->setClass('Drahak\Restful\Validation\Validator');
@@ -132,14 +136,33 @@ class RestfulExtension extends CompilerExtension
 	}
 
 	/**
+	 * Before compile
+	 */
+	public function beforeCompile()
+	{
+		$container = $this->getContainerBuilder();
+		$config = $this->getConfig($this->defaults);
+
+		$resourceConverter = $container->getDefinition($this->prefix('resourceConverter'));
+		$services = $container->findByTag(self::CONVERTER_TAG);
+
+		foreach ($services as $service => $args) {
+			$resourceConverter->addSetup('$service->addConverter(?)', array('@' . $service));
+		}
+	}
+
+	/**
 	 * @param ContainerBuilder $container
 	 * @param $config
 	 */
 	private function loadResourceConverters(ContainerBuilder $container, $config)
 	{
+		Validators::assert($config['timeFormat'], 'string');
+
 		// Converters
 		$container->addDefinition($this->prefix('dateTimeConverter'))
 			->setClass('Drahak\Restful\Resource\DateTimeConverter')
+			->setArguments(array($config['timeFormat']))
 			->addTag(self::CONVERTER_TAG);
 		$container->addDefinition($this->prefix('camelCaseConverter'))
 			->setClass('Drahak\Restful\Resource\CamelCaseConverter');
@@ -161,13 +184,8 @@ class RestfulExtension extends CompilerExtension
 		}
 
 		// Load converters by tag
-		$resourceConverter = $container->addDefinition($this->prefix('resourceConverter'))
+		$container->addDefinition($this->prefix('resourceConverter'))
 			->setClass('Drahak\Restful\Resource\ResourceConverter');
-
-		$services = $container->findByTag(self::CONVERTER_TAG);
-		foreach ($services as $service => $args) {
-			$resourceConverter->addSetup('$service->addConverter(?)', array('@' . $service));
-		}
 	}
 
 	/**
