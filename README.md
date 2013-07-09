@@ -426,6 +426,8 @@ callback({
 
 Documentation
 -------------
+**Restful Documentation is just a proposal implementation and will be changed.**
+
 API is as good as its documentation. Documentation should be clear and readable for all team members (so even for you). It also should contain all information about resources (input parameters, headers, validation rules, response headers, data, code ...). It is a lot of information and it's hard and boring to do it for each resource. That's why Restful contains documentation tool which generates all these informations to array. Then you can save it as JSON, XML or whatever and use it as data source for some documentation tool. I wrote my own in AngularJS & Closure. You can find in my [RestfulDoc repository](https://github.com/drahak/RestfulDoc). The format that Restful generates is compatible with RestfulDoc so do not worry.
 
 #### How it works?
@@ -496,10 +498,8 @@ ___
 
 TODO list
 ---------
-What I plan to (sometime) implement.
-
 - Better API resources panel. There are to many records in the table.
-- `@resource` annotation (presenter class) to auto generate CrudRoute
 - Refactor `RouteListFactory` for easier scalability
+- Make documentation tool work in command line
 
 So that's it. Enjoy and hope you like it!
