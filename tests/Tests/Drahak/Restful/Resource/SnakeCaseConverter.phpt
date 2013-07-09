@@ -28,7 +28,7 @@ class SnakeCaseConverterTest extends TestCase
 		$this->converter = new SnakeCaseConverter();
     }
     
-    public function testConvertsCamelCaseToSnakeCase()
+    public function testConvertsArrayKeysToSnakeCase()
     {
 		$data = array(
 			'camelCase' => 'is not so good to read'

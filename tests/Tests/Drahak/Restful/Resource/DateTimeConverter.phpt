@@ -28,7 +28,7 @@ class DateTimeConverterTest extends TestCase
 		$this->converter = new DateTimeConverter('c');
     }
     
-    public function testGetDecoratedData()
+    public function testConvertDateTimeObjectsToString()
     {
 		$data = array(
 			array(

@@ -3,29 +3,29 @@ namespace Tests\Drahak\Restful\Resource;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Resource\CamelCaseConverter;
+use Drahak\Restful\Resource\PascalCaseConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\CamelCaseConverter.
+ * Test: Tests\Drahak\Restful\Resource\PascalCaseConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\CamelCaseConverterTest
+ * @testCase Tests\Drahak\Restful\Resource\PascalCaseConverterTest
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful\Resource
  */
-class CamelCaseConverterTest extends TestCase
+class PascalCaseConverterTest extends TestCase
 {
 
-	/** @var CamelCaseConverter */
+	/** @var PascalCaseConverter */
 	private $converter;
     
     protected function setUp()
     {
 		parent::setUp();
-		$this->converter = new CamelCaseConverter();
+		$this->converter = new PascalCaseConverter();
     }
     
     public function testConvertsArrayKeysToCamelCase()
@@ -36,8 +36,8 @@ class CamelCaseConverterTest extends TestCase
 
 		$result = $this->converter->convert($data);
 		$keys = array_keys($result);
-		Assert::same('niceArrayKey', $keys[0]);
+		Assert::same('NiceArrayKey', $keys[0]);
     }
 
 }
-\run(new CamelCaseConverterTest());
+\run(new PascalCaseConverterTest());
