@@ -32,7 +32,7 @@ class Strings extends Nette\Utils\Strings
 			return self::upper($matches[2]);
 		};
 
-		return self::firstLower(self::replace($string, '/(_| |-)([a-z])/', $func));
+		return self::firstLower(self::replace($string, '/(_| |-)([a-zA-Z])/', $func));
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Strings extends Nette\Utils\Strings
 		$replace = array(' ', '-');
 		return self::trim(
 			self::lower(
-				str_replace($replace, '_', self::replace(ltrim($string, '!'), '/([a-z -]{1})([A-Z])/', '$1_$2'))
+				str_replace($replace, '_', self::replace(ltrim($string, '!'), '/([^_]+[a-z -]{1})([A-Z])/', '$1_$2'))
 			)
 		);
 	}

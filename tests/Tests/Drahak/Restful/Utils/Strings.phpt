@@ -27,20 +27,20 @@ class StringsTest extends TestCase
 
     public function testConvertsStringToCamelCase()
     {
-		$camel = Strings::toCamelCase('Just a normal sentence');
-		Assert::equal($camel, 'justANormalSentence');
+		$camel = Strings::toCamelCase('I really_do not_like_WhenPeople do not_comply WithStandards');
+		Assert::equal($camel, 'iReallyDoNotLikeWhenPeopleDoNotComplyWithStandards');
     }
 
 	public function testConvertsStringToSnakeCase()
 	{
-		$snake = Strings::toSnakeCase('someCamel or_any-other case');
-		Assert::equal($snake, 'some_camel_or_any_other_case');
+		$snake = Strings::toSnakeCase('I really_do not_like_WhenPeople do not_comply WithStandards');
+		Assert::equal($snake, 'i_really_do_not_like_when_people_do_not_comply_with_standards');
 	}
 
 	public function testConvertsStringToPascalCase()
 	{
-		$pascal = Strings::toPascalCase('just a normal sentence');
-		Assert::equal($pascal, 'JustANormalSentence');
+		$pascal = Strings::toPascalCase('I really_do not_like_WhenPeople do not_comply WithStandards');
+		Assert::equal($pascal, 'IReallyDoNotLikeWhenPeopleDoNotComplyWithStandards');
 	}
 
 }
