@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Events;
 
+use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
