@@ -56,8 +56,9 @@ class RouteListFactory extends Object implements IRouteListFactory
 
 		$routeList = new ResourceRouteList($module);
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
+			if (!method_exists($class, 'getReflection')) continue;
 			/** @var ClassType $classReflection */
-			if (method_exists($class, 'getReflection')) $classReflection = $class::getReflection();
+			$classReflection = $class::getReflection();
 			$presenter = str_replace('Presenter', '', $classReflection->getShortName());
 			$methods = $classReflection->getMethods();
 
