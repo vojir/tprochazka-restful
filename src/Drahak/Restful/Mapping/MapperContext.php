@@ -1,9 +1,9 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Drahak\Restful\InvalidStateException;
 use Nette\Object;
 use Nette\Utils\Strings;
+use Drahak\Restful\InvalidStateException;
 
 /**
  * MapperContext

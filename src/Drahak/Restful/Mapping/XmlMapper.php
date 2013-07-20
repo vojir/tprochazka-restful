@@ -70,7 +70,7 @@ class XmlMapper extends Object implements IMapper
 		}
 
 		if ($data instanceof \Traversable) {
-			$data = iterator_to_array($data);
+			$data = iterator_to_array($data, TRUE);
 		}
 
 		if ($this->rootElement) {

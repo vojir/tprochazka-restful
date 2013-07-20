@@ -24,7 +24,7 @@ class JsonMapper extends Object implements IMapper
 	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
-			$data = iterator_to_array($data);
+			$data = iterator_to_array($data, TRUE);
 		}
 
 		try {

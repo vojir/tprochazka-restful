@@ -1,8 +1,8 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Nette\Http\Url;
 use Nette\Object;
+use Nette\Http\Url;
 use Nette\Utils\Strings;
 
 /**
@@ -22,7 +22,7 @@ class QueryMapper extends Object implements IMapper
 	public function stringify($data, $prettyPrint = TRUE)
 	{
 		if ($data instanceof \Traversable) {
-			$data = iterator_to_array($data);
+			$data = iterator_to_array($data, TRUE);
 		}
 		return http_build_query($data, '', '&');
 	}
