@@ -14,7 +14,6 @@ This repository is being developed.
 - [Security & authentication](#security--authentication)
 - [Secure your resources with OAuth2](#secure-your-resources-with-oauth2)
 - [JSONP support](#jsonp-support)
-- [Documentation](#documentation)
 
 Requirements
 ------------
@@ -401,76 +400,6 @@ callback({
 **Note** : the function name. This is name from `jsonp` query parameter. This string is "webalized" by `Nette\Utils\Strings::webalize(jsonp, NULL, FALSE)`. If you set `jsonpKey` to `FALSE` or `NULL` in configuration, you totally disable JSONP mode for all your API resources. Then you can trigger it manually. Just set `IResource` `$contentType` property to `IResource::JSONP`.
 
 **Also note** : if this option is enabled and client adds `jsonp` parameter to query string, no matter what you set to `$presenter->resource->contentType` it will produce `JsonpResponse`.
-
-Documentation
--------------
-**Restful Documentation is just a proposal implementation and will be changed.**
-
-API is as good as its documentation. Documentation should be clear and readable for all team members (so even for you). It also should contain all information about resources (input parameters, headers, validation rules, response headers, data, code ...). It is a lot of information and it's hard and boring to do it for each resource. That's why Restful contains documentation tool which generates all these informations to array. Then you can save it as JSON, XML or whatever and use it as data source for some documentation tool. I wrote my own in AngularJS & Closure. You can find in my [RestfulDoc repository](https://github.com/drahak/RestfulDoc). The format that Restful generates is compatible with RestfulDoc so do not worry.
-
-#### How it works?
-Of course you have to do some coding but it's not as hard as to write it by hand. Only thing you have to do is to add some special annotations to you action resource method.
-
-```php
-
-/**
- * SamplePresenter resource
- * @package Restful\Api
- * @author Drahomír Hanák
- */
-class SamplePresenter extends BasePresenter
-{
-
-	/**
-	 * Sample values
-	 * @description Provides sample values for clients to test API.
-	 * @example GET /sample/1
-	 */
-	public function actionRead($id)
-    {
-		$this->repository->delete($id);
-    }
-
-}
-```
-
-Or some complex example:
-
-```php
-/**
- * SamplePresenter resource
- * @package Restful\Api
- * @author Drahomír Hanák
- */
-class SamplePresenter extends BasePresenter
-{
-
-	public function validateDefault()
-	{
-		$this->input->field('age')
-			->addRule(IValidator::INTEGER)
-			->addRule(IValidator::RANGE, 'Age must be in range from %d to %d', array(5, 100));
-		$this->input->field('url')
-			->addRule(IValidator::URL);
-	}
-
-	/**
-	 * Sample values
-	 * @description Provides sample values for clients to test API.
-	 * @example GET /sample
-	 * @example-data(age=8, url="http://www.drahak.eu")
-	 * @example-header(authorization="Bearer as1d16a8sad181da6v9sv1d94s1vd8v")
-	 */
-	public function actionDefault()
-    {
-		$this->getHttpRequest()->getHeader('x-is-chuck-norris', TRUE);
-		$this->resource->data = range(0, 50);
-		$paginator = $this->requestFilter->getPaginator(0, 10);
-		$paginator->setItemCount(50);
-    }
-
-}
-```
 
 ___
 

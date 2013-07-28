@@ -20,10 +20,10 @@ final class RouteListFactoryProxy extends Object implements IRouteListFactory
 	/** @var array */
 	private $routeConfig;
 
-	/** @var \Nette\Caching\Cache */
+	/** @var Cache */
 	private $cache;
 
-	/** @var \Drahak\Restful\Application\RouteAnnotation */
+	/** @var RouteAnnotation */
 	private $routeAnnotation;
 
 	/**
