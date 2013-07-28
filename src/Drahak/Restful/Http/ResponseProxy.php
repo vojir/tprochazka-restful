@@ -26,7 +26,7 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Set respomse
+	 * Set response
 	 * @param IResponse $response
 	 * @return ResponseProxy
 	 */

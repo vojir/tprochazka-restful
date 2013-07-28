@@ -39,6 +39,7 @@ class ResourceRoute extends Route implements IResourceRouter
 	{
 		parent::__construct($mask, $metadata, $flags);
 
+		$this->actionDictionary = array();
 		if (isset($metadata['action']) && is_array($metadata['action'])) {
 			$this->actionDictionary = $metadata['action'];
 		}
