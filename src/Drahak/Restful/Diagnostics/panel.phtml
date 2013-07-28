@@ -21,7 +21,9 @@
 					<th><?php echo $esc($name); ?></th>
 					<td><pre><?php echo $esc($route->mask); ?></pre></td>
 					<td>
-						<?php echo $route->defaults['presenter']; ?></td>
+						<?php echo isset($route->defaults['presenter']) ?
+							$route->defaults['presenter'] :
+							''; ?></td>
 					<td>
 						<?php
 						echo isset($route->actionDictionary[$method]) ?
