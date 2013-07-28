@@ -35,7 +35,7 @@ class ResourceRoute extends Route implements IResourceRouter
 	 * @param array|string $metadata
 	 * @param int $flags
 	 */
-	public function __construct($mask, $metadata = array(), $flags = 0)
+	public function __construct($mask, $metadata = array(), $flags = IResourceRouter::GET)
 	{
 		parent::__construct($mask, $metadata, $flags);
 
