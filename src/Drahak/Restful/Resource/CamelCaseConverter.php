@@ -1,8 +1,8 @@
 <?php
 namespace Drahak\Restful\Resource;
 
-use Drahak\Restful\Utils\Strings;
 use Nette\Object;
+use Drahak\Restful\Utils\Strings;
 
 /**
  * CamelCaseConverter

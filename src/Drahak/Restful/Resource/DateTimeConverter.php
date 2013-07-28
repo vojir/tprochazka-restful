@@ -41,10 +41,6 @@ class DateTimeConverter extends Object implements IConverter
 	 */
 	private function parseDateTime($array)
 	{
-		if ($array instanceof Traversable) {
-			$array = iterator_to_array($array);
-		}
-
 		if (!is_array($array)) {
 			return $array instanceof DateTime ? $array->format($this->format) : $array;
 		}
