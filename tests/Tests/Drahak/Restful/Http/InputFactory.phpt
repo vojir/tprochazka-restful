@@ -43,40 +43,24 @@ class InputFactoryTest extends TestCase
 		$this->inputFactory = new InputFactory($this->request, $this->mapperContext, $this->validationScopeFactory);
     }
     
-    public function testCreateInputFromPostData()
+    public function testCreateInputWithMixedPostAndQueryData()
     {
-		$data = array('post' => 'data');
+		$post = array('post' => 'data', 'same' => 'POST');
+		$query = array('get' => 'data', 'same' => 'GET');
 		$exception = new InvalidStateException;
+
+		$expected = array(
+			'get' => 'data',
+			'same' => 'POST',
+			'post' => 'data'
+		);
 
 		$this->request->expects('getPost')
 			->atLeastOnce()
-			->andReturn($data);
-		$this->request->expects('getHeader')
-			->atLeastOnce()
-			->with('Content-Type')
-			->andReturn('application/test');
-
-		$this->mapperContext->expects('getMapper')
-			->once()
-			->with('application/test')
-			->andThrow($exception);
-
-		$input = $this->inputFactory->create();
-		Assert::true($input instanceof IInput);
-		Assert::same($input->getData(), $data);
-    }
-
-	public function testCreateInputFromGetUrlQueryParameters()
-	{
-		$data = array('get' => 'data');
-		$exception = new InvalidStateException;
-
-		$this->request->expects('getPost')
-			->once()
-			->andReturn(array());
+			->andReturn($post);
 		$this->request->expects('getQuery')
 			->atLeastOnce()
-			->andReturn($data);
+			->andReturn($query);
 		$this->request->expects('getHeader')
 			->atLeastOnce()
 			->with('Content-Type')
@@ -89,8 +73,8 @@ class InputFactoryTest extends TestCase
 
 		$input = $this->inputFactory->create();
 		Assert::true($input instanceof IInput);
-		Assert::same($input->getData(), $data);
-	}
+		Assert::same($input->getData(), $expected);
+    }
     
 }
 \run(new InputFactoryTest());

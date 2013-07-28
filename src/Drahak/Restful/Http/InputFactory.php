@@ -58,9 +58,22 @@ class InputFactory extends Object
 	 */
 	protected function parseData()
 	{
-		if ($this->httpRequest->getPost()) {
-			return $this->httpRequest->getPost();
-		} else if ($input = file_get_contents('php://input')) {
+		$postQuery = (array)$this->httpRequest->getPost();
+		$urlQuery = (array)$this->httpRequest->getQuery();
+		$requestBody = $this->parseRequestBody();
+
+		return array_merge($urlQuery, $requestBody, $postQuery);
+	}
+
+	/**
+	 * Parse request body if any
+	 * @return array|\Traversable
+	 * @throws BadRequestException
+	 */
+	protected function parseRequestBody()
+	{
+		$requestBody = array();
+		if ($input = file_get_contents('php://input')) {
 			try {
 				$this->mapper = $this->mapperContext->getMapper($this->httpRequest->getHeader('Content-Type'));
 			} catch (InvalidStateException $e) {
@@ -69,9 +82,9 @@ class InputFactory extends Object
 					$e
 				);
 			}
-			return $this->mapper->parse($input);
+			$requestBody = $this->mapper->parse($input);
 		}
-		return (array)$this->httpRequest->getQuery();
+		return $requestBody;
 	}
 
 }
