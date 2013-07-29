@@ -260,6 +260,8 @@ class RestfulExtension extends CompilerExtension
 			->setClass('Drahak\Restful\Security\Process\NullAuthentication');
 		$container->addDefinition($this->prefix('security.securedAuthentication'))
 			->setClass('Drahak\Restful\Security\Process\SecuredAuthentication');
+		$container->addDefinition($this->prefix('security.basicAuthentication'))
+			->setClass('Drahak\Restful\Security\Process\BasicAuthentication');
 
 		$container->addDefinition($this->prefix('security.authentication'))
 			->setClass('Drahak\Restful\Security\AuthenticationContext')
