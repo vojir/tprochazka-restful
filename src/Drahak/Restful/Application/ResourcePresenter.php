@@ -76,6 +76,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	{
 		parent::startup();
 		$this->resource = $this->resourceFactory->create();
+		$this->autoCanonicalize = FALSE;
 
 		// calls $this->validate<Action>()
 		$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
