@@ -17,7 +17,11 @@ class CrudRoute extends ResourceRoute
 
     public function __construct($mask, $metadata = array(), $flags = IResourceRouter::CRUD)
     {
-        parent::__construct($mask, is_string($metadata) ? $metadata . ':default' : $metadata, $flags);
+		$metadata = is_string($metadata) && count(explode(':', $metadata)) === 1 ?
+			$metadata . ':default' :
+			$metadata;
+
+        parent::__construct($mask, $metadata, $flags);
         $this->actionDictionary = array(
             IResourceRouter::POST => self::ACTION_CREATE,
             IResourceRouter::GET => self::ACTION_READ,

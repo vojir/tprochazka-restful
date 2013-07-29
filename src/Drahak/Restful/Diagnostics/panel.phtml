@@ -28,7 +28,7 @@
 						<?php
 						echo isset($route->actionDictionary[$method]) ?
 							$route->actionDictionary[$method] :
-							$route->defaults['action'];
+							(isset($route->defaults['action']) ? $route->defaults['action'] : '');
 						?>
 					</td>
 				</tr>
