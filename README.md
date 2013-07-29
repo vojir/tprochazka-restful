@@ -188,6 +188,66 @@ class CrudPresenter extends BasePresenter
 
 Note: every request method can be overridden if you specify `X-HTTP-Method-Override` header in request or by adding query parameter `__method` to URL.
 
+Let there be relations
+======================
+Relations are pretty common in RESTful services but how to deal with it in URL? Our goal is something like this `GET /articles/94/comments[/5]` while ID in brackets might be optional. The route will be as follows:
+
+```php
+$router[] = new ResourceRoute('api/v1/articles/<id>/comments[/<commentId>]', array(
+    'presenter' => 'Articles',
+    'action' => array(
+        IResourceRouter::GET => 'readComment',
+        IResourceRouter::DELETE => 'deleteComment'
+    )
+), IResourceRouter::GET | IResourceRouter::DELETE);
+```
+
+It's a quite long. Therefore, there is an option how to generalize it. You can add **request parameters to action name**. Now it will look like this:
+
+```php
+$router[] = new ResourceRoute('api/v1/<presenter>/<id>/<relation>[/<relationId>]', array(
+    'presenter' => 'Articles',
+    'action' => array(
+        IResourceRouter::GET => 'read<Relation>',
+        IResourceRouter::DELETE => 'delete<Relation>'
+    )
+), IResourceRouter::GET | IResourceRouter::DELETE);
+```
+
+Much better but still quite long. Let's use `CrudRoute` again:
+
+```php
+$router[] = new CrudRoute('api/v1/<presenter>/<id>/[<relation>[/<relationId>]]', 'Articles');
+```
+
+This is the shortest way. It works because action dictionary in `CrudRoute` is basically as follows.
+
+```php
+array(
+    IResourceRouter::POST => 'create<Relation>',
+    IResourceRouter::GET => 'read<Relation>',
+    IResourceRouter::PUT => 'update<Relation>',
+    IResourceRouter::DELETE => 'delete<Relation>'
+)
+```
+
+Also have a look at few examples for this single route:
+```
+    GET api/v1/articles/94                  => Articles:read
+    DELETE api/v1/articles/94               => Articles:delete
+    GET api/v1/articles/94/comments         => Articles:readComments
+    GET api/v1/articles/94/comments/5       => Articles:readComments
+    DELETE api/v1/articles/94/comments/5    => Articles:deleteComments
+    POST api/v1/articles/94/comments        => Articles:createComments
+    ...
+```
+
+Of course you can add more then one parameter to action name and make even longer relations.
+
+**Note:** if *relation* or any other parameter in action name does not exist, it will be ignored and name without the parameter will be used.
+
+**Also note:** parameters in action name are **NOT** case-sensitive
+
 Accessing input data
 --------------------
 If you want to build REST API, you may also want to access query input data for all request methods (GET, POST, PUT, DELETE and HEAD). So the library defines input parser, which reads data and parse it to an array. Data are fetched from query string or from request body and parsed by `IMapper`. First the library looks for request body. If it's not empty it checks `Content-Type` header and determines correct mapper (e.g. for `application/json` -> `JsonMapper` etc.) Then, if request body is empty, try to get POST data and at the end even URL query data.
