@@ -114,6 +114,7 @@ class ResourceRoute extends Route implements IResourceRouter
 		if ($this->actionDictionary) {
 			$parameters = $appRequest->getParameters();
 			$parameters['action'] = $this->actionDictionary[$methodFlag];
+			$parameters['action'] = self::formatActionName($this->actionDictionary[$methodFlag], $parameters);
 			$appRequest->setParameters($parameters);
 		}
 
@@ -133,5 +134,18 @@ class ResourceRoute extends Route implements IResourceRouter
 		return $httpUrl->getBasePath() . $httpUrl->getRelativeUrl();
 	}
 
+	/**
+	 * Format action name
+	 * @param string $action
+	 * @param array $parameters
+	 * @return string
+	 */
+	protected static function formatActionName($action, array $parameters)
+	{
+		return Strings::replace($action, "@\<([0-9a-zA-Z_-]+)\>@i", function($m) use($parameters) {
+			$key = strtolower($m[1]);
+			return isset($parameters[$key]) ? $parameters[$key] : '';
+		});
+	}
 
 }
