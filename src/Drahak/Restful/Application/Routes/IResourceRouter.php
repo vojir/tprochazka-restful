@@ -22,7 +22,7 @@ interface IResourceRouter extends IRouter
 
 	/** Combined resource methods */
 	const RESTFUL = 252; // GET | POST | PUT | DELETE | HEAD | PATCH
-	const CRUD = 60; // PUT | GET | POST | DELETE
+	const CRUD = 188; // PUT | GET | POST | DELETE | PATCH
 
 	/**
 	 * Is this route mapped to given method
