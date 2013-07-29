@@ -13,7 +13,6 @@ use Drahak\Restful\Utils\RequestFilter;
 use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\ValidationException;
 use Nette\Caching\Cache;
-use Nette\Callback;
 use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;

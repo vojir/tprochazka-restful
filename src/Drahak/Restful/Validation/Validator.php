@@ -3,7 +3,6 @@ namespace Drahak\Restful\Validation;
 
 use Drahak\Restful\InvalidStateException;
 use Nette\InvalidArgumentException;
-use Nette\Callback;
 use Nette\Object;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -38,8 +37,9 @@ class Validator extends Object implements IValidator
 	{
 		if (isset($this->handle[$rule->expression])) {
 			try {
-				$callback = new Callback($this->handle[$rule->expression]);
-				$callback->invokeArgs(array($value, $rule));
+				$callback = $this->handle[$rule->expression];
+				$params = array($value, $rule);
+				call_user_func_array($callback, $params);
 				return;
 			} catch (InvalidArgumentException $e) {
 				throw new InvalidStateException('Handle for expression ' . $rule->expression . ' not found or is not callable');

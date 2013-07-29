@@ -1,7 +1,6 @@
 <?php
 namespace Drahak\Restful\Validation;
 
-use Nette\Callback;
 use Nette\Object;
 use Nette\Forms\Form;
 use Nette\Utils\Strings;
