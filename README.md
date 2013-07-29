@@ -188,8 +188,7 @@ class CrudPresenter extends BasePresenter
 
 Note: every request method can be overridden if you specify `X-HTTP-Method-Override` header in request or by adding query parameter `__method` to URL.
 
-Let there be relations
-======================
+### Let there be relations
 Relations are pretty common in RESTful services but how to deal with it in URL? Our goal is something like this `GET /articles/94/comments[/5]` while ID in brackets might be optional. The route will be as follows:
 
 ```php
@@ -202,7 +201,8 @@ $router[] = new ResourceRoute('api/v1/articles/<id>/comments[/<commentId>]', arr
 ), IResourceRouter::GET | IResourceRouter::DELETE);
 ```
 
-It's a quite long. Therefore, there is an option how to generalize it. You can add **request parameters to action name**. Now it will look like this:
+#### Request parameters in action name
+It's a quite long. Therefore, there is an option how to generalize it. Now it will look like this:
 
 ```php
 $router[] = new ResourceRoute('api/v1/<presenter>/<id>/<relation>[/<relationId>]', array(
