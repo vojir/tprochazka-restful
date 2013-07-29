@@ -16,6 +16,7 @@ class CrudRoute extends ResourceRoute
     const ACTION_CREATE = 'create<Relation>';
 	const ACTION_READ = 'read<Relation>';
 	const ACTION_UPDATE = 'update<Relation>';
+	const ACTION_PATCH = 'patch<Relation>';
     const ACTION_DELETE = 'delete<Relation>';
 
 	/**
@@ -33,6 +34,7 @@ class CrudRoute extends ResourceRoute
 			IResourceRouter::POST => self::ACTION_CREATE,
 			IResourceRouter::GET => self::ACTION_READ,
 			IResourceRouter::PUT => self::ACTION_UPDATE,
+			IResourceRouter::PATCH => self::ACTION_PATCH,
 			IResourceRouter::DELETE => self::ACTION_DELETE
 		);
     }
