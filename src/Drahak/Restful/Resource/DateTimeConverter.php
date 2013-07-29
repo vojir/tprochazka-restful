@@ -42,7 +42,10 @@ class DateTimeConverter extends Object implements IConverter
 	private function parseDateTime($array)
 	{
 		if (!is_array($array)) {
-			return $array instanceof DateTime ? $array->format($this->format) : $array;
+			if ($array instanceof DateTime || interface_exists('DateTimeInterface') && $array instanceof \DateTimeInterface) {
+				return $array->format($this->format);
+			}
+			return $array;
 		}
 
 		foreach ($array as $key => $value) {
