@@ -3,7 +3,6 @@ namespace Tests\Drahak\Restful\Utils;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Utils\IQueryList;
 use Drahak\Restful\Utils\RequestFilter;
 use Mockista\MockInterface;
 use Nette;
@@ -38,12 +37,12 @@ class RequestFilterTest extends TestCase
     {
 		$this->request->expects('getQuery')
 			->once()
-			->with('fields')
+			->with(RequestFilter::FIELDS_KEY)
 			->andReturn('-any,item,list,');
 
 		$result = $this->filter->getFieldList();
-		Assert::true($result instanceof IQueryList);
-		Assert::same($result->toArray(), array('-any','item','list'));
+		Assert::type('array', $result);
+		Assert::same($result, array('-any','item','list'));
     }
 
 	public function testGetSortList()
@@ -54,8 +53,8 @@ class RequestFilterTest extends TestCase
 			->andReturn('-any,item,list,');
 
 		$result = $this->filter->getSortList();
-		Assert::true($result instanceof IQueryList);
-		Assert::same($result->toArray(), array('-any','item','list'));
+		Assert::type('array', $result);
+		Assert::same($result, array('-any','item','list'));
 	}
 
 	public function testGetSearchQuery()

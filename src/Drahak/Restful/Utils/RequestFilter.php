@@ -1,28 +1,36 @@
 <?php
 namespace Drahak\Restful\Utils;
 
+use Nette\Object;
+use Nette\ArrayList;
+use Nette\Utils\Paginator;
 use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\InvalidStateException;
-use Nette\Object;
-use Nette\Utils\Paginator;
 
 /**
  * RequestFilter
  * @package Drahak\Restful\Utils
  * @author Drahomír Hanák
  *
- * @property-read IQueryList $fieldList
- * @property-read IQueryList $sortList
+ * @property-read array $fieldList
+ * @property-read array $sortList
  * @property-read string $searchQuery
  * @property-read Paginator $paginator
  */
 class RequestFilter extends Object
 {
 
-	/** @var IQueryList */
+	/** Fields key in URL query */
+	const FIELDS_KEY = 'fields';
+	/** Sort key in URL query */
+	const SORT_KEY = 'sort';
+	/** Search string key in URL query */
+	const SEARCH_KEY = 'q';
+
+	/** @var ArrayList */
 	private $fieldList;
 
-	/** @var IQueryList */
+	/** @var ArrayList */
 	private $sortList;
 
 	/** @var Paginator */
@@ -31,6 +39,9 @@ class RequestFilter extends Object
 	/** @var IRequest */
 	private $request;
 
+	/**
+	 * @param IRequest $request
+	 */
 	public function __construct(IRequest $request)
 	{
 		$this->request = $request;
@@ -38,25 +49,24 @@ class RequestFilter extends Object
 
 	/**
 	 * Get fields list
-	 * @return IQueryList
+	 * @return array
 	 */
 	public function getFieldList()
 	{
 		if (!$this->fieldList) {
-			$fields = array_filter(explode(',', $this->request->getQuery('fields')));
-			$this->fieldList = new QueryList($fields);
+			$this->fieldList = $this->createFieldList();
 		}
 		return $this->fieldList;
 	}
 
 	/**
 	 * Create sort list
-	 * @return IQueryList
+	 * @return array
 	 */
 	public function getSortList()
 	{
 		if (!$this->sortList) {
-			$this->sortList = new QueryList(array_filter(explode(',', $this->request->getQuery('sort'))));
+			$this->sortList = $this->createSortList();
 		}
 		return $this->sortList;
 	}
@@ -81,21 +91,53 @@ class RequestFilter extends Object
 	public function getPaginator($offset = NULL, $limit = NULL)
 	{
 		if (!$this->paginator) {
-			$offset = $this->request->getQuery('offset', $offset);
-			$limit = $this->request->getQuery('limit', $limit);
-
-			if ($offset === NULL || $limit === NULL) {
-				throw new InvalidStateException(
-					'To create paginator add offset and query parameter to request URL'
-				);
-			}
-
-			$paginator = new Paginator();
-			$paginator->setItemsPerPage($limit);
-			$paginator->setPage(floor($offset/$limit)+1);
-			$this->paginator = $paginator;
+			$this->paginator = $this->createPaginator($offset, $limit);
 		}
 		return $this->paginator;
+	}
+
+
+	/**
+	 * Create sort list
+	 * @return ArrayList
+	 */
+	protected function createSortList()
+	{
+		return array_filter(explode(',', $this->request->getQuery(self::SORT_KEY)));
+	}
+
+	/**
+	 * Create field list
+	 * @return ArrayList
+	 */
+	protected function createFieldList()
+	{
+		return array_filter(explode(',', $this->request->getQuery(self::FIELDS_KEY)));
+	}
+
+	/**
+	 * Create paginator
+	 * @param int|null $offset
+	 * @param int|null $limit
+	 * @return Paginator
+	 *
+	 * @throws InvalidStateException
+	 */
+	protected function createPaginator($offset = NULL, $limit = NULL)
+	{
+		$offset = $this->request->getQuery('offset', $offset);
+		$limit = $this->request->getQuery('limit', $limit);
+
+		if ($offset === NULL || $limit === NULL) {
+			throw new InvalidStateException(
+				'To create paginator add offset and query parameter to request URL'
+			);
+		}
+
+		$paginator = new Paginator();
+		$paginator->setItemsPerPage($limit);
+		$paginator->setPage(floor($offset/$limit)+1);
+		return $paginator;
 	}
 
 }
