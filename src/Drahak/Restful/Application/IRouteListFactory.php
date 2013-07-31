@@ -1,5 +1,7 @@
 <?php
-namespace Drahak\Restful\Application\Routes;
+namespace Drahak\Restful\Application;
+
+use Drahak\Restful\Application\Routes\ResourceRouteList;
 
 /**
  * IRouteListFactory

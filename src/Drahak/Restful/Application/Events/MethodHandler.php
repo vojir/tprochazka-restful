@@ -1,8 +1,9 @@
 <?php
 namespace Drahak\Restful\Application\Events;
 
+use Traversable;
 use Drahak\Restful\Application\BadRequestException;
-use Drahak\Restful\Application\Routes\IResourceRouter;
+use Drahak\Restful\Application\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
 use Drahak\Restful\Http\IRequest;
@@ -63,7 +64,7 @@ class MethodHandler extends Object implements IApplicationEvent
 	private function checkAvailableMethods(IRouter $router)
 	{
 		foreach ($router as $route) {
-			if ($route instanceof IResourceRouter && !$route instanceof \Traversable) {
+			if ($route instanceof IResourceRouter && !$route instanceof Traversable) {
 				$methodFlag = NULL;
 				foreach ($this->methods as $flag => $requestMethod) {
 					if ($route->isMethod($flag)) {
@@ -86,7 +87,7 @@ class MethodHandler extends Object implements IApplicationEvent
 				}
 			}
 
-			if ($route instanceof \Traversable) {
+			if ($route instanceof Traversable) {
 				$this->checkAvailableMethods($route);
 			}
 		}

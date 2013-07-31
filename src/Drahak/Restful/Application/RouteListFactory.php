@@ -1,16 +1,17 @@
 <?php
-namespace Drahak\Restful\Application\Routes;
-
+namespace Drahak\Restful\Application;
 
 use Nette\Object;
 use Nette\DI\Container;
-use Nette\Loaders\RobotLoader;
-use Nette\Reflection\ClassType;
-use Nette\Reflection\Method;
-use Drahak\Restful\Application\RouteAnnotation;
-use Drahak\Restful\InvalidStateException;
-use Drahak\Restful\Utils\Strings;
 use Nette\Caching\IStorage;
+use Nette\Loaders\RobotLoader;
+use Nette\Reflection\Method;
+use Nette\Reflection\ClassType;
+use Drahak\Restful\Utils\Strings;
+use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Application\RouteAnnotation;
+use Drahak\Restful\Application\Routes\ResourceRoute;
+use Drahak\Restful\Application\Routes\ResourceRouteList;
 
 /**
  * RouteListFactory

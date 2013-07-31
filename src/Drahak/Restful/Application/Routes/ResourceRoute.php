@@ -2,10 +2,11 @@
 namespace Drahak\Restful\Application\Routes;
 
 use Drahak\Restful;
-use Nette\Application;
-use Nette\Application\Routers\Route;
+use Drahak\Restful\Application\IResourceRouter;
 use Nette\Http;
+use Nette\Application;
 use Nette\Utils\Strings;
+use Nette\Application\Routers\Route;
 
 /**
  * ResourceRoute
@@ -95,7 +96,7 @@ class ResourceRoute extends Route implements IResourceRouter
 
 	/**
 	 * @param Http\IRequest $httpRequest
-	 * @return \Nette\Application\Request|NULL
+	 * @return Application\Request|NULL
 	 */
 	public function match(Http\IRequest $httpRequest)
 	{

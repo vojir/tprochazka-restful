@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Application\Routes;
+namespace Drahak\Restful\Application;
 
 use Nette\Caching\Cache;
 use Nette\Caching\IStorage;

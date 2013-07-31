@@ -3,6 +3,7 @@ namespace Drahak\Restful\Application\Routes;
 
 use Drahak\Restful\InvalidStateException;
 use Nette\Application\Routers\RouteList;
+use Drahak\Restful\Application\IResourceRouter;
 
 /**
  * ResourceRouteList

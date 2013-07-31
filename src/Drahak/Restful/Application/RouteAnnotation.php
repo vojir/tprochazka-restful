@@ -4,7 +4,6 @@ namespace Drahak\Restful\Application;
 use Nette\Object;
 use Nette\Utils\Strings;
 use Nette\Reflection\Method;
-use Drahak\Restful\Application\Routes\IResourceRouter;
 use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\Http\IRequest;
 
