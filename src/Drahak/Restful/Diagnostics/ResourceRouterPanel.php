@@ -39,10 +39,10 @@ class ResourceRouterPanel extends Object implements IBarPanel
 	 */
 	private function getResourceRoutes($routeList)
 	{
-		$resourceRoutes = array();
+		static $resourceRoutes = array();
 		foreach ($routeList as $route) {
 			if ($route instanceof Traversable)
-				$resourceRoutes += $this->getResourceRoutes($route);
+				$this->getResourceRoutes($route);
 			if ($route instanceof IResourceRouter)
 				$resourceRoutes[] = $route;
 		}
