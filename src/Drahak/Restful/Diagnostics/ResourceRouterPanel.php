@@ -2,7 +2,7 @@
 namespace Drahak\Restful\Diagnostics;
 
 use Traversable;
-use Drahak\Restful\Application\Routes\IResourceRouter;
+use Drahak\Restful\Application\IResourceRouter;
 use Nette\Application\IRouter;
 use Nette\Templating\Helpers;
 use Nette\Diagnostics\IBarPanel;
@@ -17,7 +17,7 @@ use Nette\Utils\Html;
 class ResourceRouterPanel extends Object implements IBarPanel
 {
 
-	/** @var \Nette\Application\IRouter */
+	/** @var IRouter */
 	private $router;
 
 	/** @var string */
