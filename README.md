@@ -463,8 +463,4 @@ callback({
 
 ___
 
-TODO list
----------
-- Better API resources panel. There are to many records in the table.
-
 So that's it. Enjoy and hope you like it!
