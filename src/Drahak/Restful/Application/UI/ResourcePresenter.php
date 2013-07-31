@@ -1,6 +1,7 @@
 <?php
-namespace Drahak\Restful\Application;
+namespace Drahak\Restful\Application\UI;
 
+use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\IResponseFactory;

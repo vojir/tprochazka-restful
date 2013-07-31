@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Application;
+namespace Drahak\Restful\Application\UI;
 
 use Drahak\Restful\Security\Process\BasicAuthentication;
 use Nette\Application;

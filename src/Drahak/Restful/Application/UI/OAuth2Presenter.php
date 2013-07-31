@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful\Application;
+namespace Drahak\Restful\Application\UI;
 
 use Drahak\OAuth2\Application\IOAuthPresenter;
 use Drahak\OAuth2\Grant\GrantContext;
