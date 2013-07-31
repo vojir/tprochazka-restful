@@ -210,13 +210,19 @@ class RestfulExtension extends CompilerExtension
 			->setClass('Drahak\Restful\Application\RouteAnnotation');
 
 		$container->addDefinition($this->prefix('routeListFactory'))
-			->setClass('Drahak\Restful\Application\Routes\RouteListFactoryProxy')
-			->setArguments(array($config['routes']));
+			->setClass('Drahak\Restful\Application\Routes\RouteListFactory')
+			->setArguments(array($config['routes']['presentersRoot']))
+			->addSetup('$service->setModule(?)', array($config['routes']['module']))
+			->addSetup('$service->setPrefix(?)', array($config['routes']['prefix']));
+
+		$container->addDefinition($this->prefix('cachedRouteListFactory'))
+			->setClass('Drahak\Restful\Application\Routes\CachedRouteListFactory')
+			->setArguments(array($config['routes']['presentersRoot'], $this->prefix('@routeListFactory')));
 
 		$container->getDefinition('router')
 			->addSetup('offsetSet', array(
 				NULL,
-				new Statement($this->prefix('@routeListFactory') . '::create')
+				new Statement($this->prefix('@cachedRouteListFactory') . '::create')
 			));
 	}
 

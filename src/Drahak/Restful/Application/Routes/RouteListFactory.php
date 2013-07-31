@@ -1,95 +1,179 @@
 <?php
 namespace Drahak\Restful\Application\Routes;
 
+
+use Nette\Object;
+use Nette\DI\Container;
+use Nette\Loaders\RobotLoader;
+use Nette\Reflection\ClassType;
+use Nette\Reflection\Method;
 use Drahak\Restful\Application\RouteAnnotation;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Utils\Strings;
 use Nette\Caching\IStorage;
-use Nette\DI\Container;
-use Nette\Loaders\RobotLoader;
-use Nette\Object;
-use Nette\Reflection\ClassType;
 
 /**
  * RouteListFactory
  * @package Drahak\Restful\Application\Routes
  * @author Drahomír Hanák
+ *
+ * @property-write string $module
+ * @property-write string $prefix
  */
 class RouteListFactory extends Object implements IRouteListFactory
 {
 
-	/** @var \Nette\Loaders\RobotLoader */
+	/** @var RobotLoader */
 	private $loader;
 
-	/** @var array */
-	private $routeConfig;
+	/** @var string */
+	private $module;
 
-	/** @var \Nette\Caching\IStorage */
+	/** @var string */
+	private $prefix;
+
+	/** @var IStorage */
 	private $cacheStorage;
 
-	/** @var \Drahak\Restful\Application\RouteAnnotation */
+	/** @var RouteAnnotation */
 	private $routeAnnotation;
 
-	public function __construct(array $routeConfig, IStorage $cacheStorage, RouteAnnotation $routeAnnotation)
+	/**
+	 * @param string $presentersRoot from where to find presenters
+	 * @param IStorage $cacheStorage
+	 * @param RouteAnnotation $routeAnnotation
+	 */
+	public function __construct($presentersRoot, IStorage $cacheStorage, RouteAnnotation $routeAnnotation)
 	{
 		$loader = new RobotLoader();
-		$loader->addDirectory($routeConfig['presentersRoot']);
+		$loader->addDirectory($presentersRoot);
 		$loader->setCacheStorage($cacheStorage);
 		$loader->tryLoad('Drahak\Restful\Application\IResourcePresenter');
 
 		$this->loader = $loader;
-		$this->routeConfig = $routeConfig;
 		$this->cacheStorage = $cacheStorage;
 		$this->routeAnnotation = $routeAnnotation;
+	}
+
+	/**
+	 * Set default module of created routes
+	 * @param string $module
+	 * @return ResourceRoute
+	 */
+	public function setModule($module)
+	{
+		$this->module = $module;
+		return $this;
+	}
+
+	/**
+	 * Set default routes URL mask prefix
+	 * @param string $prefix
+	 * @return RouteListFactory
+	 */
+	public function setPrefix($prefix)
+	{
+		$this->prefix = $prefix;
+		return $prefix;
 	}
 
 	/**
 	 * Create route list
 	 * @param string|null $module
 	 * @return ResourceRouteList
-	 *
-	 * @throws \Drahak\Restful\InvalidStateException
 	 */
-	public function create($module = NULL)
+	public final function create($module = NULL)
 	{
-		$module = $module ? $module : $this->routeConfig['module'];
-
-		$routeList = new ResourceRouteList($module);
+		$routeList = new ResourceRouteList($module ? $module : $this->module);
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
-			if (!method_exists($class, 'getReflection')) continue;
-			/** @var ClassType $classReflection */
-			$classReflection = $class::getReflection();
-			$presenter = str_replace('Presenter', '', $classReflection->getShortName());
-			$methods = $classReflection->getMethods();
-
-			// Fetch routes data
-			$routeData = array();
-			foreach ($methods as $method) {
-				if (!Strings::contains($method->getName(), 'action'))
-					continue;
-
-				$annotations = $this->routeAnnotation->parse($method);
-				foreach ($annotations as $requestMethod => $mask) {
-					$action = str_replace('action', '', $method->getName());
-					$action = Strings::firstLower($action);
-
-					$pattern = $this->routeConfig['prefix'] ?
-						$this->routeConfig['prefix'] . '/' .  $mask :
-						$mask;
-
-					$routeData[$pattern][$requestMethod] = $action;
-				}
-			}
-
-			// Create joined Resource routes form routes data
-			foreach ($routeData as $mask => $dictionary) {
-				$routeList[] = new ResourceRoute($mask, array(
-					'presenter' => $presenter,
-					'action' => $dictionary
-				), IResourceRouter::RESTFUL);
+			try {
+				$methods = $this->getClassMethods($class);
+				$routeData = $this->parseClassRoutes($methods);
+				$routeList[] = $this->addRoutes($routeList, $routeData, $class);
+			} catch (InvalidStateException $e) {
+				continue;
 			}
 		}
 		return $routeList;
+	}
+
+	/******************** Template methods ********************/
+
+	/**
+	 * Add class routes to route list
+	 * @param ResourceRouteList $routeList
+	 * @param array $routeData
+	 * @param string $className
+	 * @return ResourceRouteList
+	 *
+	 * @throws InvalidStateException
+	 */
+	protected function addRoutes(ResourceRouteList $routeList, array $routeData, $className)
+	{
+		$presenter = str_replace('Presenter', '', self::getClassReflection($className)->getShortName());
+		foreach ($routeData as $mask => $dictionary) {
+			$routeList[] = new ResourceRoute($mask, array(
+				'presenter' => $presenter,
+				'action' => $dictionary
+			), IResourceRouter::RESTFUL);
+		}
+		return $routeList;
+	}
+
+	/**
+	 * Get class methods
+	 * @param string $className
+	 * @return Method[]
+	 *
+	 * @throws InvalidStateException
+	 */
+	protected function getClassMethods($className)
+	{
+		return self::getClassReflection($className)->getMethods();
+	}
+
+	/**
+	 * Parse route annotations on given object methods
+	 * @param Method[] $methods
+	 * @return array $data[URL mask][request method] = action name e.g. $data['api/v1/articles']['GET'] = 'read'
+	 */
+	protected function parseClassRoutes($methods)
+	{
+		$routeData = array();
+		foreach ($methods as $method) {
+			// Parse annotations only on action methods
+			if (!Strings::contains($method->getName(), 'action'))
+				continue;
+
+			$annotations = $this->routeAnnotation->parse($method);
+			foreach ($annotations as $requestMethod => $mask) {
+				$action = str_replace('action', '', $method->getName());
+				$action = Strings::firstLower($action);
+
+				$pattern = $this->prefix ?
+					$this->prefix . '/' .  $mask :
+					$mask;
+
+				$routeData[$pattern][$requestMethod] = $action;
+			}
+		}
+		return $routeData;
+	}
+
+	/**
+	 * Get class reflection
+	 * @param string $className
+	 * @return ClassType
+	 *
+	 * @throws InvalidStateException
+	 */
+	private static function getClassReflection($className)
+	{
+		if (!method_exists($className, 'getReflection')) {
+			throw new InvalidStateException('Invalid class. Missing getReflection method on ' . $className);
+		}
+
+		return $className::getReflection();
 	}
 
 }
