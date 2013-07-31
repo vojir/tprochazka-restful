@@ -75,7 +75,7 @@ Sample usage
 namespace ResourcesModule;
 
 use Drahak\Restful\IResource;
-use Drahak\Restful\Application\ResourcePresenter
+use Drahak\Restful\Application\UI\ResourcePresenter
 
 /**
  * SamplePresenter resource
@@ -316,7 +316,7 @@ The simplest but yet powerful way to provide readable error response for clients
 <?php
 namespace Restful\Api;
 
-use Drahak\Restful\Application\ResourcePresenter;
+use Drahak\Restful\Application\UI\ResourcePresenter;
 
 /**
  * Base API ErrorPresenter
@@ -466,7 +466,5 @@ ___
 TODO list
 ---------
 - Better API resources panel. There are to many records in the table.
-- Refactor `RouteListFactory` for easier scalability
-- Make documentation tool work in command line
 
 So that's it. Enjoy and hope you like it!
