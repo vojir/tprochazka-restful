@@ -15,13 +15,14 @@ class ResourceRouteList extends RouteList
 	/**
 	 * Set offset
 	 * @param mixed $index
-	 * @param mixed $route
-	 * @throws \Drahak\Restful\InvalidStateException
+	 * @param IResourceRouter $route
+	 *
+	 * @throws InvalidStateException
 	 */
 	public function offsetSet($index, $route)
 	{
 		if (!($route instanceof IResourceRouter)) {
-			throw new InvalidStateException('ResourceRouteList expects IResourceRoute');
+			throw new InvalidStateException('ResourceRouteList expects IResourceRoute, ' . get_class($route) . ' given.');
 		}
 		parent::offsetSet($index, $route);
 	}
