@@ -38,6 +38,13 @@ class MediaResourceTest extends TestCase
 		$data = $this->resource->getData();
 		Assert::same($data, $this->media);
     }
+
+	public function testThrowsExceptionWhenIllegalContentTypeIsGiven()
+	{
+		Assert::exception(function() {
+			$this->resource->setContentType('application/test');
+		}, 'Drahak\Restful\InvalidArgumentException');
+	}
     
 }
 \run(new MediaResourceTest());

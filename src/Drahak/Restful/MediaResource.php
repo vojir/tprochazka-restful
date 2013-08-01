@@ -20,18 +20,25 @@ class MediaResource extends Object implements IResource
 	/** @var Media */
 	private $media;
 
+	/** @var array */
+	protected static $supportedTypes = array(
+		self::DATA_URL
+	);
+
 	/**
 	 * @param Media $media
 	 * @param string $contentType
+	 *
+	 * @throws InvalidArgumentException when given content type is illegal for this resource
 	 */
 	public function __construct(Media $media, $contentType = self::DATA_URL)
 	{
 		$this->media = $media;
-		$this->contentType = $contentType;
+		$this->setContentType($contentType);
 	}
 
 	/**
-	 * Get content type
+	 * Get resource content type
 	 * @return string
 	 */
 	public function getContentType()
@@ -43,9 +50,17 @@ class MediaResource extends Object implements IResource
 	 * Set content type
 	 * @param string $contentType
 	 * @return MediaResource
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function setContentType($contentType)
 	{
+		if (!in_array($contentType, self::$supportedTypes)) {
+			throw new InvalidArgumentException(
+				'Media resource supports ' . implode(', ', self::$supportedTypes) . ', "' . $contentType . '" given'
+			);
+		}
+
 		$this->contentType = $contentType;
 		return $this;
 	}
