@@ -37,13 +37,22 @@ class ResourceTest extends TestCase
 		Assert::equal($data['name'], 'Test');
     }
 
+	public function testAddingArrayListThroughArrayAccess()
+	{
+		$this->resource[] = 'hello';
+		$this->resource[] = 'world';
+		$data = $this->resource->getData();
+		Assert::equal($data[0], 'hello');
+		Assert::equal($data[1], 'world');
+	}
+
 	public function testAddingDataThroughMagicMethods()
 	{
 		$this->resource->name = 'Test';
 		Assert::equal($this->resource->name, 'Test');
 	}
 
-	public function testSettingMimeType()
+	public function testSetMimeType()
 	{
 		$this->resource->setContentType(IResource::JSON);
 		Assert::equal($this->resource->contentType, IResource::JSON);

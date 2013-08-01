@@ -82,7 +82,6 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 		$this->data = Json::decode($serialized);
 	}
 
-
 	/******************** ArrayAccess interface ********************/
 
 	/**
@@ -109,6 +108,9 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 */
 	public function offsetSet($offset, $value)
 	{
+		if ($offset === NULL) {
+			$offset = count($this->data);
+		}
 		$this->data[$offset] = $value;
 	}
 
@@ -126,7 +128,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	/**
 	 * Magic getter from $this->data
 	 * @param string $name
-	 * @param $name
+	 *
 	 * @throws \Exception|\Nette\MemberAccessException
 	 * @return mixed
 	 */
