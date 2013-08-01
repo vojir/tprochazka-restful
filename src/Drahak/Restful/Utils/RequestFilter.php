@@ -6,6 +6,7 @@ use Nette\ArrayList;
 use Nette\Utils\Paginator;
 use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\InvalidStateException;
+use Nette\Utils\Strings;
 
 /**
  * RequestFilter
@@ -27,10 +28,15 @@ class RequestFilter extends Object
 	/** Search string key in URL query */
 	const SEARCH_KEY = 'q';
 
-	/** @var ArrayList */
+	/** Descending sort */
+	const SORT_DESC = 'DESC';
+	/** Ascending sort */
+	const SORT_ASC = 'ASC';
+
+	/** @var array */
 	private $fieldList;
 
-	/** @var ArrayList */
+	/** @var array */
 	private $sortList;
 
 	/** @var Paginator */
@@ -99,16 +105,24 @@ class RequestFilter extends Object
 
 	/**
 	 * Create sort list
-	 * @return ArrayList
+	 * @return array
 	 */
 	protected function createSortList()
 	{
-		return array_filter(explode(',', $this->request->getQuery(self::SORT_KEY)));
+		$sortList = array();
+		$fields = array_filter(explode(',', $this->request->getQuery(self::SORT_KEY)));
+		foreach ($fields as $field) {
+			$isInverted = Strings::substring($field, 0, 1) === '-';
+			$sort = $isInverted ? self::SORT_DESC : self::SORT_ASC;
+			$field = $isInverted ? Strings::substring($field, 1) : $field;
+			$sortList[$field] = $sort;
+		}
+		return $sortList;
 	}
 
 	/**
 	 * Create field list
-	 * @return ArrayList
+	 * @return array
 	 */
 	protected function createFieldList()
 	{
@@ -130,7 +144,7 @@ class RequestFilter extends Object
 
 		if ($offset === NULL || $limit === NULL) {
 			throw new InvalidStateException(
-				'To create paginator add offset and query parameter to request URL'
+				'To create paginator add offset and limit query parameter to request URL'
 			);
 		}
 

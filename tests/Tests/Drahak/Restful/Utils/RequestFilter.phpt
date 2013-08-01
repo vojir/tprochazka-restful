@@ -52,9 +52,15 @@ class RequestFilterTest extends TestCase
 			->with('sort')
 			->andReturn('-any,item,list,');
 
+		$expected = array(
+			'any' => RequestFilter::SORT_DESC,
+			'item' => RequestFilter::SORT_ASC,
+			'list' => RequestFilter::SORT_ASC
+		);
+
 		$result = $this->filter->getSortList();
 		Assert::type('array', $result);
-		Assert::same($result, array('-any','item','list'));
+		Assert::same($result, $expected);
 	}
 
 	public function testGetSearchQuery()
