@@ -66,14 +66,9 @@ class MethodHandler extends Object implements IApplicationEvent
 	{
 		foreach ($router as $route) {
 			if ($route instanceof IResourceRouter && !$route instanceof Traversable) {
-				$methodFlag = NULL;
-				foreach ($this->methods as $flag => $requestMethod) {
-					if ($route->isMethod($flag)) {
-						$methodFlag = $flag;
-						break;
-					}
-				}
+				$methodFlag = $this->getMethodFlag($route);
 				if (!$methodFlag) continue;
+
 				$request = $this->createAcceptableRequest($methodFlag);
 
 				$acceptableMethods = array_keys($route->getActionDictionary());
@@ -95,11 +90,27 @@ class MethodHandler extends Object implements IApplicationEvent
 	}
 
 	/**
+	 * Get route method flag
+	 * @param IResourceRouter $route
+	 * @return int|NULL
+	 */
+	protected function getMethodFlag(IResourceRouter $route)
+	{
+		$methodFlag = NULL;
+		foreach ($this->methods as $flag => $requestMethod) {
+			if ($route->isMethod($flag)) {
+				return $flag;
+			}
+		}
+		return $methodFlag;
+	}
+
+	/**
 	 * Create route acceptable HTTP request
 	 * @param int $methodFlag
 	 * @return Request
 	 */
-	private function createAcceptableRequest($methodFlag)
+	protected function createAcceptableRequest($methodFlag)
 	{
 		$query = $this->removeOverrideParam($this->request->getQuery());
 		$headers = $this->removeOverrideHeader($this->request->getHeaders());
