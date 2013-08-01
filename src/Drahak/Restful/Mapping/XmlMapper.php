@@ -1,22 +1,34 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Drahak\Restful\InvalidArgumentException;
+use DOMDocument;
+use Traversable;
 use Nette\Object;
+use SimpleXMLElement;
+use Drahak\Restful\InvalidArgumentException;
 
 /**
  * XmlMapper
  * @package Drahak\Restful\Mapping
  * @author Drahomír Hanák
+ *
+ * @property string|NULL $rootElement
+ * @property string $itemElement
  */
 class XmlMapper extends Object implements IMapper
 {
+
+	/** @internal */
+	const ITEM_ELEMENT = 'item';
 
 	/** @var \DOMDocument */
 	private $xml;
 
 	/** @var null|string */
 	private $rootElement;
+
+	/** @var null|string */
+	private $itemElement;
 
 	/**
 	 * @param string|null $rootElement
@@ -26,7 +38,8 @@ class XmlMapper extends Object implements IMapper
 	public function __construct($rootElement = NULL)
 	{
 		$this->rootElement = $rootElement;
-		$this->xml = new \DOMDocument('1.0', 'UTF-8');
+		$this->itemElement = self::ITEM_ELEMENT;
+		$this->xml = new DOMDocument('1.0', 'UTF-8');
 		$this->xml->formatOutput = TRUE;
 	}
 
@@ -56,20 +69,45 @@ class XmlMapper extends Object implements IMapper
 	}
 
 	/**
+	 * Set item element tag name for array lists
+	 * @param string $itemElement
+	 * @return XmlMapper
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	public function setItemElement($itemElement)
+	{
+		if (!is_string($itemElement)) {
+			throw new InvalidArgumentException('Item element must be of type string');
+		}
+		$this->itemElement = $itemElement;
+		return $this;
+	}
+
+	/**
+	 * Get item element
+	 * @return string
+	 */
+	public function getItemElement()
+	{
+		return $this->itemElement;
+	}
+
+	/**
 	 * Parse traversable or array resource data to XML
-	 * @param array|\Traversable $data
+	 * @param array|Traversable $data
 	 * @param bool $prettyPrint
 	 * @return mixed|string
 	 *
-	 * @throws \Drahak\Restful\InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function stringify($data, $prettyPrint = TRUE)
 	{
-		if (!is_array($data) && !($data instanceof \Traversable)) {
+		if (!is_array($data) && !($data instanceof Traversable)) {
 			throw new InvalidArgumentException('Data must be of type array or Traversable');
 		}
 
-		if ($data instanceof \Traversable) {
+		if ($data instanceof Traversable) {
 			$data = iterator_to_array($data, TRUE);
 		}
 
@@ -99,7 +137,7 @@ class XmlMapper extends Object implements IMapper
 	 */
 	private function fromXml($data)
 	{
-		$xml = new \SimpleXMLElement($data);
+		$xml = new SimpleXMLElement($data);
 		return (array)$xml;
 	}
 
@@ -111,19 +149,14 @@ class XmlMapper extends Object implements IMapper
 	{
 		$domElement = is_null($domElement) ? $this->xml : $domElement;
 
-		if (is_array($data) || $data instanceof \Traversable) {
+		if (is_array($data) || $data instanceof Traversable) {
 			foreach ($data as $index => $mixedElement) {
 				if (is_int($index)) {
-					if ($index == 0) {
-						$node = $domElement;
-					} else {
-						$node = $this->xml->createElement($domElement->tagName);
-						$domElement->parentNode->appendChild($node);
-					}
+					$node = $this->xml->createElement($this->itemElement);
 				} else {
 					$node = $this->xml->createElement($index);
-					$domElement->appendChild($node);
 				}
+				$domElement->appendChild($node);
 				$this->toXml($mixedElement, $node);
 			}
 		} else {

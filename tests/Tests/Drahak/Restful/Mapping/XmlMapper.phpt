@@ -36,6 +36,32 @@ class XmlMapperTest extends TestCase
 		Assert::true($dom->has('root node'));
 	}
 
+	public function testConvertArrayListWithNumericIndexes()
+	{
+		$data = array('hello', 'world');
+		$xml = $this->mapper->stringify($data);
+		$dom = Tester\DomQuery::fromXml($xml);
+
+		$items = $dom->find('root item');
+		Assert::equal(count($items), 2);
+		Assert::equal((string)$items[0], 'hello');
+		Assert::equal((string)$items[1], 'world');
+	}
+
+	public function testSetCustomItemElementName()
+	{
+		$data = array('hello', 'world');
+		$this->mapper->setRootElement('base');
+		$this->mapper->setItemElement('test');
+		$xml = $this->mapper->stringify($data);
+		$dom = Tester\DomQuery::fromXml($xml);
+
+		$items = $dom->find('base test');
+		Assert::equal(count($items), 2);
+		Assert::equal((string)$items[0], 'hello');
+		Assert::equal((string)$items[1], 'world');
+	}
+
 	public function testConvertXmlToDataArray()
 	{
 		$array = $this->mapper->parse('<?xml version="1.0" encoding="utf-8" ?><root><node>value</node></root>');
