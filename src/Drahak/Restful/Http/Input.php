@@ -1,16 +1,17 @@
 <?php
 namespace Drahak\Restful\Http;
 
-use Drahak\Restful\Validation\IDataProvider;
-use Drahak\Restful\Validation\IField;
-use Drahak\Restful\Validation\IValidationScope;
-use Drahak\Restful\Validation\ValidationScopeFactory;
+use ArrayIterator;
 use IteratorAggregate;
-use Nette\MemberAccessException;
 use Nette\Object;
 use Nette\Http;
 use Nette\Utils\Json;
 use Nette\Utils\Strings;
+use Nette\MemberAccessException;
+use Drahak\Restful\Validation\IDataProvider;
+use Drahak\Restful\Validation\IField;
+use Drahak\Restful\Validation\IValidationScope;
+use Drahak\Restful\Validation\ValidationScopeFactory;
 
 /**
  * Request Input parser
@@ -106,7 +107,7 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	 */
 	public function getIterator()
 	{
-		return new InputIterator($this);
+		return new ArrayIterator($this->getData());
 	}
 
 	/******************** Validation data provider interface ********************/
