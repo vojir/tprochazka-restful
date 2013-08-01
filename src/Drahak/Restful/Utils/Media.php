@@ -1,5 +1,5 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Utils;
 
 use Nette\Object;
 use Nette\Templating\Helpers;

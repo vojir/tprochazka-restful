@@ -1,20 +1,20 @@
 <?php
-namespace Tests\Drahak\Restful;
+namespace Tests\Drahak\Restful\Utils;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Media;
+use Drahak\Restful\Utils\Media;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Media.
+ * Test: Tests\Drahak\Restful\Utils\Media.
  *
- * @testCase Tests\Drahak\Restful\MediaTest
+ * @testCase Tests\Drahak\Restful\Utils\MediaTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful
+ * @package Tests\Drahak\Restful\Utils
  */
 class MediaTest extends TestCase
 {
