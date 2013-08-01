@@ -1,9 +1,11 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Drahak\Restful\InvalidArgumentException;
+use Drahak\Restful\Media;
 use Nette\Object;
+use Nette\Templating\Helpers;
 use Nette\Utils\Strings;
+use Drahak\Restful\InvalidArgumentException;
 
 /**
  * DataUrlMapper - encode or decode base64 file
@@ -14,26 +16,27 @@ class DataUrlMapper extends Object implements IMapper
 {
 
 	/**
-	 * Create DATA URL from file path
-	 * @param array $data (type => string, src => string)
+	 * Create DATA URL from file
+	 * @param Media $data
 	 * @param bool $prettyPrint
 	 * @return string
 	 *
-	 * @throws \Drahak\Restful\InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function stringify($data, $prettyPrint = TRUE)
 	{
-		if (!isset($data['src']) || !isset($data['type'])) {
-			throw new InvalidArgumentException('DataUrlMapper expects array(src => \'\', contentType => \'\')');
+		if (!$data instanceof Media) {
+			throw new InvalidArgumentException(
+				'DataUrlMapper expects object of type Media, ' . (gettype($data)) . ' given'
+			);
 		}
-		$src = base64_encode($data['src']);
-		return 'data:' . $data['type'] . ';base64,'. $src;
+		return Helpers::dataStream((string)$data, $data->getContentType());
 	}
 
 	/**
 	 * Convert client request data to array or traversable
-	 * @param mixed $data
-	 * @return array (type => string|null, src => string)
+	 * @param string $data
+	 * @return Media
 	 *
 	 * @throws MappingException
 	 */
@@ -44,10 +47,7 @@ class DataUrlMapper extends Object implements IMapper
 			throw new MappingException('Given data URL is invalid.');
 		}
 
-		return array(
-			'type' => $matches[1],
-			'src' => base64_decode($matches[3])
-		);
+		return new Media(base64_decode($matches[3]), $matches[1]);
 	}
 
 }

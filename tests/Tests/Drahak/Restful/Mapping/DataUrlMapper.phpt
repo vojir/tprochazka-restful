@@ -4,6 +4,7 @@ namespace Tests\Drahak\Restful\Mapping;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Drahak\Restful\Mapping\DataUrlMapper;
+use Mockista\MockInterface;
 use Nette;
 use Tester;
 use Tester\Assert;
@@ -22,23 +23,34 @@ class DataUrlMapperTest extends TestCase
 	/** @var DataUrlMapper */
 	private $mapper;
 
+	/** @var MockInterface */
+	private $media;
+
     protected function setUp()
     {
 		parent::setUp();
+		$this->media = $this->mockista->create('Drahak\Restful\Media');
 		$this->mapper = new DataUrlMapper;
     }
     
-    public function testEncodeContentToBase64WithMimeTypeFromArray()
+    public function testEncodeContentToBase64WithMimeTypeFromMediaObject()
     {
-		$encoded = $this->mapper->stringify(array('src' => 'Hello world', 'type' => 'text/plain'));
+		$this->media->expects('__toString')
+			->once()
+			->andReturn('Hello world');
+		$this->media->expects('getContentType')
+			->once()
+			->andReturn('text/plain');
+
+		$encoded = $this->mapper->stringify($this->media);
 		Assert::equal($encoded, 'data:text/plain;base64,SGVsbG8gd29ybGQ=');
     }
 
-	public function testDecodeBase64DataToArray()
+	public function testDecodeBase64DataToMediaObject()
 	{
-		$data = array('src' => 'Hello world', 'type' => 'text/plain');
 		$result = $this->mapper->parse('data:text/plain;base64,SGVsbG8gd29ybGQ=');
-		Assert::equal($result, $data);
+		Assert::equal($result->getContent(), 'Hello world');
+		Assert::equal($result->getContentType(), 'text/plain');
 	}
 
 }
