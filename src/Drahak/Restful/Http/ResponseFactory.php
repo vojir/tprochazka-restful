@@ -1,0 +1,146 @@
+<?php
+namespace Drahak\Restful\Http;
+
+use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Utils\RequestFilter;
+use Nette\Http\IResponse;
+use Nette\Http\Response;
+use Nette\Http\Url;
+use Nette\Object;
+use Nette\Utils\Paginator;
+
+/**
+ * ResponseFactory
+ * @package Drahak\Restful\Http
+ * @author Drahomír Hanák
+ */
+class ResponseFactory extends Object
+{
+
+	/** @var IRequest */
+	private $request;
+
+	/** @var IResponse */
+	private $response;
+
+	/** @var RequestFilter */
+	private $requestFilter;
+
+	/** @var array Default response code for each request method */
+	protected $defaultCodes = array(
+		IRequest::GET => 200,
+		IRequest::POST => 201,
+		IRequest::PUT => 200,
+		IRequest::PATCH => 200,
+		IRequest::HEAD => 200,
+		IRequest::DELETE => 200,
+	);
+
+	/**
+	 * @param IRequest $request
+	 * @param RequestFilter $requestFilter
+	 */
+	public function __construct(IRequest $request, RequestFilter $requestFilter)
+	{
+		$this->request = $request;
+		$this->requestFilter = $requestFilter;
+	}
+
+	/**
+	 * Set original wrapper response since nette does not support custom response codes
+	 * @param IResponse $response
+	 * @return ResponseFactory
+	 */
+	public function setResponse(IResponse $response)
+	{
+		$this->response = $response;
+		return $this;
+	}
+
+	/**
+	 * Create HTTP response
+	 * @param int|NULL $code
+	 * @return IResponse
+	 */
+	public function createHttpResponse($code = NULL)
+	{
+		$response = new ResponseProxy($this->response ? $this->response : new Response);
+		$response->setCode($this->getCode($code));
+
+		try {
+			$response->setHeader('Link', $this->getPaginatorLink());
+			$response->setHeader('X-Total-Count',$this->getPaginatorTotalCount());
+		} catch (InvalidStateException $e) {
+			// Don't use paginator
+		}
+		return $response;
+	}
+
+	/**
+	 * Get default status code
+	 * @param int|null $code
+	 * @return null
+	 */
+	protected function getCode($code = NULL)
+	{
+		if ($code === NULL) {
+			$code = $this->defaultCodes[$this->request->getMethod()];
+		}
+		return (int)$code;
+	}
+
+	/**
+	 * Get paginator next/last link header
+	 * @return string
+	 */
+	protected function getPaginatorLink()
+	{
+		$paginator = $this->requestFilter->getPaginator();
+
+		$link = '<' . $this->getNextPageUrl($paginator) . '>; rel="next"';
+		if ($paginator->getItemCount()) {
+			$link .= ', <' . $this->getLastPageUrl($paginator) . '>; rel="last"';
+		}
+		return $link;
+	}
+
+	/**
+	 * Get paginator items total count
+	 * @return int|NULL
+	 */
+	protected function getPaginatorTotalCount()
+	{
+		$paginator = $this->requestFilter->getPaginator();
+		return $paginator->getItemCount() ? $paginator->getItemCount() : NULL;
+	}
+
+	/**
+	 * Get next page URL
+	 * @param Paginator $paginator
+	 * @return Url
+	 */
+	private function getNextPageUrl(Paginator $paginator)
+	{
+		$url = $this->request->getUrl();
+		parse_str($url->getQuery(), $query);
+		$paginator->setPage($paginator->getPage()+1);
+		$query['offset'] = $paginator->getOffset();
+		$query['limit'] = $paginator->getItemsPerPage();
+		return $url->appendQuery($query);
+	}
+
+	/**
+	 * Get last page URL
+	 * @param Paginator $paginator
+	 * @return Url
+	 */
+	private function getLastPageUrl(Paginator $paginator)
+	{
+		$url = $this->request->getUrl();
+		parse_str($url->getQuery(), $query);
+		$query['offset'] = $paginator->getLastPage() * $paginator->getItemsPerPage() - $paginator->getItemsPerPage();
+		$query['limit'] = $paginator->getItemsPerPage();
+		return $url->appendQuery($query);
+	}
+
+}

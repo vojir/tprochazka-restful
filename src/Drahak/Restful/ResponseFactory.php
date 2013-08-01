@@ -3,11 +3,11 @@ namespace Drahak\Restful;
 
 use Drahak\Restful\IResource;
 use Drahak\Restful\Http\IRequest;
+use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
 use Nette\Http\Url;
 use Nette\Object;
-use Nette\Utils\Paginator;
 
 /**
  * REST ResponseFactory
@@ -23,8 +23,8 @@ class ResponseFactory extends Object implements IResponseFactory
 	/** @var IRequest */
 	private $request;
 
-	/** @var RequestFilter */
-	private $filter;
+	/** @var MapperContext */
+	private $mapperContext;
 
 	/** @var array */
 	private $responses = array(
@@ -36,26 +36,16 @@ class ResponseFactory extends Object implements IResponseFactory
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
 
-	/** @var array Default response code for each request method */
-	protected $defaultCodes = array(
-		IRequest::GET => 200,
-		IRequest::POST => 201,
-		IRequest::PUT => 200,
-		IRequest::PATCH => 200,
-		IRequest::HEAD => 200,
-		IRequest::DELETE => 200,
-	);
-
 	/**
 	 * @param IResponse $response
 	 * @param IRequest $request
-	 * @param RequestFilter $filter
+	 * @param MapperContext $mapperContext
 	 */
-	public function __construct(IResponse $response, IRequest $request, RequestFilter $filter)
+	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext)
 	{
 		$this->response = $response;
 		$this->request = $request;
-		$this->filter = $filter;
+		$this->mapperContext = $mapperContext;
 	}
 
 	/**
@@ -106,7 +96,10 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	public function create(IResource $resource, $code = NULL)
 	{
-		$contentType = $resource->getContentType();
+		$contentType = !$this->request->isJsonp() ?
+			$resource->getContentType() :
+			IResource::JSONP;
+
 		if (!isset($this->responses[$contentType])) {
 			throw new InvalidStateException('Unregistered API response.');
 		}
@@ -115,83 +108,14 @@ class ResponseFactory extends Object implements IResponseFactory
 			throw new InvalidStateException('API response class does not exist.');
 		}
 
-		if ($this->request->isJsonp()) {
-			$contentType = IResource::JSONP;
+		if (!$resource->getData()) {
+			$this->response->setCode(204); // No content
 		}
-
-		$this->setupCode($resource, $code);
-		$this->setupPaginator($resource, $code);
 
 		$data = $resource->getData();
 		$responseClass = $this->responses[$contentType];
-		$response = new $responseClass($data);
+		$response = new $responseClass($data, $this->mapperContext->getMapper($contentType));
 		return $response;
-	}
-
-	/**
-	 * Setup response HTTP code
-	 * @param IResource $resource
-	 * @param int|null $code
-	 */
-	protected function setupCode(IResource $resource, $code = NULL)
-	{
-		if ($code === NULL) {
-			$code = $this->defaultCodes[$this->request->getMethod()];
-			if (!$resource->getData()) {
-				$code = 204; // No content
-			}
-		}
-		$this->response->setCode($code);
-	}
-
-	/**
-	 * Setup paginator
-	 * @param IResource $resource
-	 * @param int|null $code
-	 */
-	protected function setupPaginator(IResource $resource, $code = NULL)
-	{
-		try {
-			$paginator = $this->filter->getPaginator();
-
-			$link = '<' . $this->getNextPageUrl($paginator) . '>; rel="next"';
-			if ($paginator->getItemCount()) {
-				$link .= ', <' . $this->getLastPageUrl($paginator) . '>; rel="last"';
-			}
-			$this->response->setHeader('X-Total-Count', $paginator->getItemCount() ? $paginator->getItemCount() : NULL);
-			$this->response->setHeader('Link', $link);
-		} catch (InvalidStateException $e) {
-			// Don't use paginator
-		}
-	}
-
-	/**
-	 * Get next page URL
-	 * @param Paginator $paginator
-	 * @return Url
-	 */
-	private function getNextPageUrl(Paginator $paginator)
-	{
-		$url = $this->request->getUrl();
-		parse_str($url->getQuery(), $query);
-		$paginator->setPage($paginator->getPage()+1);
-		$query['offset'] = $paginator->getOffset();
-		$query['limit'] = $paginator->getItemsPerPage();
-		return $url->appendQuery($query);
-	}
-
-	/**
-	 * Get last page URL
-	 * @param Paginator $paginator
-	 * @return Url
-	 */
-	private function getLastPageUrl(Paginator $paginator)
-	{
-		$url = $this->request->getUrl();
-		parse_str($url->getQuery(), $query);
-		$query['offset'] = $paginator->getLastPage() * $paginator->getItemsPerPage() - $paginator->getItemsPerPage();
-		$query['limit'] = $paginator->getItemsPerPage();
-		return $url->appendQuery($query);
 	}
 
 }

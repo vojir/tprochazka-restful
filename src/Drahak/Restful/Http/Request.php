@@ -1,9 +1,9 @@
 <?php
 namespace Drahak\Restful\Http;
 
-use Drahak\Restful\IResource;
 use Nette;
 use Nette\Utils\Strings;
+use Drahak\Restful\IResource;
 
 /**
  * HTTP Request

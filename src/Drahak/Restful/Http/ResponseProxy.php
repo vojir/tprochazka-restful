@@ -20,9 +20,12 @@ class ResponseProxy extends Object implements IResponse
 	/** @var int */
 	private $code;
 
-	public function __construct()
+	/**
+	 * @param IResponse $response
+	 */
+	public function __construct(IResponse $response)
 	{
-		$this->response = new Response();
+		$this->response = $response;
 	}
 
 	/**
@@ -64,7 +67,7 @@ class ResponseProxy extends Object implements IResponse
 	 */
 	public function getCode()
 	{
-		return $this->response->getCode();
+		return $this->code;
 	}
 
 	/**

@@ -138,18 +138,21 @@ class RestfulExtension extends CompilerExtension
 			->setImplement('Drahak\Restful\Validation\ValidationScopeFactory');
 
 		// Http
+		$container->addDefinition($this->prefix('httpResponseFactory'))
+			->setClass('Drahak\Restful\Http\ResponseFactory');
+		$container->getDefinition('nette.httpRequestFactory')
+			->setClass('Drahak\Restful\Http\RequestFactory')
+			->setArguments(array($config['jsonpKey'], $config['prettyPrintKey']));
+
 		$container->getDefinition('httpRequest')
 			->setClass('Drahak\Restful\Http\IRequest');
 		$container->getDefinition('httpResponse')
-			->setClass('Drahak\Restful\Http\ResponseProxy');
+			->setClass('Drahak\Restful\Http\ResponseProxy')
+			->setFactory($this->prefix('@httpResponseFactory') . '::createHttpResponse');
 
 		$container->addDefinition($this->prefix('requestFilter'))
 			->setClass('Drahak\Restful\Utils\RequestFilter')
 			->setArguments(array('@httpRequest', array($config['jsonpKey'], $config['prettyPrintKey'])));
-
-		$container->getDefinition('nette.httpRequestFactory')
-			->setClass('Drahak\Restful\Http\RequestFactory')
-			->setArguments(array($config['jsonpKey'], $config['prettyPrintKey']));
 
 		$container->addDefinition($this->prefix('methodHandler'))
 			->setClass('Drahak\Restful\Application\Events\MethodHandler');

@@ -30,27 +30,34 @@ class ResponseFactoryTest extends TestCase
 	private $resource;
 
 	/** @var MockInterface */
+	private $mapper;
+
+	/** @var MockInterface */
 	private $request;
 
 	/** @var MockInterface */
 	private $response;
 
 	/** @var MockInterface */
-	private $filter;
+	private $mapperContext;
 
     protected function setUp()
     {
 		parent::setUp();
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
-		$this->filter = $this->mockista->create('Drahak\Restful\Utils\RequestFilter');
-		$this->factory = new ResponseFactory($this->response, $this->request, $this->filter);
+		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
+		$this->factory = new ResponseFactory($this->response, $this->request, $this->mapperContext);
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
+		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 	}
 
 	public function testCreateResponse()
 	{
-		$this->mockResponseFactory(204);
+		$this->response->expects('setCode')
+			->once()
+			->with(204);
+
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn(IResource::JSON);
@@ -58,19 +65,36 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->andReturn(array());
 
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with(IResource::JSON)
+			->andReturn($this->mapper);
+
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
+
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof JsonResponse);
 	}
 
 	public function testCreateCustomResponse()
 	{
-		$this->mockResponseFactory();
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
+
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with('text')
+			->andReturn($this->mapper);
+
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);
@@ -80,7 +104,6 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateJsonpResponseWhenJsonpIsActive()
 	{
-		$this->mockResponseFactory();
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
@@ -90,6 +113,10 @@ class ResponseFactoryTest extends TestCase
 		$this->request->expects('isJsonp')
 			->once()
 			->andReturn(TRUE);
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with(IResource::JSONP)
+			->andReturn($this->mapper);
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);
@@ -102,6 +129,9 @@ class ResponseFactoryTest extends TestCase
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('drahak/test');
+		$this->request->expects('isJsonp')
+			->once()
+			->andReturn(FALSE);
 
 		Assert::throws(function() {
 			$this->factory->create($this->resource);
@@ -115,46 +145,6 @@ class ResponseFactoryTest extends TestCase
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
 		}, 'Drahak\Restful\InvalidArgumentException');
     }
-
-	private function mockResponseFactory($code = 200)
-	{
-		$url = new Nette\Http\Url('http://localhost/test');
-		$paginator = $this->createPaginatorMock($url);
-
-		$this->response->expects('setHeader')->atLeastOnce();
-		$this->request->expects('isJsonp')
-			->once()
-			->andReturn(FALSE);
-		$this->request->expects('getUrl')
-			->once()
-			->andReturn($url);
-		$this->request->expects('getMethod')->once()->andReturn(IRequest::GET);
-
-		$this->response->expects('setCode')
-			->once()
-			->with($code);
-		$this->filter->expects('getPaginator')
-			->once()
-			->andReturn($paginator);
-	}
-
-	/**
-	 * Create paginator mock
-	 * @param Nette\Http\Url $url
-	 * @return MockInterface
-	 */
-	private function createPaginatorMock(Nette\Http\Url $url)
-	{
-		$paginator = $this->mockista->create('Nette\Utils\Paginator');
-		$paginator->expects('setUrl')->once()->with($url);
-		$paginator->expects('getPage')->atLeastOnce()->andReturn(1);
-		$paginator->expects('getLastPage')->atLeastOnce()->andReturn(9);
-		$paginator->expects('getItemsPerPage')->atLeastOnce()->andReturn(10);
-		$paginator->expects('getOffset')->atLeastOnce()->andReturn(10);
-		$paginator->expects('getItemCount')->atLeastOnce()->andReturn(100);
-		$paginator->expects('setPage')->atLeastOnce();
-		return $paginator;
-	}
 
 }
 \run(new ResponseFactoryTest());
