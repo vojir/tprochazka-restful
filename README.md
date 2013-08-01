@@ -341,7 +341,31 @@ Clients can determine preferred format just like in normal API resource. Actuall
 
 Security & authentication
 -------------------------
-The library provides base support of secure API calls. It's based on sending hashed data with private key. Authentication process is as follows:
+Restful provides a few ways how to secure your resources:
+
+### BasicAuthentication
+This is completely basic but yet powerful way how to secure you resources. It's based on standard Nette user's authentication (if user is not logged in then throws security exception which is provided to client) therefore it's good for trusted clients (such as own client-side application etc.) Since this is common Restful contains `SecuredResourcePresenter` as a children of `ResourcePresenter` which already handles `BasicAuthentication` for you. See example:
+
+```php
+use Drahak\Restful\Application\UI\SecuredResourcePresenter
+
+/**
+ * My secured resource presenter
+ * @author Drahomír Hanák
+ */
+class ArticlesPresenter extends SecuredResourcePresenter
+{
+
+    // all my resources are protected and reachable only for logged user's
+    // you can also add some Authorizator to check user rights
+
+}
+```
+
+But remember to keep REST API stateless.
+
+### SecuredAuthentication
+When there are third-party clients are connected you have to find another way how to authenticate these clients. `SecuredAuthentication` is more or less the answer. It's based on sending hashed data with private key. Since the data is already encrypted, it not depends on SSL. Authentication process is as follows:
 
 ### Understanding authentication process
 - Client: append request timestamp to request body.
