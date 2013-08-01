@@ -116,13 +116,16 @@ class RestfulExtension extends CompilerExtension
 			->setClass('Drahak\Restful\Mapping\QueryMapper');
 		$container->addDefinition($this->prefix('dataUrlMapper'))
 			->setClass('Drahak\Restful\Mapping\DataUrlMapper');
+		$container->addDefinition($this->prefix('nullMapper'))
+			->setClass('Drahak\Restful\Mapping\NullMapper');
 
 		$container->addDefinition($this->prefix('mapperContext'))
 			->setClass('Drahak\Restful\Mapping\MapperContext')
 			->addSetup('$service->addMapper(?, ?)', array(IResource::XML, $this->prefix('@xmlMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::JSON, $this->prefix('@jsonMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::QUERY, $this->prefix('@queryMapper')))
-			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')));
+			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::NULL, $this->prefix('@nullMapper')));
 
 		// Input & validation
 		$container->addDefinition($this->prefix('inputFactory'))
