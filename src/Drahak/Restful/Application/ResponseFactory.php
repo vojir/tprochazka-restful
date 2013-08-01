@@ -1,6 +1,8 @@
 <?php
-namespace Drahak\Restful;
+namespace Drahak\Restful\Application;
 
+use Drahak\Restful\InvalidArgumentException;
+use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\Mapping\MapperContext;

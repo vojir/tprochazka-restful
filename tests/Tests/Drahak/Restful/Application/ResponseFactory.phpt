@@ -1,13 +1,12 @@
 <?php
-namespace Tests\Drahak\Restful;
+namespace Tests\Drahak\Restful\Application;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 use Drahak\Restful\Application\Responses\JsonpResponse;
 use Drahak\Restful\Application\Responses\JsonResponse;
-use Drahak\Restful\Http\IRequest;
+use Drahak\Restful\Application\ResponseFactory;
 use Drahak\Restful\IResource;
-use Drahak\Restful\ResponseFactory;
 use Mockista\MockInterface;
 use Nette;
 use Tester;
@@ -15,11 +14,11 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\ResponseFactory.
+ * Test: Tests\Drahak\Restful\Application\ResponseFactory.
  *
- * @testCase Tests\Drahak\Restful\ResponseFactoryTest
+ * @testCase Tests\Drahak\Restful\Application\ResponseFactoryTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful
+ * @package Tests\Drahak\Restful\Application
  */
 class ResponseFactoryTest extends TestCase
 {

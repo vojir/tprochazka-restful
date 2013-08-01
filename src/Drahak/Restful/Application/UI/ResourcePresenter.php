@@ -2,9 +2,9 @@
 namespace Drahak\Restful\Application\UI;
 
 use Drahak\Restful\Application\IResourcePresenter;
+use Drahak\Restful\Application\IResponseFactory;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\IResourceFactory;
-use Drahak\Restful\IResponseFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Resource;

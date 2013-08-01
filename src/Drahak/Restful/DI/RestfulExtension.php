@@ -99,7 +99,7 @@ class RestfulExtension extends CompilerExtension
 		Validators::assert($config['prettyPrintKey'], 'string');
 
 		$container->addDefinition($this->prefix('responseFactory'))
-			->setClass('Drahak\Restful\ResponseFactory');
+			->setClass('Drahak\Restful\Application\ResponseFactory');
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Drahak\Restful\ResourceFactory');
