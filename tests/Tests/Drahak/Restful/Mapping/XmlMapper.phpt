@@ -46,6 +46,8 @@ class XmlMapperTest extends TestCase
 		Assert::equal(count($items), 2);
 		Assert::equal((string)$items[0], 'hello');
 		Assert::equal((string)$items[1], 'world');
+		Assert::true($items[0]->has('[index]'));
+		Assert::true($items[1]->has('[index]'));
 	}
 
 	public function testSetCustomItemElementName()

@@ -153,6 +153,7 @@ class XmlMapper extends Object implements IMapper
 			foreach ($data as $index => $mixedElement) {
 				if (is_int($index)) {
 					$node = $this->xml->createElement($this->itemElement);
+					$node->setAttribute('index', $index);
 				} else {
 					$node = $this->xml->createElement($index);
 				}
