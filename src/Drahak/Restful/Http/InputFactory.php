@@ -4,7 +4,7 @@ namespace Drahak\Restful\Http;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\MapperContext;
-use Drahak\Restful\Validation\ValidationScopeFactory;
+use Drahak\Restful\Validation\IValidationScopeFactory;
 use Drahak\Restful\Application\BadRequestException;
 use Nette\Object;
 
@@ -19,7 +19,7 @@ class InputFactory extends Object
 	/** @var IRequest */
 	protected $httpRequest;
 
-	/** @var ValidationScopeFactory */
+	/** @var IValidationScopeFactory */
 	private $validationScopeFactory;
 
 	/** @var IMapper */
@@ -31,9 +31,9 @@ class InputFactory extends Object
 	/**
 	 * @param IRequest $httpRequest
 	 * @param MapperContext $mapperContext
-	 * @param ValidationScopeFactory $validationScopeFactory
+	 * @param IValidationScopeFactory $validationScopeFactory
 	 */
-	public function __construct(IRequest $httpRequest, MapperContext $mapperContext, ValidationScopeFactory $validationScopeFactory)
+	public function __construct(IRequest $httpRequest, MapperContext $mapperContext, IValidationScopeFactory $validationScopeFactory)
 	{
 		$this->httpRequest = $httpRequest;
 		$this->mapperContext = $mapperContext;

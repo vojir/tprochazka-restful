@@ -37,7 +37,7 @@ class InputTest extends TestCase
 		parent::setUp();
 		$this->data = array('hello_message' => 'Hello World');
 		$this->validationScope = $this->mockista->create('Drahak\Restful\Validation\ValidationScope');
-		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\ValidationScopeFactory');
+		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\IValidationScopeFactory');
 		$this->input = new Input($this->validationScopeFactory, $this->data);
     }
     

@@ -11,7 +11,7 @@ use Nette\MemberAccessException;
 use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\IField;
 use Drahak\Restful\Validation\IValidationScope;
-use Drahak\Restful\Validation\ValidationScopeFactory;
+use Drahak\Restful\Validation\IValidationScopeFactory;
 
 /**
  * Request Input parser
@@ -29,14 +29,14 @@ class Input extends Object implements IteratorAggregate, IInput, IDataProvider
 	/** @var IValidationScope */
 	private $validationScope;
 
-	/** @var ValidationScopeFactory */
+	/** @var IValidationScopeFactory */
 	private $validationScopeFactory;
 
 	/**
-	 * @param ValidationScopeFactory $validationScopeFactory
+	 * @param IValidationScopeFactory $validationScopeFactory
 	 * @param array $data
 	 */
-	public function __construct(ValidationScopeFactory $validationScopeFactory, array $data = array())
+	public function __construct(IValidationScopeFactory $validationScopeFactory, array $data = array())
 	{
 		$this->data = $data;
 		$this->validationScopeFactory = $validationScopeFactory;

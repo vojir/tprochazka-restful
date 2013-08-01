@@ -39,7 +39,7 @@ class InputFactoryTest extends TestCase
 		parent::setUp();
 		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
-		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\ValidationScopeFactory');
+		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\IValidationScopeFactory');
 		$this->inputFactory = new InputFactory($this->request, $this->mapperContext, $this->validationScopeFactory);
     }
     
