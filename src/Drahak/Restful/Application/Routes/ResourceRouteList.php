@@ -22,7 +22,7 @@ class ResourceRouteList extends RouteList
 	 */
 	public function offsetSet($index, $route)
 	{
-		if (!($route instanceof IResourceRouter)) {
+		if (!$route instanceof IResourceRouter && !$route instanceof ResourceRouteList) {
 			throw new InvalidStateException('ResourceRouteList expects IResourceRoute, ' . get_class($route) . ' given.');
 		}
 		parent::offsetSet($index, $route);
