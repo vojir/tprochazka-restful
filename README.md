@@ -366,9 +366,9 @@ class ArticlesPresenter extends SecuredResourcePresenter
 But remember to keep REST API stateless.
 
 ### SecuredAuthentication
-When there are third-party clients are connected you have to find another way how to authenticate these clients. `SecuredAuthentication` is more or less the answer. It's based on sending hashed data with private key. Since the data is already encrypted, it not depends on SSL. Authentication process is as follows:
+When third-party clients are connected you have to find another way how to authenticate these requests. `SecuredAuthentication` is more or less the answer. It's based on sending hashed data with private key. Since the data is already encrypted, it not depends on SSL. Authentication process is as follows:
 
-### Understanding authentication process
+#### Understanding authentication process
 - Client: append request timestamp to request body.
 - Client: hash all data with `hash_hmac` (sha256 algorithm) and with private key. Then append generated hash to request as `X-HTTP-AUTH-TOKEN` header (by default).
 - Client: sends request to server.
@@ -503,7 +503,7 @@ X-Total-Count: 1000
 In case you want to load just a part of a resource (e.g. it's expensive to load whole resource data), you should add `fields` parameter to query params with list of desired fields (e.q. `fields=user_id,name,email`). In `RequestFilter`, you can get this list (`array('user_id', 'name', 'email')`) by calling `getFieldsList()` method.
 
 ### Sort list
-If you want to sort list provided by resource you will probably need properties according to which you sort. Also, don't forget there is descending and ascending sort. To make it as easy as possible you can get it from `sort` query parameter (such as `query=name,-created_at`) as `array('name' => 'ASC', 'created_at' => 'DESC')` by calling `RequestFilter` method `getSortList()`
+If you want to sort data provided by resource you will probably need properties according to which you sort it. To make it as easy as possible you can get it from `sort` query parameter (such as `query=name,-created_at`) as `array('name' => 'ASC', 'created_at' => 'DESC')` by calling `RequestFilter` method `getSortList()`
 
 ___
 
