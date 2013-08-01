@@ -95,7 +95,7 @@ class RouteListFactory extends Object implements IRouteListFactory
 
 			$methods = $this->getClassMethods($class);
 			$routeData = $this->parseClassRoutes($methods);
-			$routeList[] = $this->addRoutes($routeList, $routeData, $class);
+			$this->addRoutes($routeList, $routeData, $class);
 		}
 		return $routeList;
 	}
