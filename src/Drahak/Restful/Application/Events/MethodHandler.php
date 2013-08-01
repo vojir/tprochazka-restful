@@ -59,7 +59,8 @@ class MethodHandler extends Object implements IApplicationEvent
 	/**
 	 * Recursively Checks available methods for this request
 	 * @param IRouter $router
-	 * @throws \Nette\Application\BadRequestException
+	 *
+	 * @throws BadRequestException
 	 */
 	private function checkAvailableMethods(IRouter $router)
 	{

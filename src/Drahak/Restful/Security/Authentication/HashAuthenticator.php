@@ -27,6 +27,11 @@ class HashAuthenticator extends Object implements IRequestAuthenticator
 	/** @var IAuthTokenCalculator */
 	protected $calculator;
 
+	/**
+	 * @param string $privateKey
+	 * @param IRequest $request
+	 * @param IAuthTokenCalculator $calculator
+	 */
 	public function __construct($privateKey, IRequest $request, IAuthTokenCalculator $calculator)
 	{
 		$this->privateKey = $privateKey;

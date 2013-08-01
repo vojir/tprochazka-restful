@@ -1,9 +1,9 @@
 <?php
 namespace Drahak\Restful\Security\Authentication;
 
+use Nette\Object;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Security\RequestTimeoutException;
-use Nette\Object;
 
 /**
  * Verify request timeout to avoid replay attack (needs to be applied with any HashAuthenticator)

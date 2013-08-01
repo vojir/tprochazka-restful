@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\UI;
 
+use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Application\IResponseFactory;
 use Drahak\Restful\Http\IInput;
@@ -13,8 +14,6 @@ use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;
 use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\ValidationException;
-use Nette\Caching\Cache;
-use Nette\Utils\Strings;
 use Nette\Application;
 use Nette\Application\UI;
 use Nette\Application\IResponse;
@@ -70,6 +69,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 	/**
 	 * Presenter startup
+	 *
 	 * @throws BadRequestException
 	 */
 	protected function startup()

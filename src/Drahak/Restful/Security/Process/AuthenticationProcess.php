@@ -1,8 +1,8 @@
 <?php
 namespace Drahak\Restful\Security\Process;
 
-use Drahak\Restful\Http\IInput;
 use Nette\Object;
+use Drahak\Restful\Http\IInput;
 
 /**
  * Request AuthenticationProcess template

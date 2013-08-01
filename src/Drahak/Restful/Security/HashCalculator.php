@@ -25,6 +25,9 @@ class HashCalculator extends Object implements IAuthTokenCalculator
 	/** @var IMapper */
 	private $mapper;
 
+	/**
+	 * @param IMapper $mapper
+	 */
 	public function __construct(IMapper $mapper)
 	{
 		$this->mapper = $mapper;

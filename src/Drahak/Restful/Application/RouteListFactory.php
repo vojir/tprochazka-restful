@@ -88,12 +88,14 @@ class RouteListFactory extends Object implements IRouteListFactory
 		$routeList = new ResourceRouteList($module ? $module : $this->module);
 		foreach ($this->loader->getIndexedClasses() as $class => $file) {
 			try {
-				$methods = $this->getClassMethods($class);
-				$routeData = $this->parseClassRoutes($methods);
-				$routeList[] = $this->addRoutes($routeList, $routeData, $class);
+				self::getClassReflection($class);
 			} catch (InvalidStateException $e) {
 				continue;
 			}
+
+			$methods = $this->getClassMethods($class);
+			$routeData = $this->parseClassRoutes($methods);
+			$routeList[] = $this->addRoutes($routeList, $routeData, $class);
 		}
 		return $routeList;
 	}
