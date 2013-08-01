@@ -14,6 +14,7 @@ This repository is being developed.
 - [Security & authentication](#security--authentication)
 - [Secure your resources with OAuth2](#secure-your-resources-with-oauth2)
 - [JSONP support](#jsonp-support)
+- [Utilities that make life better](#utilities-that-make-life-better)
 
 Requirements
 ------------
@@ -484,6 +485,25 @@ callback({
 **Note** : the function name. This is name from `jsonp` query parameter. This string is "webalized" by `Nette\Utils\Strings::webalize(jsonp, NULL, FALSE)`. If you set `jsonpKey` to `FALSE` or `NULL` in configuration, you totally disable JSONP mode for all your API resources. Then you can trigger it manually. Just set `IResource` `$contentType` property to `IResource::JSONP`.
 
 **Also note** : if this option is enabled and client adds `jsonp` parameter to query string, no matter what you set to `$presenter->resource->contentType` it will produce `JsonpResponse`.
+
+Utilities that make life better
+-------------------------------
+Filtering API requests is rut. That's why it's boring to do it all again. Restful provides `RequestFilter` which parses the most common things for you. In `ResourcePresenter` you can find `RequestFilter` in `$requestFilter` property.
+
+### Paginator
+By adding `offset` & `limit` parameters to query string you can create standard Nette `Paginator`. Your API resource then response with `Link` header (where "last page" part of `Link` and `X-Total-Count` header are only provided if you set total items count to a paginator)
+
+```
+Link: <URL_to_next_page>; rel="next",
+      <URL_to_last_page>; rel="last"
+X-Total-Count: 1000
+```
+
+### Fields list
+In case you want to load just a part of a resource (e.g. it's expensive to load whole resource data), you should add `fields` parameter to query params with list of desired fields (e.q. `fields=user_id,name,email`). In `RequestFilter`, you can get this list (`array('user_id', 'name', 'email')`) by calling `getFieldsList()` method.
+
+### Sort list
+If you want to sort list provided by resource you will probably need properties according to which you sort. Also, don't forget there is descending and ascending sort. To make it as easy as possible you can get it from `sort` query parameter (such as `query=name,-created_at`) as `array('name' => 'ASC', 'created_at' => 'DESC')` by calling `RequestFilter` method `getSortList()`
 
 ___
 
