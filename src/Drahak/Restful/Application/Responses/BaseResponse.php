@@ -29,11 +29,13 @@ abstract class BaseResponse extends Object implements IResponse
 	protected $contentType;
 
 	/**
-	 * @param string|NULL $contentType
+	 * @param null $contentType
+	 * @param IMapper $mapper
 	 */
-	public function __construct($contentType = NULL)
+	public function __construct(IMapper $mapper, $contentType = NULL)
 	{
 		$this->contentType = $contentType;
+		$this->mapper = $mapper;
 	}
 
 	/**

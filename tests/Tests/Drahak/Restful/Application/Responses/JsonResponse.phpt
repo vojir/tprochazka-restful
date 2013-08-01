@@ -30,8 +30,7 @@ class JsonResponseTest extends TestCase
     {
 		parent::setUp();
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
-		$this->response = new JsonResponse(array('hello' => 'world'));
-		$this->response->setMapper($this->mapper);
+		$this->response = new JsonResponse(array('hello' => 'world'), $this->mapper);
     }
     
     public function testResponseWithJson()

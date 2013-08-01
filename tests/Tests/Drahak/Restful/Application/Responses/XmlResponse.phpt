@@ -31,8 +31,11 @@ class XmlResponseTest extends TestCase
     {
 		parent::setUp();
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\XmlMapper');
-		$this->response = new XmlResponse(array());
-		$this->response->setMapper($this->mapper);
+		$this->mapper->expects('getRootElement')
+			->atLeastOnce()
+			->andReturn('root');
+
+		$this->response = new XmlResponse(array(), $this->mapper);
     }
     
     public function testSendXmlResponse()

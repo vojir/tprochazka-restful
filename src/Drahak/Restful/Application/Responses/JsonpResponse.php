@@ -2,8 +2,8 @@
 namespace Drahak\Restful\Application\Responses;
 
 use Drahak;
+use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\InvalidArgumentException;
-use Drahak\Restful\Mapping\JsonMapper;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Utils\Strings;
@@ -16,11 +16,15 @@ use Nette\Utils\Strings;
 class JsonpResponse extends BaseResponse
 {
 
-	public function __construct($data, $contentType = NULL)
+	/**
+	 * @param array $data
+	 * @param IMapper $mapper
+	 * @param null $contentType
+	 */
+	public function __construct($data, IMapper $mapper, $contentType = NULL)
 	{
-		parent::__construct($contentType);
+		parent::__construct($mapper, $contentType);
 		$this->data = $data;
-		$this->mapper = new JsonMapper;
 	}
 
 	/**

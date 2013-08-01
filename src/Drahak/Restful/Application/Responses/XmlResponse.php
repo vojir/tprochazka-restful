@@ -14,14 +14,16 @@ class XmlResponse extends BaseResponse
 {
 
 	/**
-	 * @param null|string $data
+	 * @param array $data
+	 * @param XmlMapper $mapper
 	 * @param string|null $contentType
-	 * @param string $rootElement
 	 */
-	public function __construct($data, $contentType = NULL, $rootElement = 'root')
+	public function __construct($data, XmlMapper $mapper, $contentType = NULL)
 	{
-		parent::__construct($contentType);
-		$this->mapper = new XmlMapper($rootElement);
+		parent::__construct($mapper, $contentType);
+		if (!$mapper->getRootElement()) {
+			$mapper->setRootElement('root');
+		}
 		$this->data = $data;
 	}
 

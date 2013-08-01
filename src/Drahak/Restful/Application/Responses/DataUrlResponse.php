@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
-use Drahak\Restful\Mapping\DataUrlMapper;
+use Drahak\Restful\Mapping\IMapper;
 use Nette\Http;
 
 /**
@@ -14,13 +14,13 @@ class DataUrlResponse extends BaseResponse
 
 	/**
 	 * @param string|null $data
+	 * @param IMapper $mapper
 	 * @param string|null $contentType
 	 */
-	public function __construct($data, $contentType = NULL)
+	public function __construct($data, IMapper $mapper, $contentType = NULL)
 	{
-		parent::__construct($contentType);
+		parent::__construct($mapper, $contentType);
 		$this->data = $data;
-		$this->mapper = new DataUrlMapper;
 	}
 
 	/**

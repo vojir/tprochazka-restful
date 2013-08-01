@@ -38,8 +38,7 @@ class JsonpResponseTest extends TestCase
 		$this->httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->httpResponse = $this->mockista->create('Nette\Http\IResponse');
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
-		$this->response = new JsonpResponse(array('test' => 'JSONP'));
-		$this->response->setMapper($this->mapper);
+		$this->response = new JsonpResponse(array('test' => 'JSONP'), $this->mapper);
     }
     
     public function testResponseWithJSONP()

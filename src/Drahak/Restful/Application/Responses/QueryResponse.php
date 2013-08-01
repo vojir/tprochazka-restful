@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
+use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\QueryMapper;
 use Nette\Http;
 
@@ -13,13 +14,13 @@ class QueryResponse extends BaseResponse
 {
 
 	/**
-	 * @param $data
+	 * @param array $data
+	 * @param IMapper $mapper
 	 * @param string|null $contentType
 	 */
-	public function __construct($data, $contentType = NULL)
+	public function __construct($data, IMapper $mapper, $contentType = NULL)
 	{
-		parent::__construct($contentType);
-		$this->mapper = new QueryMapper;
+		parent::__construct($mapper, $contentType);
 		$this->data = $data;
 	}
 

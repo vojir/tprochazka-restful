@@ -37,8 +37,7 @@ class DataUrlResponseTest extends TestCase
 		$this->response = new DataUrlResponse(array(
 			'src' => 'Hello world',
 			'type' => 'text/plain'
-		));
-		$this->response->setMapper($this->mapper);
+		), $this->mapper);
     }
     
     public function testResponseWithValidDataUrl()
