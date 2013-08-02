@@ -84,7 +84,9 @@ class ResponseFactory extends Object
 	protected function getCode($code = NULL)
 	{
 		if ($code === NULL) {
-			$code = $this->defaultCodes[$this->request->getMethod()];
+			$code = $code = isset($this->defaultCodes[$this->request->getMethod()]) ?
+				$this->defaultCodes[$this->request->getMethod()] :
+				200;
 		}
 		return (int)$code;
 	}
