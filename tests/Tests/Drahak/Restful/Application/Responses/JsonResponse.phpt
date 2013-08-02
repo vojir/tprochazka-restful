@@ -47,7 +47,7 @@ class JsonResponseTest extends TestCase
 
 		$httpResponse->expects('setContentType')
 			->once()
-			->with('application/json');
+			->with('application/json; charset=UTF-8');
 
 		$httpRequest->expects('isPrettyPrint')
 			->once()
