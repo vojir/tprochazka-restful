@@ -16,9 +16,12 @@ class ValidationScope extends Object implements IValidationScope
 	/** @var IValidator */
 	private $validator;
 
-	/** @var array */
+	/** @var Field[] */
 	private $fields = array();
 
+	/**
+	 * @param IValidator $validator
+	 */
 	public function __construct(IValidator $validator)
 	{
 		$this->validator = $validator;
@@ -42,7 +45,7 @@ class ValidationScope extends Object implements IValidationScope
 	/**
 	 * Validate all field in collection
 	 * @param array $data
-	 * @return array of fields with error information
+	 * @return Error[]
 	 */
 	public function validate(array $data)
 	{

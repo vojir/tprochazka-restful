@@ -46,7 +46,7 @@ class ValidationScopeTest extends TestCase
 
 	public function testValidateArrayData()
 	{
-		$exception = new ValidationException('text');
+		$exception = new ValidationException('test', 'Please add integer');
 
 		$rule = $this->schema->field('test');
 		$rule->addRule(IValidator::INTEGER, 'Please add integer');
@@ -56,8 +56,8 @@ class ValidationScopeTest extends TestCase
 			->andThrow($exception);
 
 		$errors = $this->schema->validate(array('test' => 'Hello world'));
-		Assert::equal($errors[0]['field'], 'test');
-		Assert::equal($errors[0]['message'], 'Please add integer');
+		Assert::equal($errors[0]->field, 'test');
+		Assert::equal($errors[0]->message, 'Please add integer');
 	}
 
 }

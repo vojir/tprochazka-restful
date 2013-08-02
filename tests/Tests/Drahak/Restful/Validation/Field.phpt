@@ -62,7 +62,7 @@ class FieldTest extends TestCase
 
 	public function testProvideErrorListWhenValidationFails()
 	{
-		$exception = new ValidationException('test');
+		$exception = new ValidationException('test', 'Please enter a value of at least 3 characters.');
 		$this->field->addRule(IValidator::MAX_LENGTH, 'Please enter a value of at least %d characters.', 3);
 		$rules = $this->field->getRules();
 
@@ -73,9 +73,9 @@ class FieldTest extends TestCase
 
 		$result = $this->field->validate('hello world');
 
-		Assert::same($result[0]['field'], 'test');
-		Assert::same($result[0]['message'], 'Please enter a value of at least 3 characters.');
-		Assert::null($result[0]['code']);
+		Assert::same($result[0]->field, 'test');
+		Assert::same($result[0]->message, 'Please enter a value of at least 3 characters.');
+		Assert::equal($result[0]->code, 0);
 	}
 
 }

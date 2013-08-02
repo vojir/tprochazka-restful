@@ -80,7 +80,7 @@ class Field extends Object implements IField
 	/**
 	 * Validate field for given value
 	 * @param mixed $value
-	 * @return array
+	 * @return Error[]
 	 */
 	public function validate($value)
 	{
@@ -93,11 +93,7 @@ class Field extends Object implements IField
 
 				$this->validator->validate($value, $rule);
 			} catch (ValidationException $e) {
-				$errors[] = array(
-					'field' => $this->getName(),
-					'message' => vsprintf($rule->getMessage(), $rule->getArgument()),
-					'code' => $rule->getCode()
-				);
+				$errors[] = new Error($e->getField(), $e->getMessage(), $e->getCode());
 			}
 		}
 		return $errors;
