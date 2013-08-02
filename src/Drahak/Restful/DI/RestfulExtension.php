@@ -123,6 +123,7 @@ class RestfulExtension extends CompilerExtension
 			->setClass('Drahak\Restful\Mapping\MapperContext')
 			->addSetup('$service->addMapper(?, ?)', array(IResource::XML, $this->prefix('@xmlMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::JSON, $this->prefix('@jsonMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::JSONP, $this->prefix('@jsonMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::QUERY, $this->prefix('@queryMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::NULL, $this->prefix('@nullMapper')));
