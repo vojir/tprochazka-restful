@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\Validation\Error;
 use Nette;
 
 /**
@@ -86,7 +87,7 @@ class BadRequestException extends Nette\Application\BadRequestException
 
 	/**
 	 * Is thrown when validation problem appears
-	 * @param array $errors during validation
+	 * @param Error[] $errors during validation
 	 * @param string $message
 	 * @param \Exception $previous
 	 * @return BadRequestException

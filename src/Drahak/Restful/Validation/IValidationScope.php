@@ -19,7 +19,7 @@ interface IValidationScope
 	/**
 	 * Validate all field in collection
 	 * @param array $data
-	 * @return array
+	 * @return Error
 	 */
 	public function validate(array $data);
 

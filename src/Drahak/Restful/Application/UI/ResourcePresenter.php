@@ -84,7 +84,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		// Check if input is validate
 		if (!$this->input->isValid() && $validationProcessed === TRUE) {
 			$errors = $this->input->validate();
-			throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]['message']);
+			throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]->message);
 		}
 	}
 
