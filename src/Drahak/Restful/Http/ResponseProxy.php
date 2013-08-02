@@ -40,9 +40,11 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Sets HTTP response code.
-	 * @param  int
-	 * @return void
+	 * Set response code
+	 * @param int $code
+	 * @return ResponseProxy
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function setCode($code)
 	{
@@ -50,7 +52,7 @@ class ResponseProxy extends Object implements IResponse
 			$this->response->setCode($code);
 			$this->code = $code;
 		} catch (InvalidArgumentException $e) {
-			if ($code === 422 || $code === 429) {
+			if ($code > 99 && $code < 600) {
 				$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 				header($protocol . ' ' . $code, TRUE, $code);
 				$this->code = $code;
@@ -62,7 +64,7 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Returns HTTP response code.
+	 * Returns status code
 	 * @return int
 	 */
 	public function getCode()
@@ -71,10 +73,10 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Sends a HTTP header and replaces a previous one.
-	 * @param  string  header name
-	 * @param  string  header value
-	 * @return void
+	 * Set HTTP header
+	 * @param string $name
+	 * @param string|int|null $value
+	 * @return ResponseProxy
 	 */
 	public function setHeader($name, $value)
 	{
@@ -83,10 +85,10 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Adds HTTP header.
-	 * @param  string  header name
-	 * @param  string  header value
-	 * @return void
+	 * Add HTTP header
+	 * @param string $name
+	 * @param string|int|null $value
+	 * @return ResponseProxy
 	 */
 	public function addHeader($name, $value)
 	{
@@ -95,10 +97,10 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Sends a Content-type HTTP header.
-	 * @param  string  mime-type
-	 * @param  string  charset
-	 * @return void
+	 * Set Content-Type header
+	 * @param string $type
+	 * @param string|null $charset
+	 * @return ResponseProxy
 	 */
 	public function setContentType($type, $charset = NULL)
 	{
@@ -107,10 +109,10 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Redirects to a new URL.
-	 * @param  string  URL
-	 * @param  int     HTTP code
-	 * @return void
+	 * Redirects to a new URL
+	 * @param string $url
+	 * @param int $code
+	 * @return ResponseProxy
 	 */
 	public function redirect($url, $code = self::S302_FOUND)
 	{
@@ -120,8 +122,8 @@ class ResponseProxy extends Object implements IResponse
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  mixed  timestamp or number of seconds
-	 * @return void
+	 * @param mixed $seconds timestamp or number of seconds
+	 * @return ResponseProxy
 	 */
 	public function setExpiration($seconds)
 	{
@@ -148,15 +150,15 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Sends a cookie.
-	 * @param  string name of the cookie
-	 * @param  string value
-	 * @param  mixed expiration as unix timestamp or number of seconds; Value 0 means "until the browser is closed"
-	 * @param  string
-	 * @param  string
-	 * @param  bool
-	 * @param  bool
-	 * @return void
+	 * Sends a cookie
+	 * @param string $name of the cookie
+	 * @param string $value
+	 * @param int $expire expiration as unix timestamp or number of seconds; Value 0 means "until the browser is closed"
+	 * @param string|null $path
+	 * @param string|null $domain
+	 * @param bool|null $secure
+	 * @param bool|null $httpOnly
+	 * @return ResponseProxy
 	 */
 	public function setCookie($name, $value, $expire, $path = NULL, $domain = NULL, $secure = NULL, $httpOnly = NULL)
 	{
@@ -165,22 +167,27 @@ class ResponseProxy extends Object implements IResponse
 	}
 
 	/**
-	 * Deletes a cookie.
-	 * @param  string name of the cookie.
-	 * @param  string
-	 * @param  string
-	 * @param  bool
-	 * @return void
+	 * Delete cookies
+	 * @param string $name
+	 * @param string|null $path
+	 * @param string|null $domain
+	 * @param bool|null $secure
+	 * @return ResponseProxy
 	 */
 	public function deleteCookie($name, $path = NULL, $domain = NULL, $secure = NULL)
 	{
 		$this->response->deleteCookie($name, $path, $domain, $secure);
+		return $this;
 	}
 
-
+	/**
+	 * Removes duplicate cookies from response.
+	 * @return ResponseProxy
+	 */
 	public function removeDuplicateCookies()
 	{
 		$this->response->removeDuplicateCookies();
+		return $this;
 	}
 
 }
