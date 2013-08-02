@@ -53,7 +53,7 @@ class JsonpResponseTest extends TestCase
 
 		$this->httpResponse->expects('setContentType')
 			->once()
-			->with('application/javascript; charset=UTF-8');
+			->with('application/javascript', 'UTF-8');
 		$this->httpResponse->expects('getCode')
 			->once()
 			->andReturn(200);
@@ -96,7 +96,7 @@ class JsonpResponseTest extends TestCase
 
 		$this->httpResponse->expects('setContentType')
 			->once()
-			->with('application/javascript; charset=UTF-8');
+			->with('application/javascript', 'UTF-8');
 		$this->httpResponse->expects('getCode')
 			->once()
 			->andReturn(200);

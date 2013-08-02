@@ -36,7 +36,7 @@ class JsonpResponse extends BaseResponse
 	public function send(IRequest $httpRequest, IResponse $httpResponse)
 	{
 		$this->checkRequest($httpRequest);
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/javascript; charset=UTF-8');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/javascript', 'UTF-8');
 
 		$data = array();
 		$data['response'] = $this->data;

@@ -36,7 +36,7 @@ class XmlResponse extends BaseResponse
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
 		$this->checkRequest($httpRequest);
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/xml');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/xml', 'UTF-8');
 		echo $this->mapper->stringify($this->data, $httpRequest->isPrettyPrint());
 	}
 

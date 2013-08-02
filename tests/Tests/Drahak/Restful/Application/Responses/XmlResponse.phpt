@@ -53,7 +53,7 @@ class XmlResponseTest extends TestCase
 			->andReturn(FALSE);
 		$httpResponse->expects('setContentType')
 			->once()
-			->with(IResource::XML);
+			->with(IResource::XML, 'UTF-8');
 
 
 		ob_start();

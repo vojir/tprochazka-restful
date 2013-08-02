@@ -35,7 +35,7 @@ class JsonResponse extends BaseResponse
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
 		$this->checkRequest($httpRequest);
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/json; charset=UTF-8');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/json', 'UTF-8');
 		echo $this->mapper->stringify($this->data, $httpRequest->isPrettyPrint());
 	}
 

@@ -31,7 +31,7 @@ class QueryResponse extends BaseResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/x-www-form-urlencoded');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/x-www-form-urlencoded', 'UTF-8');
 		echo $this->mapper->stringify($this->data);
 	}
 

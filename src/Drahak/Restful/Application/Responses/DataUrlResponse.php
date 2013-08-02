@@ -30,7 +30,7 @@ class DataUrlResponse extends BaseResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain', 'UTF-8');
 		echo $this->mapper->stringify($this->data);
 	}
 

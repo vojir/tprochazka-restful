@@ -52,7 +52,7 @@ class DataUrlResponseTest extends TestCase
 		$response = $this->mockista->create('Nette\Http\IResponse');
 		$response->expects('setContentType')
 			->once()
-			->with('text/plain');
+			->with('text/plain', 'UTF-8');
 
 		ob_start();
 		$this->response->send($this->request, $response);
