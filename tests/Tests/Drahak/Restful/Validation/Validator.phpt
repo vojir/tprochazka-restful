@@ -198,5 +198,14 @@ class ValidatorTest extends TestCase
 		}, 'Drahak\Restful\Validation\ValidationException');
 	}
 
+	public function testThrowsExceptionWhenCallbackToValidationFunctionIsNotCallable()
+	{
+		$this->validator->handle['test'] = 'Hello wordl!';
+		$this->rule->expression = 'test';
+		Assert::exception(function() {
+			$this->validator->validate('test', $this->rule);
+		}, 'Drahak\Restful\InvalidStateException');
+	}
+
 }
 \run(new ValidatorTest());

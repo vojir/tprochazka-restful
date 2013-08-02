@@ -36,14 +36,14 @@ class Validator extends Object implements IValidator
 	public function validate($value, Rule $rule)
 	{
 		if (isset($this->handle[$rule->expression])) {
-			try {
-				$callback = $this->handle[$rule->expression];
-				$params = array($value, $rule);
-				call_user_func_array($callback, $params);
-				return;
-			} catch (InvalidArgumentException $e) {
-				throw new InvalidStateException('Handle for expression ' . $rule->expression . ' not found or is not callable');
+			$callback = $this->handle[$rule->expression];
+			if (!is_callable($callback)) {
+				throw new InvalidStateException(
+					'Handle for expression ' . $rule->expression . ' not found or is not callable');
 			}
+			$params = array($value, $rule);
+			call_user_func_array($callback, $params);
+			return;
 		}
 
 		$expression = $this->parseExpression($rule);
