@@ -57,7 +57,7 @@ class ValidatorTest extends TestCase
 		$this->validator->validate('10', $this->rule);
 	}
 
-	public function tetsThrowsExceptionWhenValuesAreNotSame()
+	public function testThrowsExceptionWhenValuesAreNotSame()
 	{
 		$this->rule->expression = IValidator::EQUAL;
 		$this->rule->argument = 10;
