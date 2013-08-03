@@ -2,6 +2,7 @@
 namespace Drahak\Restful\Http;
 
 use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Resource\Link;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
 use Nette\Http\Response;
@@ -99,9 +100,9 @@ class ResponseFactory extends Object
 	{
 		$paginator = $this->requestFilter->getPaginator();
 
-		$link = '<' . $this->getNextPageUrl($paginator) . '>; rel="next"';
+		$link = $this->getNextPageUrl($paginator);
 		if ($paginator->getItemCount()) {
-			$link .= ', <' . $this->getLastPageUrl($paginator) . '>; rel="last"';
+			$link .= ', ' . $this->getLastPageUrl($paginator);
 		}
 		return $link;
 	}
@@ -119,30 +120,30 @@ class ResponseFactory extends Object
 	/**
 	 * Get next page URL
 	 * @param Paginator $paginator
-	 * @return Url
+	 * @return Link
 	 */
 	private function getNextPageUrl(Paginator $paginator)
 	{
-		$url = $this->request->getUrl();
+		$url = clone $this->request->getUrl();
 		parse_str($url->getQuery(), $query);
 		$paginator->setPage($paginator->getPage()+1);
 		$query['offset'] = $paginator->getOffset();
 		$query['limit'] = $paginator->getItemsPerPage();
-		return $url->appendQuery($query);
+		return new Link($url->appendQuery($query), Link::NEXT);
 	}
 
 	/**
 	 * Get last page URL
 	 * @param Paginator $paginator
-	 * @return Url
+	 * @return Link
 	 */
 	private function getLastPageUrl(Paginator $paginator)
 	{
-		$url = $this->request->getUrl();
+		$url = clone $this->request->getUrl();
 		parse_str($url->getQuery(), $query);
 		$query['offset'] = $paginator->getLastPage() * $paginator->getItemsPerPage() - $paginator->getItemsPerPage();
 		$query['limit'] = $paginator->getItemsPerPage();
-		return $url->appendQuery($query);
+		return new Link($url->appendQuery($query), Link::LAST);
 	}
 
 }
