@@ -7,7 +7,7 @@ use Nette\Object;
  * ResourceConverter
  * @package Drahak\Restful\Resource
  *
- * @property-read IConverter[] $converter
+ * @property-read IConverter[] $converters
  */
 class ResourceConverter extends Object
 {

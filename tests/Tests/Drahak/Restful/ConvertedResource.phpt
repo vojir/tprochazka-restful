@@ -11,13 +11,13 @@ use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\ConverterResource.
+ * Test: Tests\Drahak\Restful\ConvertedResource.
  *
- * @testCase Tests\Drahak\Restful\ConverterResourceTest
+ * @testCase Tests\Drahak\Restful\ConvertedResourceTest
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful
  */
-class ConverterResourceTest extends TestCase
+class ConvertedResourceTest extends TestCase
 {
 
 	/** @var array */
@@ -56,4 +56,4 @@ class ConverterResourceTest extends TestCase
 
     
 }
-\run(new ConverterResourceTest());
+\run(new ConvertedResourceTest());

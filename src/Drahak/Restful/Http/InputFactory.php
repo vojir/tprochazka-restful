@@ -54,6 +54,7 @@ class InputFactory extends Object
 	/**
 	 * Parse data for input
 	 * @return array
+	 *
 	 * @throws BadRequestException
 	 */
 	protected function parseData()
@@ -68,6 +69,7 @@ class InputFactory extends Object
 	/**
 	 * Parse request body if any
 	 * @return array|\Traversable
+	 *
 	 * @throws BadRequestException
 	 */
 	protected function parseRequestBody()

@@ -36,6 +36,7 @@ interface IValidator
 	 * @param mixed $value
 	 * @param Rule $rule
 	 * @return void
+	 *
 	 * @throws ValidationException
 	 */
 	public function validate($value, Rule $rule);

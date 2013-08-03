@@ -47,6 +47,6 @@ class ResourceConverterTest extends TestCase
 		$result = $this->resourceConverter->convert($data);
 		Assert::same($result, $converted);
     }
-    
+
 }
 \run(new ResourceConverterTest());

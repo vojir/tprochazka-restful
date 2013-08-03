@@ -31,7 +31,7 @@ class DateTimeConverter extends Object implements IConverter
      */
 	public function convert(array $resource)
 	{
-		$data = $this->parseDateTime($resource);
+		$data = $this->parseDateTimeToString($resource);
 		return $data;
 	}
 
@@ -39,7 +39,7 @@ class DateTimeConverter extends Object implements IConverter
 	 * @param $array
 	 * @return array
 	 */
-	private function parseDateTime($array)
+	private function parseDateTimeToString($array)
 	{
 		if (!is_array($array)) {
 			if ($array instanceof DateTime || interface_exists('DateTimeInterface') && $array instanceof \DateTimeInterface) {
@@ -50,7 +50,7 @@ class DateTimeConverter extends Object implements IConverter
 
 		foreach ($array as $key => $value) {
 			if ($value instanceof Traversable || is_array($array)) {
-				$array[$key] = $this->parseDateTime($value);
+				$array[$key] = $this->parseDateTimeToString($value);
 			}
 		}
 		return $array;
