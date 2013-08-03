@@ -35,7 +35,7 @@ class XmlMapper extends Object implements IMapper
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct($rootElement = NULL)
+	public function __construct($rootElement = 'root')
 	{
 		$this->rootElement = $rootElement;
 		$this->itemElement = self::ITEM_ELEMENT;

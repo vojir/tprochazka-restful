@@ -2,6 +2,7 @@
 namespace Drahak\Restful\Application\Responses;
 
 use Drahak\Restful\InvalidArgumentException;
+use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\XmlMapper;
 use Nette\Http;
 
@@ -15,15 +16,12 @@ class XmlResponse extends BaseResponse
 
 	/**
 	 * @param array $data
-	 * @param XmlMapper $mapper
+	 * @param IMapper $mapper
 	 * @param string|null $contentType
 	 */
-	public function __construct($data, XmlMapper $mapper, $contentType = NULL)
+	public function __construct($data, IMapper $mapper, $contentType = NULL)
 	{
 		parent::__construct($mapper, $contentType);
-		if (!$mapper->getRootElement()) {
-			$mapper->setRootElement('root');
-		}
 		$this->data = $data;
 	}
 
