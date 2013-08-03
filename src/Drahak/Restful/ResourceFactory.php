@@ -31,9 +31,10 @@ class ResourceFactory extends Object implements IResourceFactory
 
 	/**
 	 * Create new API resource
+	 * @param array $data
 	 * @return IResource
 	 */
-	public function create()
+	public function create(array $data = array())
 	{
 		$resource = new ConvertedResource($this->resourceConverter);
 		$resource->setContentType($this->request->getPreferredContentType());
