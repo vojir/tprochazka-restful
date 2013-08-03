@@ -60,17 +60,40 @@ class ResponseFactoryTest extends TestCase
 		Assert::equal($response->getCode(), 422);
     }
 
+	public function testCreateHttpResponseWithPaginator()
+	{
+		$paginator = $this->createPaginatorMock();
+		$this->filter->expects('getPaginator')
+			->once()
+			->andReturn($paginator);
+
+		$this->response->expects('setCode')
+			->once()
+			->with(200);
+
+		$this->request->expects('getUrl')
+			->once()
+			->andReturn(new Nette\Http\Url('http://resource/'));
+
+		$this->response->expects('setHeader')
+			->once()
+			->with('Link', '<http://resource/?offset=10&limit=10>;rel="next", <http://resource/?offset=90&limit=10>;rel="last"');
+		$this->response->expects('setHeader')
+			->once()
+			->with('X-Total-Count', 100);
+
+		$this->factory->createHttpResponse(200);
+	}
+
 	/**
 	 * Create paginator mock
-	 * @param Nette\Http\Url $url
 	 * @return MockInterface
 	 */
-	private function createPaginatorMock(Nette\Http\Url $url)
+	private function createPaginatorMock()
 	{
 		$paginator = $this->mockista->create('Nette\Utils\Paginator');
-		$paginator->expects('setUrl')->once()->with($url);
 		$paginator->expects('getPage')->atLeastOnce()->andReturn(1);
-		$paginator->expects('getLastPage')->atLeastOnce()->andReturn(9);
+		$paginator->expects('getLastPage')->atLeastOnce()->andReturn(10);
 		$paginator->expects('getItemsPerPage')->atLeastOnce()->andReturn(10);
 		$paginator->expects('getOffset')->atLeastOnce()->andReturn(10);
 		$paginator->expects('getItemCount')->atLeastOnce()->andReturn(100);

@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Converters;
 
+use Drahak\Restful\Resource\IResourceElement;
 use stdClass;
 use Traversable;
 use Nette\Object;
@@ -37,6 +38,10 @@ class ObjectConverter extends Object implements IConverter
 		}
 
 		foreach ($data as $key => $value) {
+			if ($value instanceof IResourceElement) {
+				$value = $value->getData();
+			}
+
 			if ($value instanceof Traversable || $value instanceof stdClass || is_array($value)) {
 				$data[$key] = $this->parseObjects($value);
 			}
