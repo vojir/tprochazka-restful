@@ -23,14 +23,10 @@ class JsonMapper extends Object implements IMapper
 	 */
 	public function stringify($data, $prettyPrint = TRUE)
 	{
-		if ($data instanceof \Traversable) {
-			$data = iterator_to_array($data, TRUE);
-		}
-
 		try {
 			return Json::encode($data, $prettyPrint ? Json::PRETTY : 0);
 		} catch(JsonException $e) {
-			throw new MappingException('Error in parsing response: ' .$e->getMessage());
+			throw new MappingException('Error in parsing response: ' . $e->getMessage());
 		}
 	}
 
@@ -49,6 +45,5 @@ class JsonMapper extends Object implements IMapper
 			throw new MappingException('Error in parsing request: ' . $e->getMessage());
 		}
 	}
-
 
 }

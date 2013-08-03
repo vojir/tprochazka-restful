@@ -21,7 +21,7 @@ class XmlMapper extends Object implements IMapper
 	/** @internal */
 	const ITEM_ELEMENT = 'item';
 
-	/** @var \DOMDocument */
+	/** @var DOMDocument */
 	private $xml;
 
 	/** @var null|string */
