@@ -29,7 +29,7 @@ class MediaResourceTest extends TestCase
     public function setUp()
     {
 		parent::setUp();
-		$this->media = $this->mockista->create('Drahak\Restful\Utils\Media');
+		$this->media = $this->mockista->create('Drahak\Restful\Resource\Media');
 		$this->resource = new MediaResource($this->media);
     }
     

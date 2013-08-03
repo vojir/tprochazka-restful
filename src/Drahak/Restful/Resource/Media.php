@@ -1,13 +1,13 @@
 <?php
-namespace Drahak\Restful\Utils;
+namespace Drahak\Restful\Resource;
 
 use Nette\Object;
 use Nette\Templating\Helpers;
 use Nette\Utils\MimeTypeDetector;
 
 /**
- * Media
- * @package Drahak\Restful
+ * Media resource representation object
+ * @package Drahak\Restful\Resource
  * @author Drahomír Hanák
  *
  * @property-read string $content

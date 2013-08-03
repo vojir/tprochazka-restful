@@ -29,7 +29,7 @@ class DataUrlMapperTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->media = $this->mockista->create('Drahak\Restful\Utils\Media');
+		$this->media = $this->mockista->create('Drahak\Restful\Resource\Media');
 		$this->mapper = new DataUrlMapper;
     }
     

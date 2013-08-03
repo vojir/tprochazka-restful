@@ -2,7 +2,7 @@
 namespace Drahak\Restful;
 
 use Nette\Object;
-use Drahak\Restful\Utils\Media;
+use Drahak\Restful\Resource\Media;
 
 /**
  * MediaResource

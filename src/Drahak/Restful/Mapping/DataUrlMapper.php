@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Mapping;
 
-use Drahak\Restful\Utils\Media;
+use Drahak\Restful\Resource\Media;
 use Nette\Object;
 use Nette\Templating\Helpers;
 use Nette\Utils\Strings;
