@@ -1,9 +1,9 @@
 <?php
-namespace Drahak\Restful\Resource;
+namespace Drahak\Restful\Converters;
 
 /**
  * Converts resource or input data to some format or stringify objects
- * @package Drahak\Restful\Resource
+ * @package Drahak\Restful\Converters
  */
 interface IConverter
 {

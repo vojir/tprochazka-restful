@@ -1,11 +1,11 @@
 <?php
-namespace Drahak\Restful\Resource;
+namespace Drahak\Restful\Converters;
 
 use Nette\Object;
 
 /**
  * ResourceConverter
- * @package Drahak\Restful\Resource
+ * @package Drahak\Restful\Converters
  *
  * @property-read IConverter[] $converters
  */

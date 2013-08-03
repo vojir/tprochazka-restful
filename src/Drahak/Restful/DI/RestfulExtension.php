@@ -184,20 +184,20 @@ class RestfulExtension extends CompilerExtension
 
 		// Default used converters
 		$container->addDefinition($this->prefix('objectConverter'))
-			->setClass('Drahak\Restful\Resource\ObjectConverter')
+			->setClass('Drahak\Restful\Converters\ObjectConverter')
 			->addTag(self::CONVERTER_TAG);
 		$container->addDefinition($this->prefix('dateTimeConverter'))
-			->setClass('Drahak\Restful\Resource\DateTimeConverter')
+			->setClass('Drahak\Restful\Converters\DateTimeConverter')
 			->setArguments(array($config['timeFormat']))
 			->addTag(self::CONVERTER_TAG);
 
 		// Other available converters
 		$container->addDefinition($this->prefix('camelCaseConverter'))
-			->setClass('Drahak\Restful\Resource\CamelCaseConverter');
+			->setClass('Drahak\Restful\Converters\CamelCaseConverter');
 		$container->addDefinition($this->prefix('pascalCaseConverter'))
-			->setClass('Drahak\Restful\Resource\PascalCaseConverter');
+			->setClass('Drahak\Restful\Converters\PascalCaseConverter');
 		$container->addDefinition($this->prefix('snakeCaseConverter'))
-			->setClass('Drahak\Restful\Resource\SnakeCaseConverter');
+			->setClass('Drahak\Restful\Converters\SnakeCaseConverter');
 
 		// Determine which converter to use if any
 		if ($config['convention'] === self::CONVENTION_SNAKE_CASE) {
@@ -213,7 +213,7 @@ class RestfulExtension extends CompilerExtension
 
 		// Load converters by tag
 		$container->addDefinition($this->prefix('resourceConverter'))
-			->setClass('Drahak\Restful\Resource\ResourceConverter');
+			->setClass('Drahak\Restful\Converters\ResourceConverter');
 	}
 
 	/**

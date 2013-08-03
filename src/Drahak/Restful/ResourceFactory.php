@@ -2,7 +2,7 @@
 namespace Drahak\Restful;
 
 use Drahak\Restful\Http\IRequest;
-use Drahak\Restful\Resource\ResourceConverter;
+use Drahak\Restful\Converters\ResourceConverter;
 use Nette\Object;
 
 /**

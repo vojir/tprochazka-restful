@@ -1,20 +1,20 @@
 <?php
-namespace Tests\Drahak\Restful\Resource;
+namespace Tests\Drahak\Restful\Converters;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Resource\DateTimeConverter;
+use Drahak\Restful\Converters\DateTimeConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\DateTimeConverter.
+ * Test: Tests\Drahak\Restful\Converters\DateTimeConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\DateTimeConverterTest
+ * @testCase Tests\Drahak\Restful\Converters\DateTimeConverterTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful\Resource
+ * @package Tests\Drahak\Restful\Converters
  */
 class DateTimeConverterTest extends TestCase
 {

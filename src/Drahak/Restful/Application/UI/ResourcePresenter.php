@@ -8,7 +8,7 @@ use Drahak\Restful\Http\IInput;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
-use Drahak\Restful\Resource;
+use Drahak\Restful\Converters;
 use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;

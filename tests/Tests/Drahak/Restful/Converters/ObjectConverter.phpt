@@ -1,21 +1,21 @@
 <?php
-namespace Tests\Drahak\Restful\Resource;
+namespace Tests\Drahak\Restful\Converters;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use ArrayIterator;
-use Drahak\Restful\Resource\ObjectConverter;
+use Drahak\Restful\Converters\ObjectConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\ObjectConverter.
+ * Test: Tests\Drahak\Restful\Converters\ObjectConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\ObjectConverterTest
+ * @testCase Tests\Drahak\Restful\Converters\ObjectConverterTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful\Resource
+ * @package Tests\Drahak\Restful\Converters
  */
 class ObjectConverterTest extends TestCase
 {

@@ -1,20 +1,20 @@
 <?php
-namespace Tests\Drahak\Restful\Resource;
+namespace Tests\Drahak\Restful\Converters;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Resource\CamelCaseConverter;
+use Drahak\Restful\Converters\CamelCaseConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\CamelCaseConverter.
+ * Test: Tests\Drahak\Restful\Converters\CamelCaseConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\CamelCaseConverterTest
+ * @testCase Tests\Drahak\Restful\Converters\CamelCaseConverterTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful\Resource
+ * @package Tests\Drahak\Restful\Converters
  */
 class CamelCaseConverterTest extends TestCase
 {

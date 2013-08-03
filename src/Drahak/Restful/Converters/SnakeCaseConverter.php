@@ -1,12 +1,12 @@
 <?php
-namespace Drahak\Restful\Resource;
+namespace Drahak\Restful\Converters;
 
 use Drahak\Restful\Utils\Strings;
 use Nette\Object;
 
 /**
  * SnakeCaseConverter
- * @package Drahak\Restful\Resource
+ * @package Drahak\Restful\Converters
  * @author Drahomír Hanák
  */
 class SnakeCaseConverter extends Object implements IConverter

@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful;
 
-use Drahak\Restful\Resource\ResourceConverter;
+use Drahak\Restful\Converters\ResourceConverter;
 
 /**
  * ConvertedResource

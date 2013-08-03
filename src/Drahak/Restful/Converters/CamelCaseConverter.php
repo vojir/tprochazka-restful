@@ -1,12 +1,12 @@
 <?php
-namespace Drahak\Restful\Resource;
+namespace Drahak\Restful\Converters;
 
 use Nette\Object;
 use Drahak\Restful\Utils\Strings;
 
 /**
  * CamelCaseConverter
- * @package Drahak\Restful\Resource
+ * @package Drahak\Restful\Converters
  * @author Drahomír Hanák
  */
 class CamelCaseConverter extends Object implements IConverter

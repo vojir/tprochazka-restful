@@ -1,20 +1,20 @@
 <?php
-namespace Tests\Drahak\Restful\Resource;
+namespace Tests\Drahak\Restful\Converters;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Drahak\Restful\Resource\PascalCaseConverter;
+use Drahak\Restful\Converters\PascalCaseConverter;
 use Nette;
 use Tester;
 use Tester\Assert;
 use Tests\TestCase;
 
 /**
- * Test: Tests\Drahak\Restful\Resource\PascalCaseConverter.
+ * Test: Tests\Drahak\Restful\Converters\PascalCaseConverter.
  *
- * @testCase Tests\Drahak\Restful\Resource\PascalCaseConverterTest
+ * @testCase Tests\Drahak\Restful\Converters\PascalCaseConverterTest
  * @author Drahomír Hanák
- * @package Tests\Drahak\Restful\Resource
+ * @package Tests\Drahak\Restful\Converters
  */
 class PascalCaseConverterTest extends TestCase
 {

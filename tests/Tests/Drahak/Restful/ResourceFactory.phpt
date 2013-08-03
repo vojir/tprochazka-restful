@@ -4,7 +4,7 @@ namespace Tests\Drahak\Restful;
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Drahak\Restful\IResource;
-use Drahak\Restful\Resource\ResourceConverter;
+use Drahak\Restful\Converters\ResourceConverter;
 use Drahak\Restful\ResourceFactory;
 use Mockista\MockInterface;
 use Nette;
@@ -35,7 +35,7 @@ class ResourceFactoryTest extends TestCase
     {
 		parent::setUp();
         $this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
-        $this->resourceConverter = $this->mockista->create('Drahak\Restful\Resource\ResourceConverter');
+        $this->resourceConverter = $this->mockista->create('Drahak\Restful\Converters\ResourceConverter');
         $this->factory = new ResourceFactory($this->request, $this->resourceConverter);
     }
     
