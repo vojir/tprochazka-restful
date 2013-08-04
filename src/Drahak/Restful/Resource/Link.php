@@ -2,6 +2,7 @@
 namespace Drahak\Restful\Resource;
 
 use Nette\Object;
+use Drahak\Restful\IResourceElement;
 
 /**
  * Link representation in resource

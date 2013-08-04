@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 use ArrayIterator;
 use Drahak\Restful\Converters\ObjectConverter;
+use Drahak\Restful\Resource\Link;
 use Nette;
 use Tester;
 use Tester\Assert;
@@ -59,6 +60,17 @@ class ObjectConverterTest extends TestCase
 			'traversable' => $collection
 		);
 
+		$result = $this->converter->convert($data);
+		Assert::same($result, $expected);
+	}
+
+	public function testConvertsResourceElementToAnArray()
+	{
+		$expected = array(
+			array('href' => 'http://resource', 'rel' => 'self')
+		);
+		$data = array();
+		$data[] = new Link('http://resource');
 		$result = $this->converter->convert($data);
 		Assert::same($result, $expected);
 	}

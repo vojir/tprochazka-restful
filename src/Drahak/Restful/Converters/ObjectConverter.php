@@ -1,10 +1,10 @@
 <?php
 namespace Drahak\Restful\Converters;
 
-use Drahak\Restful\Resource\IResourceElement;
 use stdClass;
 use Traversable;
 use Nette\Object;
+use Drahak\Restful\IResourceElement;
 
 /**
  * ObjectConverter

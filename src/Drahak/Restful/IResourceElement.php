@@ -1,9 +1,11 @@
 <?php
-namespace Drahak\Restful\Resource;
+namespace Drahak\Restful;
+
+use Traversable;
 
 /**
  * IResourceElement
- * @package Drahak\Restful\Resource
+ * @package Drahak\Restful
  * @author Drahomír Hanák
  */
 interface IResourceElement
@@ -11,7 +13,7 @@ interface IResourceElement
 
 	/**
 	 * Get element value or array data
-	 * @return mixed
+	 * @return array|Traversable
 	 */
 	public function getData();
 
