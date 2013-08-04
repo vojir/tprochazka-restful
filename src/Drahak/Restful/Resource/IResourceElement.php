@@ -10,12 +10,6 @@ interface IResourceElement
 {
 
 	/**
-	 * Get resource element name
-	 * @return string
-	 */
-	public function getName();
-
-	/**
 	 * Get element value or array data
 	 * @return mixed
 	 */

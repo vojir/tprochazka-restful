@@ -14,9 +14,6 @@ use Nette\Object;
 class Link extends Object implements IResourceElement
 {
 
-	/** Resource element name */
-	const NAME = 'link';
-
 	/** Link pointing on self */
 	const SELF = 'self';
 	/** Link pointing on next page */
@@ -70,15 +67,6 @@ class Link extends Object implements IResourceElement
 	}
 
 	/****************** Resource element interface ******************/
-
-	/**
-	 * Get resource element name
-	 * @return string
-	 */
-	public function getName()
-	{
-		return self::NAME;
-	}
 
 	/**
 	 * Get element value or array data
