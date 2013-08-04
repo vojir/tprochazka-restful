@@ -25,7 +25,7 @@ class ResourceFactoryTest extends TestCase
     /** @var MockInterface */
     private $request;
 
-	/** @var ResourceConverter */
+	/** @var MockInterface */
 	private $resourceConverter;
 
     /** @var ResourceFactory */
@@ -49,6 +49,24 @@ class ResourceFactoryTest extends TestCase
         Assert::true($resource instanceof IResource);
         Assert::equal($resource->getContentType(), 'application/json');
     }
-    
+
+	public function testCreateResourceWithDefaultData()
+	{
+		$data = array('test' => 'factory');
+
+		$this->request->expects('getPreferredContentType')
+			->once()
+			->andReturn('application/json');
+		$this->resourceConverter->expects('convert')
+			->once()
+			->with($data)
+			->andReturn($data);
+
+		$resource = $this->factory->create($data);
+		Assert::true($resource instanceof IResource);
+		Assert::equal($resource->getContentType(), 'application/json');
+		Assert::same($resource->getData(), $data);
+	}
+
 }
 \run(new ResourceFactoryTest());

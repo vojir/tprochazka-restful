@@ -36,7 +36,7 @@ class ResourceFactory extends Object implements IResourceFactory
 	 */
 	public function create(array $data = array())
 	{
-		$resource = new ConvertedResource($this->resourceConverter);
+		$resource = new ConvertedResource($this->resourceConverter, $data);
 		$resource->setContentType($this->request->getPreferredContentType());
 		return $resource;
 	}
