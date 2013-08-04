@@ -4,7 +4,6 @@ namespace Tests\Drahak\Restful;
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Drahak\Restful\IResource;
-use Drahak\Restful\Converters\ResourceConverter;
 use Drahak\Restful\ResourceFactory;
 use Mockista\MockInterface;
 use Nette;

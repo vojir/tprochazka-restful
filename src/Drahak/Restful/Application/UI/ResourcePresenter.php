@@ -9,6 +9,7 @@ use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Converters;
+use Drahak\Restful\Resource\Link;
 use Drahak\Restful\Security\AuthenticationContext;
 use Drahak\Restful\Security\SecurityException;
 use Drahak\Restful\Utils\RequestFilter;
@@ -158,6 +159,20 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		$this->sendResource(NULL, $code);
 	}
+
+	/**
+	 * Create resource link representation object
+	 * @param string $destination
+	 * @param array $args
+	 * @param string $rel
+	 * @return Link
+	 */
+	public function link($destination, $args = array(), $rel = Link::SELF)
+	{
+		$href = parent::link($destination, $args);
+		return new Link($href, $rel);
+	}
+
 
 	/****************** Format methods ******************/
 
