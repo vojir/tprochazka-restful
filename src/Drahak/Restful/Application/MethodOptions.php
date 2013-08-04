@@ -71,10 +71,6 @@ class MethodOptions extends Object
 					$methodNames[] = $this->methods[$flag];
 				}
 
-				if ($request->getMethod() == 'POST') {
-					$route->match($request);
-				}
-
 				if (in_array($route->getMethod($request), $acceptableMethods) && $route->match($request)) {
 					return $methodNames;
 				}
