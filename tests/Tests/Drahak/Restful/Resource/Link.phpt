@@ -40,6 +40,22 @@ class LinkTest extends TestCase
 		$link = (string)$this->link;
 		Assert::equal($link, '<http://resource>;rel="last"');
 	}
+
+	public function testLinkImmutabilityThroughHrefSetter()
+	{
+		$link = $this->link->setHref('http://test');
+		Assert::notSame($link, $this->link);
+		Assert::equal($this->link->getHref(), 'http://resource');
+		Assert::equal($link->getHref(), 'http://test');
+	}
+
+	public function testLinkImmutabilityThroughRelSetter()
+	{
+		$link = $this->link->setRel('test');
+		Assert::notSame($link, $this->link);
+		Assert::equal($this->link->getRel(), Link::LAST);
+		Assert::equal($link->getRel(), 'test');
+	}
     
 }
 \run(new LinkTest());

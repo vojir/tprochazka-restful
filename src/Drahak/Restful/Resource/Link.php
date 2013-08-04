@@ -59,6 +59,26 @@ class Link extends Object implements IResourceElement
 	}
 
 	/**
+	 * Create link with new href
+	 * @param string $href
+	 * @return Link
+	 */
+	public function setHref($href)
+	{
+		return new Link($href, $this->rel);
+	}
+
+	/**
+	 * Create link with new rel
+	 * @param string $rel
+	 * @return Link
+	 */
+	public function setRel($rel)
+	{
+		return new Link($this->href, $rel);
+	}
+
+	/**
 	 * Converts link to string
 	 * @return string
 	 */
