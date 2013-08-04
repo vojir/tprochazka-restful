@@ -107,6 +107,9 @@ class RestfulExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('resource'))
 			->setFactory($this->prefix('@resourceFactory') . '::create');
 
+		$container->addDefinition($this->prefix('methodOptions'))
+			->setClass('Drahak\Restful\Application\MethodOptions');
+
 		// Mappers
 		$container->addDefinition($this->prefix('xmlMapper'))
 			->setClass('Drahak\Restful\Mapping\XmlMapper');

@@ -1,14 +1,12 @@
 <?php
 namespace Drahak\Restful\Application\Events;
 
-use Traversable;
+use Drahak\Restful\Application\MethodOptions;
 use Drahak\Restful\Application\BadRequestException;
-use Drahak\Restful\Application\IResourceRouter;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
 use Drahak\Restful\Http\IRequest;
 use Nette\Application\Application;
-use Nette\Application\IRouter;
 use Nette\Http\IResponse;
 use Nette\Object;
 
@@ -23,128 +21,35 @@ class MethodHandler extends Object implements IApplicationEvent
 	/** @var IRequest */
 	private $request;
 
-	/** @var array */
-	private $methods = array(
-		IResourceRouter::GET => IRequest::GET,
-		IResourceRouter::POST => IRequest::POST,
-		IResourceRouter::PUT => IRequest::PUT,
-		IResourceRouter::DELETE => IRequest::DELETE,
-		IResourceRouter::HEAD => IRequest::HEAD,
-		IResourceRouter::PATCH => IRequest::PATCH
-	);
+	/** @var MethodOptions */
+	private $methods;
 
 	/**
 	 * @param IRequest $request
+	 * @param MethodOptions $methods
 	 */
-	public function __construct(IRequest $request)
+	public function __construct(IRequest $request, MethodOptions $methods)
 	{
 		$this->request = $request;
+		$this->methods = $methods;
 	}
 
 	/**
 	 * On application run
 	 * @param Application $application
 	 *
-	 * @throws \Nette\Application\BadRequestException
+	 * @throws BadRequestException
 	 */
 	public function run(Application $application)
 	{
 		$router = $application->getRouter();
 		$response = $router->match($this->request);
 		if (!$response) {
-			$this->checkAvailableMethods($router);
+			$methods = $this->methods->getOptions($this->request->getUrl());
+			if (!$methods) return;
+			throw BadRequestException::methodNotSupported(
+				'Method not supported. Available methods: ' . implode(', ', $methods));
 		}
 	}
-
-	/**
-	 * Recursively Checks available methods for this request
-	 * @param IRouter $router
-	 *
-	 * @throws BadRequestException
-	 */
-	private function checkAvailableMethods(IRouter $router)
-	{
-		foreach ($router as $route) {
-			if ($route instanceof IResourceRouter && !$route instanceof Traversable) {
-				$methodFlag = $this->getMethodFlag($route);
-				if (!$methodFlag) continue;
-
-				$request = $this->createAcceptableRequest($methodFlag);
-
-				$acceptableMethods = array_keys($route->getActionDictionary());
-				$methodNames = array();
-				foreach ($acceptableMethods as $flag) {
-					$methodNames[] = $this->methods[$flag];
-				}
-
-				if (in_array($route->getMethod($request), $acceptableMethods) && $route->match($request)) {
-					throw BadRequestException::methodNotSupported(
-						'Method not supported. Available methods: ' . implode(', ', $methodNames));
-				}
-			}
-
-			if ($route instanceof Traversable) {
-				$this->checkAvailableMethods($route);
-			}
-		}
-	}
-
-	/**
-	 * Get route method flag
-	 * @param IResourceRouter $route
-	 * @return int|NULL
-	 */
-	protected function getMethodFlag(IResourceRouter $route)
-	{
-		$methodFlag = NULL;
-		foreach ($this->methods as $flag => $requestMethod) {
-			if ($route->isMethod($flag)) {
-				return $flag;
-			}
-		}
-		return $methodFlag;
-	}
-
-	/**
-	 * Create route acceptable HTTP request
-	 * @param int $methodFlag
-	 * @return Request
-	 */
-	protected function createAcceptableRequest($methodFlag)
-	{
-		$query = $this->removeOverrideParam($this->request->getQuery());
-		$headers = $this->removeOverrideHeader($this->request->getHeaders());
-
-		return new Request(
-			$this->request->getUrl(),
-			$query,
-			$this->request->getPost(), NULL, NULL,
-			$headers,
-			$this->methods[$methodFlag]
-		);
-	}
-
-	/**
-	 * Remove override header
-	 * @param array $headers
-	 * @return array
-	 */
-	private function removeOverrideHeader(array $headers)
-	{
-		unset($headers[Request::METHOD_OVERRIDE_HEADER]);
-		return $headers;
-	}
-
-	/**
-	 * Remove override param from query URL parameters
-	 * @param array $query
-	 * @return string
-	 */
-	private function removeOverrideParam(array $query)
-	{
-		unset($query[Request::METHOD_OVERRIDE_PARAM]);
-		return $query;
-	}
-
 
 }
