@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\Application\Routes\ResourceRouteList;
 use Nette\Caching\Cache;
 use Nette\Caching\IStorage;
 use Nette\Object;

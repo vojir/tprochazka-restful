@@ -2,9 +2,11 @@
 namespace Drahak\Restful;
 
 use ArrayAccess;
-use Nette\Utils\Json;
 use Serializable;
+use ArrayIterator;
+use IteratorAggregate;
 use Nette\Object;
+use Nette\Utils\Json;
 use Nette\MemberAccessException;
 
 /**
@@ -15,7 +17,7 @@ use Nette\MemberAccessException;
  * @property string $contentType Allowed result content type
  * @property-read array $data
  */
-class Resource extends Object implements ArrayAccess, Serializable, IResource
+class Resource extends Object implements ArrayAccess, Serializable, IteratorAggregate, IResource
 {
 
 	/** @var string */
@@ -122,6 +124,16 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 		unset($this->data[$offset]);
 	}
 
+	/******************** Iterator aggregate interface ********************/
+
+	/**
+	 * Get resource data iterator
+	 * @return ArrayIterator
+	 */
+	public function getIterator()
+	{
+		return new ArrayIterator($this->getData());
+	}
 
 	/******************** Magic methods ********************/
 

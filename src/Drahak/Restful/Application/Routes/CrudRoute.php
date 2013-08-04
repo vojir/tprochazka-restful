@@ -1,9 +1,9 @@
 <?php
 namespace Drahak\Restful\Application\Routes;
 
-use Drahak\Restful\Application\IResourceRouter;
 use Nette\Http;
 use Nette\Utils\Strings;
+use Drahak\Restful\Application\IResourceRouter;
 
 /**
  * Resource CrudRoute to simple resource creation
