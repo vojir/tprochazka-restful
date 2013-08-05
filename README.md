@@ -65,6 +65,12 @@ restful:
 - `security.requestTimeKey`: key in request body, where to find request timestamp (see below - [Security & authentication](#security--authentication))
 - `security.requestTimeout`: maximal request timestamp age
 
+**Tip:** Use gzip compression for your resources. You can enable it simply in neon:
+```yaml
+php:
+    zlib.output_compression: yes
+```
+
 #### Resource routes panel
 It is enabled by default but you can disable it by setting `restful.routes.panel` to `FALSE`. This panel show you all REST API resources routes (exactly all routes in default route list which implements `IResourceRouter` interface). This is useful e.g. for developers who develop client application, so they have all API resource routes in one place.
 ![REST API resource routes panel](http://files.drahak.eu/restful-routes-panel.png "REST API resource routes panel")
@@ -114,9 +120,9 @@ class SamplePresenter extends ResourcePresenter
 
 Resource output is determined by `Accept` header. Library checks the header for `application/xml`, `application/json`, `application/x-data-url` and `application/www-form-urlencoded` and keep an order in `Accept` header.
 
-**Note**: If you call `$presenter->sendResource()` method with a mime type in first parameter, API will accept only this one.
+**Note:** If you call `$presenter->sendResource()` method with a mime type in first parameter, API will accept only this one.
 
-**Also note:*** There are available annotations `@GET`, `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manually. But it's not necessary! You can define your routes using `IResourceRoute` or its default implementation such as:
+**Also note:** There are available annotations `@GET`, `@POST`, `@PUT`, `@HEAD`, `@DELETE`. This allows Drahak\Restful library to generate API routes for you so you don't need to do it manually. But it's not necessary! You can define your routes using `IResourceRoute` or its default implementation such as:
 
 ```php
 <?php
@@ -363,7 +369,7 @@ class ArticlesPresenter extends SecuredResourcePresenter
 }
 ```
 
-But remember to keep REST API stateless.
+**Tip:** Be careful using this authentication (and standard things such as user's Identity). Remember to keep REST API stateless. Being pragmatic, this is not a good approach but it's the simplest one.
 
 ### SecuredAuthentication
 When third-party clients are connected you have to find another way how to authenticate these requests. `SecuredAuthentication` is more or less the answer. It's based on sending hashed data with private key. Since the data is already encrypted, it not depends on SSL. Authentication process is as follows:
