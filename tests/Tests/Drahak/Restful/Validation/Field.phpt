@@ -78,5 +78,14 @@ class FieldTest extends TestCase
 		Assert::equal($result[0]->code, 0);
 	}
 
+	public function testSkipOptionalFieldIfIsNotSet()
+	{
+		$this->field->addRule(IValidator::EMAIL);
+		$this->field->addRule(IValidator::OPTIONAL);
+
+		$result = $this->field->validate(NULL);
+		Assert::equal($result, array());
+	}
+
 }
 \run(new FieldTest());

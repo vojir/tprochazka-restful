@@ -12,6 +12,7 @@ interface IValidator
 	// Equality rules
 	const EQUAL = ':equal';
 	const IS_IN = ':equal';
+	const OPTIONAL = 'optional';
 
 	// Textual rules
 	const MIN_LENGTH = 'string:%d..';

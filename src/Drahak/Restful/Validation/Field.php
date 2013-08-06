@@ -84,6 +84,10 @@ class Field extends Object implements IField
 	 */
 	public function validate($value)
 	{
+		if (!$this->isRequired() && $value === NULL) {
+			return array();
+		}
+
 		$errors = array();
 		foreach ($this->rules as $rule) {
 			try {
@@ -97,6 +101,20 @@ class Field extends Object implements IField
 			}
 		}
 		return $errors;
+	}
+
+	/**
+	 * Is field required
+	 * @return bool
+	 */
+	public function isRequired()
+	{
+		foreach ($this->rules as $rule) {
+			if ($rule->expression === IValidator::OPTIONAL) {
+				return FALSE;
+			}
+		}
+		return TRUE;
 	}
 
 	/**
