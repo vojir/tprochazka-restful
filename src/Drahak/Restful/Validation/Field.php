@@ -90,6 +90,10 @@ class Field extends Object implements IField
 
 		$errors = array();
 		foreach ($this->rules as $rule) {
+			if ($rule->expression === IValidator::OPTIONAL) {
+				continue;
+			}
+
 			try {
 				if (in_array($rule->expression, static::$numericExpressions)) {
 					$value = $this->parseNumericValue($value);
