@@ -15,6 +15,7 @@ interface IResource extends IResourceElement
 	const JSONP = 'application/javascript';
 	const QUERY = 'application/x-www-form-urlencoded';
 	const DATA_URL = 'application/x-data-url';
+	const FILE = 'application/octet-stream';
 	const FORM = 'multipart/form-data';
 	const NULL = 'NULL';
 

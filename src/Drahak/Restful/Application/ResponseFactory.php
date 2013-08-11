@@ -35,6 +35,7 @@ class ResponseFactory extends Object implements IResponseFactory
 		IResource::QUERY => 'Drahak\Restful\Application\Responses\QueryResponse',
 		IResource::XML => 'Drahak\Restful\Application\Responses\XmlResponse',
 		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\DataUrlResponse',
+		IResource::FILE => 'Drahak\Restful\Application\Responses\FileResponse',
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
 
@@ -114,9 +115,8 @@ class ResponseFactory extends Object implements IResponseFactory
 			$this->response->setCode(204); // No content
 		}
 
-		$data = $resource->getData();
 		$responseClass = $this->responses[$contentType];
-		$response = new $responseClass($data, $this->mapperContext->getMapper($contentType));
+		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType));
 		return $response;
 	}
 

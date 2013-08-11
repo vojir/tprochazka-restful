@@ -23,7 +23,8 @@ class MediaResource extends Object implements IResource
 
 	/** @var array */
 	protected static $supportedTypes = array(
-		self::DATA_URL
+		self::DATA_URL,
+		self::FILE
 	);
 
 	/**

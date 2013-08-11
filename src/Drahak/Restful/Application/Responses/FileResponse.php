@@ -6,11 +6,11 @@ use Drahak\Restful\Resource\Media;
 use Nette\Http;
 
 /**
- * DataUrlResponse
+ * FileResponse
  * @package Drahak\Restful\Application\Responses
  * @author Drahomír Hanák
  */
-class DataUrlResponse extends BaseResponse
+class FileResponse extends BaseResponse
 {
 
 	/**
@@ -18,7 +18,7 @@ class DataUrlResponse extends BaseResponse
 	 * @param IMapper $mapper
 	 * @param string|null $contentType
 	 */
-	public function __construct($data, IMapper $mapper, $contentType = NULL)
+	public function __construct(Media $data, IMapper $mapper, $contentType = NULL)
 	{
 		parent::__construct($mapper, $contentType);
 		$this->data = $data;
@@ -31,8 +31,8 @@ class DataUrlResponse extends BaseResponse
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain', 'UTF-8');
-		echo $this->mapper->stringify($this->data);
+		$httpResponse->setContentType($this->data->contentType);
+		echo $this->data;
 	}
 
 
