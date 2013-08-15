@@ -79,13 +79,21 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource = $this->resourceFactory->create();
 		$this->autoCanonicalize = FALSE;
 
-		// calls $this->validate<Action>()
-		$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
+		try {
+			// calls $this->validate<Action>()
+			$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
-		// Check if input is validate
-		if (!$this->input->isValid() && $validationProcessed === TRUE) {
-			$errors = $this->input->validate();
-			throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]->message);
+			// Check if input is validate
+			if (!$this->input->isValid() && $validationProcessed === TRUE) {
+				$errors = $this->input->validate();
+				throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]->message);
+			}
+		} catch (BadRequestException $e) {
+			if ($e->getCode() === 422) {
+				$this->sendErrorResource($e);
+				return;
+			}
+			throw $e;
 		}
 	}
 
