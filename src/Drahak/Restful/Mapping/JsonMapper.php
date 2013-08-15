@@ -24,7 +24,7 @@ class JsonMapper extends Object implements IMapper
 	public function stringify($data, $prettyPrint = TRUE)
 	{
 		try {
-			return Json::encode($data, $prettyPrint ? Json::PRETTY : 0);
+			return Json::encode($data, $prettyPrint && defined('Nette\\Utils\\Json::PRETTY') ? Json::PRETTY : 0);
 		} catch(JsonException $e) {
 			throw new MappingException('Error in parsing response: ' . $e->getMessage());
 		}

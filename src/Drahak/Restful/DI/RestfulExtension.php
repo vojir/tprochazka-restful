@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\DI;
 
+use Nette;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\IResource;
 use Nette\Caching\Storages\FileStorage;
@@ -12,6 +13,17 @@ use Nette\DI\Statement;
 use Nette\Diagnostics\Debugger;
 use Nette\Loaders\RobotLoader;
 use Nette\Utils\Validators;
+
+if (!class_exists('Nette\DI\CompilerExtension')) {
+	class_alias('Nette\Config\CompilerExtension', 'Nette\DI\CompilerExtension');
+	class_alias('Nette\Config\Compiler', 'Nette\DI\Compiler');
+	class_alias('Nette\Config\Helpers', 'Nette\DI\Config\Helpers');
+}
+
+if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator']) || !class_exists('Nette\Configurator')) {
+	unset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator']);
+	class_alias('Nette\Config\Configurator', 'Nette\Configurator');
+}
 
 /**
  * Drahak RestfulExtension
@@ -172,9 +184,12 @@ class RestfulExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('validator'))
 			->setClass('Drahak\Restful\Validation\Validator');
 
+		$container->addDefinition($this->prefix('validationScopeFactory'))
+			->setClass('Drahak\Restful\Validation\ValidationScopeFactory');
+
 		$container->addDefinition($this->prefix('validationScope'))
 			->setClass('Drahak\Restful\Validation\ValidationScope')
-			->setImplement('Drahak\Restful\Validation\IValidationScopeFactory');
+			->setFactory($this->prefix('@validationScopeFactory') . '::create');
 
 	}
 

@@ -40,6 +40,9 @@ class JsonMapperTest extends TestCase
 	{
 		$array = array('node' => 'value');
 		$json = $this->mapper->stringify($array);
+		if (!defined('Nette\\Utils\\Json::PRETTY')) {
+			Tester\Environment::skip('Json does not support PRETTY PRINT in this Nette version');
+		}
 		Assert::equal($json, "{\n    \"node\": \"value\"\n}");
 	}
 
