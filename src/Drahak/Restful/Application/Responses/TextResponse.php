@@ -1,21 +1,20 @@
 <?php
 namespace Drahak\Restful\Application\Responses;
 
-use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\Mapping\IMapper;
-use Drahak\Restful\Mapping\XmlMapper;
+use Drahak\Restful\Resource\Media;
 use Nette\Http;
 
 /**
- * XmlResponse
- * @package Drahak\Restful\Responses
+ * TextResponse
+ * @package Drahak\Restful\Application\Responses
  * @author Drahomír Hanák
  */
-class XmlResponse extends BaseResponse
+class TextResponse extends BaseResponse
 {
 
 	/**
-	 * @param array $data
+	 * @param Media $data
 	 * @param IMapper $mapper
 	 * @param string|null $contentType
 	 */
@@ -29,13 +28,12 @@ class XmlResponse extends BaseResponse
 	 * Sends response to output
 	 * @param Http\IRequest $httpRequest
 	 * @param Http\IResponse $httpResponse
-	 * @throws InvalidArgumentException
 	 */
 	public function send(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$this->checkRequest($httpRequest);
-		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/xml', 'UTF-8');
+		$httpResponse->setContentType($this->contentType ? $this->contentType : 'text/plain', 'UTF-8');
 		echo $this->mapper->stringify($this->data, $httpRequest->isPrettyPrint());
 	}
+
 
 }

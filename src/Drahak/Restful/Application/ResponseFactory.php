@@ -30,11 +30,11 @@ class ResponseFactory extends Object implements IResponseFactory
 
 	/** @var array */
 	private $responses = array(
-		IResource::JSON => 'Drahak\Restful\Application\Responses\JsonResponse',
+		IResource::JSON => 'Drahak\Restful\Application\Responses\TextResponse',
 		IResource::JSONP => 'Drahak\Restful\Application\Responses\JsonpResponse',
-		IResource::QUERY => 'Drahak\Restful\Application\Responses\QueryResponse',
-		IResource::XML => 'Drahak\Restful\Application\Responses\XmlResponse',
-		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\DataUrlResponse',
+		IResource::QUERY => 'Drahak\Restful\Application\Responses\TextResponse',
+		IResource::XML => 'Drahak\Restful\Application\Responses\TextResponse',
+		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\TextResponse',
 		IResource::FILE => 'Drahak\Restful\Application\Responses\FileResponse',
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
@@ -116,7 +116,7 @@ class ResponseFactory extends Object implements IResponseFactory
 		}
 
 		$responseClass = $this->responses[$contentType];
-		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType));
+		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType), $contentType);
 		return $response;
 	}
 
