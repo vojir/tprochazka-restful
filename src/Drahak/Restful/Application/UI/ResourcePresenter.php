@@ -5,6 +5,7 @@ use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Application\IResponseFactory;
 use Drahak\Restful\Http\IInput;
+use Drahak\Restful\Http\Request;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
@@ -144,8 +145,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->getHttpResponse()->setCode($code);
 		}
 
-		$response = $this->responseFactory->create($this->resource);
-		$this->sendResponse($response);
+		try {
+			$response = $this->responseFactory->create($this->resource);
+			$this->sendResponse($response);
+		} catch (InvalidStateException $e) {
+			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e));
+		}
 	}
 
 	/**
@@ -154,6 +159,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	 */
 	protected function sendErrorResource(\Exception $e)
 	{
+		/** @var Request $request */
+		$request = $this->getHttpRequest();
 		$code = $e->getCode() ? $e->getCode() : 500;
 		if ($code < 100 || $code > 599) {
 			$code = 400;
@@ -163,6 +170,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->code = $code;
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
+		$this->resource->setContentType(
+			$request->getPreferredContentType() ? $request->getPreferredContentType() : IResource::JSON
+		);
 
 		if (isset($e->errors) && $e->errors) {
 			$this->resource->errors = $e->errors;

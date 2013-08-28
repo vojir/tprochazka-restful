@@ -21,7 +21,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IteratorAggr
 {
 
 	/** @var string */
-	private $contentType = self::QUERY;
+	private $contentType;
 
 	/** @var array */
 	private $data = array();
@@ -32,7 +32,6 @@ class Resource extends Object implements ArrayAccess, Serializable, IteratorAggr
 	public function __construct(array $data = array())
 	{
 		$this->data = $data;
-		$this->contentType = self::QUERY;
 	}
 
 	/**

@@ -141,7 +141,7 @@ class Request extends Nette\Http\Request implements IRequest
 				}
 			}
 		}
-		return IResource::JSON;
+		return NULL;
 	}
 
 
