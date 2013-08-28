@@ -24,12 +24,12 @@ class Media extends Object
 
 	/**
 	 * @param string $content
-	 * @param string $contentType
+	 * @param string|NULL $contentType
 	 */
-	public function __construct($content, $contentType)
+	public function __construct($content, $contentType = NULL)
 	{
 		$this->content = $content;
-		$this->contentType = $contentType;
+		$this->contentType = $contentType ? $contentType : MimeTypeDetector::fromString($content);
 	}
 
 	/**
