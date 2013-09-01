@@ -1,6 +1,8 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\Application\Responses\NullResponse;
+use Drahak\Restful\Http\Caching\ICacheValidator;
 use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
@@ -28,6 +30,9 @@ class ResponseFactory extends Object implements IResponseFactory
 	/** @var MapperContext */
 	private $mapperContext;
 
+	/** @var ICacheValidator */
+	private $cacheValidator;
+
 	/** @var array */
 	private $responses = array(
 		IResource::JSON => 'Drahak\Restful\Application\Responses\TextResponse',
@@ -43,12 +48,14 @@ class ResponseFactory extends Object implements IResponseFactory
 	 * @param IResponse $response
 	 * @param IRequest $request
 	 * @param MapperContext $mapperContext
+	 * @param ICacheValidator $cacheValidator
 	 */
-	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext)
+	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext, ICacheValidator $cacheValidator)
 	{
 		$this->response = $response;
 		$this->request = $request;
 		$this->mapperContext = $mapperContext;
+		$this->cacheValidator = $cacheValidator;
 	}
 
 	/**
@@ -109,6 +116,15 @@ class ResponseFactory extends Object implements IResponseFactory
 
 		if (!class_exists($this->responses[$contentType])) {
 			throw new InvalidStateException('API response class does not exist.');
+		}
+
+		$this->response->setHeader(
+			$this->cacheValidator->getName(),
+			$this->cacheValidator->generate($resource)
+		);
+		if ($this->cacheValidator->match($resource)) {
+			$this->response->setCode(304); // Not modified
+			return new NullResponse();
 		}
 
 		if (!$resource->getData()) {

@@ -157,6 +157,8 @@ class RestfulExtension extends CompilerExtension
 		$container->getDefinition('nette.httpRequestFactory')
 			->setClass('Drahak\Restful\Http\RequestFactory')
 			->setArguments(array($config['jsonpKey'], $config['prettyPrintKey']));
+		$container->addDefinition($this->prefix('cacheValidator'))
+			->setClass('Drahak\Restful\Http\Caching\EntityTagValidator');
 
 		$container->getDefinition('httpRequest')
 			->setClass('Drahak\Restful\Http\IRequest');
