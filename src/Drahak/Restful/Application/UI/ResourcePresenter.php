@@ -137,6 +137,10 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	 */
 	public function sendResource($contentType = NULL, $code = NULL)
 	{
+		if (!($this->resource instanceof IResource)) {
+			$this->resource = $this->resourceFactory->create($this->resource);
+		}
+
 		if ($contentType !== NULL) {
 			$this->resource->setContentType($contentType);
 		}
@@ -170,9 +174,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->code = $code;
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
-		$this->resource->setContentType(
-			$request->getPreferredContentType() ? $request->getPreferredContentType() : IResource::JSON
-		);
+		$this->resource->setContentType(IResource::JSON);
 
 		if (isset($e->errors) && $e->errors) {
 			$this->resource->errors = $e->errors;
