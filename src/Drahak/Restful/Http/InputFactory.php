@@ -6,6 +6,7 @@ use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Validation\IValidationScopeFactory;
 use Drahak\Restful\Application\BadRequestException;
+use Nette\Http\IRequest;
 use Nette\Object;
 
 /**

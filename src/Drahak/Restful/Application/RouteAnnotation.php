@@ -4,8 +4,8 @@ namespace Drahak\Restful\Application;
 use Nette\Object;
 use Nette\Utils\Strings;
 use Nette\Reflection\Method;
+use Nette\Http\IRequest;
 use Drahak\Restful\InvalidArgumentException;
-use Drahak\Restful\Http\IRequest;
 
 /**
  * RouteAnnotation
@@ -24,7 +24,7 @@ class RouteAnnotation extends Object implements IAnnotationParser
 		IRequest::PUT => IResourceRouter::PUT,
 		IRequest::DELETE => IResourceRouter::DELETE,
 		IRequest::HEAD => IResourceRouter::HEAD,
-		IRequest::PATCH => IResourceRouter::PATCH
+		'PATCH' => IResourceRouter::PATCH
 	);
 
 	/**

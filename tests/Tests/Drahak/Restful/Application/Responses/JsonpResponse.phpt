@@ -35,7 +35,7 @@ class JsonpResponseTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
+		$this->httpRequest = $this->mockista->create('Nette\Http\IRequest');
 		$this->httpResponse = $this->mockista->create('Nette\Http\IResponse');
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 		$this->response = new JsonpResponse(array('test' => 'JSONP'), $this->mapper);
@@ -60,11 +60,13 @@ class JsonpResponseTest extends TestCase
 		$this->httpResponse->expects('getHeaders')
 			->once()
 			->andReturn($headers);
-		$this->httpRequest->expects('getJsonp')
+		$this->httpRequest->expects('getQuery')
 			->once()
+			->with('jsonp')
 			->andReturn('callbackFn');
-		$this->httpRequest->expects('isPrettyPrint')
+		$this->httpRequest->expects('getQuery')
 			->once()
+			->with('prettyPrint')
 			->andReturn(FALSE);
 
 		$this->mapper->expects('stringify')
@@ -103,12 +105,14 @@ class JsonpResponseTest extends TestCase
 		$this->httpResponse->expects('getHeaders')
 			->once()
 			->andReturn($headers);
-		$this->httpRequest->expects('getJsonp')
+		$this->httpRequest->expects('getQuery')
 			->once()
+			->with('jsonp')
 			->andReturn('ěščřžýáíéAnd+_-! ?');
-		$this->httpRequest->expects('isPrettyPrint')
+		$this->httpRequest->expects('getQuery')
 			->once()
-			->andReturn(FALSE);
+			->with('prettyPrint')
+			->andReturn('false');
 
 		ob_start();
 		$this->response->send($this->httpRequest, $this->httpResponse);
@@ -116,14 +120,6 @@ class JsonpResponseTest extends TestCase
 		ob_end_flush();
 
 		Assert::same($content, 'escrzyaieAnd(' . $output . ');');
-	}
-
-	public function testThrowsExceptionWhenInvalidRequestIsGiven()
-	{
-		$request = $this->mockista->create('Nette\Http\IRequest');
-		Assert::throws(function() use($request) {
-			$this->response->send($request, $this->httpResponse);
-		}, 'Drahak\Restful\InvalidArgumentException');
 	}
 
 }

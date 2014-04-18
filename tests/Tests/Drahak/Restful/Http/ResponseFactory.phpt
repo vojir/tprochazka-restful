@@ -37,8 +37,8 @@ class ResponseFactoryTest extends TestCase
     public function setUp()
     {
 		parent::setUp();
-		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->filter = $this->mockista->create('Drahak\Restful\Utils\RequestFilter');
+		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->factory = new ResponseFactory($this->request, $this->filter);
 		$this->factory->setResponse($this->response);

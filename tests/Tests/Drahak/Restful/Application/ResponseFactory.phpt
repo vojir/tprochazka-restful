@@ -47,18 +47,15 @@ class ResponseFactoryTest extends TestCase
     {
 		parent::setUp();
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
-		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
+		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
-		$this->cacheValidator = $this->mockista->create('Drahak\Restful\Http\Caching\ICacheValidator');
-		$this->factory = new ResponseFactory($this->response, $this->request, $this->mapperContext, $this->cacheValidator);
+		$this->factory = new ResponseFactory($this->response, $this->request, $this->mapperContext);
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 	}
 
 	public function testCreateResponse()
 	{
-		$this->mockCacheValidator();
-
 		$this->response->expects('setCode')
 			->once()
 			->with(204);
@@ -75,8 +72,9 @@ class ResponseFactoryTest extends TestCase
 			->with(IResource::JSON)
 			->andReturn($this->mapper);
 
-		$this->request->expects('isJsonp')
+		$this->request->expects('getQuery')
 			->once()
+			->with('jsonp')
 			->andReturn(FALSE);
 
 		$response = $this->factory->create($this->resource);
@@ -85,8 +83,6 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateCustomResponse()
 	{
-		$this->mockCacheValidator();
-
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
@@ -99,8 +95,9 @@ class ResponseFactoryTest extends TestCase
 			->with('text')
 			->andReturn($this->mapper);
 
-		$this->request->expects('isJsonp')
+		$this->request->expects('getQuery')
 			->once()
+			->with('jsonp')
 			->andReturn(FALSE);
 
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
@@ -111,17 +108,16 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateJsonpResponseWhenJsonpIsActive()
 	{
-		$this->mockCacheValidator();
-
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('text');
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
-		$this->request->expects('isJsonp')
+		$this->request->expects('getQuery')
 			->once()
-			->andReturn(TRUE);
+			->with('jsonp')
+			->andReturn('callback');
 		$this->mapperContext->expects('getMapper')
 			->once()
 			->with(IResource::JSONP)
@@ -135,13 +131,12 @@ class ResponseFactoryTest extends TestCase
 
 	public function testThrowsExceptionWhenResponseTypeIsNotFound()
 	{
-		$this->mockCacheValidator();
-
 		$this->resource->expects('getContentType')
 			->once()
 			->andReturn('drahak/test');
-		$this->request->expects('isJsonp')
+		$this->request->expects('getQuery')
 			->once()
+			->with('jsonp')
 			->andReturn(FALSE);
 
 		Assert::throws(function() {
@@ -151,62 +146,15 @@ class ResponseFactoryTest extends TestCase
 
     public function testThrowsExceptionWhenResponseClassNotExists()
     {
+		$this->request->expects('getQuery')
+			->once()
+			->with('jsonp')
+			->andReturn(FALSE);
 		$factory = $this->factory;
 		Assert::throws(function() use($factory) {
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
 		}, 'Drahak\Restful\InvalidArgumentException');
     }
-
-	public function testResponseWithNoContentWhenEntityTagsMatch()
-	{
-		$this->cacheValidator->expects('getName')
-			->once()
-			->andReturn('ETag');
-		$this->cacheValidator->expects('generate')
-			->once()
-			->andReturn('0800fc577294c34e0b28ad2839435945');
-		$this->cacheValidator->expects('match')
-			->once()
-			->with($this->resource)
-			->andReturn('0800fc577294c34e0b28ad2839435945');
-		$this->response->expects('setHeader')
-			->once()
-			->with('ETag', '0800fc577294c34e0b28ad2839435945');
-
-		$this->response->expects('setCode')
-			->once()
-			->with(304);
-
-		$this->resource->expects('getContentType')
-			->once()
-			->andReturn(IResource::JSON);
-
-		$this->request->expects('isJsonp')
-			->once()
-			->andReturn(FALSE);
-
-		$this->factory->create($this->resource);
-	}
-
-	/**
-	 * Mock HTTP cache validator
-	 */
-	private function mockCacheValidator()
-	{
-		$this->cacheValidator->expects('getName')
-			->once()
-			->andReturn('ETag');
-		$this->cacheValidator->expects('generate')
-			->once()
-			->andReturn('0800fc577294c34e0b28ad2839435945');
-		$this->cacheValidator->expects('match')
-			->once()
-			->with($this->resource)
-			->andReturn(FALSE);
-		$this->response->expects('setHeader')
-			->once()
-			->with('ETag', '0800fc577294c34e0b28ad2839435945');
-	}
 
 }
 \run(new ResponseFactoryTest());

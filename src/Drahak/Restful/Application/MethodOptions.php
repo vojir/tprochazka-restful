@@ -4,10 +4,10 @@ namespace Drahak\Restful\Application;
 use Nette\Application\IRouter;
 use Nette\Http\Url;
 use Nette\Http\UrlScript;
+use Nette\Http\Request;
+use Nette\Http\IRequest;
 use Traversable;
 use Nette\Object;
-use Drahak\Restful\Http\Request;
-use Drahak\Restful\Http\IRequest;
 
 /**
  * MethodOptions
@@ -27,7 +27,7 @@ class MethodOptions extends Object
 		IResourceRouter::PUT => IRequest::PUT,
 		IResourceRouter::DELETE => IRequest::DELETE,
 		IResourceRouter::HEAD => IRequest::HEAD,
-		IResourceRouter::PATCH => IRequest::PATCH
+		IResourceRouter::PATCH => 'PATCH'
 	);
 
 	/**
@@ -121,7 +121,7 @@ class MethodOptions extends Object
 	 */
 	private function removeOverrideParam(array $query)
 	{
-		unset($query[Request::METHOD_OVERRIDE_PARAM]);
+		unset($query['X-HTTP-Method-Override']);
 		return $query;
 	}
 

@@ -5,8 +5,8 @@ use Drahak\Restful\Application\MethodOptions;
 use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\Routes\ResourceRoute;
 use Drahak\Restful\Http\Request;
-use Drahak\Restful\Http\IRequest;
 use Nette\Application\Application;
+use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Object;
 

@@ -35,7 +35,6 @@ class JsonpResponse extends BaseResponse
 	 */
 	public function send(IRequest $httpRequest, IResponse $httpResponse)
 	{
-		$this->checkRequest($httpRequest);
 		$httpResponse->setContentType($this->contentType ? $this->contentType : 'application/javascript', 'UTF-8');
 
 		$data = array();
@@ -43,8 +42,8 @@ class JsonpResponse extends BaseResponse
 		$data['status'] = $httpResponse->getCode();
 		$data['headers'] = $httpResponse->getHeaders();
 
-		$callback = $httpRequest->getJsonp() ? Strings::webalize($httpRequest->getJsonp(), NULL, FALSE) : '';
-		echo $callback . '(' . $this->mapper->stringify($data, $httpRequest->isPrettyPrint()) . ');';
+		$callback = $httpRequest->getQuery('jsonp') ? Strings::webalize($httpRequest->getQuery('jsonp'), NULL, FALSE) : '';
+		echo $callback . '(' . $this->mapper->stringify($data, $this->isPrettyPrint($httpRequest)) . ');';
 	}
 
 

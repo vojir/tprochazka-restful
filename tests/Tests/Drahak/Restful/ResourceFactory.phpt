@@ -33,15 +33,16 @@ class ResourceFactoryTest extends TestCase
     public function setUp()
     {
 		parent::setUp();
-        $this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
+        $this->request = $this->mockista->create('Nette\Http\IRequest');
         $this->resourceConverter = $this->mockista->create('Drahak\Restful\Converters\ResourceConverter');
         $this->factory = new ResourceFactory($this->request, $this->resourceConverter);
     }
     
     public function testCreateResource()
     {
-        $this->request->expects('getPreferredContentType')
+        $this->request->expects('getHeader')
             ->once()
+            ->with('Accept')
             ->andReturn('application/json');
 
         $resource = $this->factory->create();
@@ -53,8 +54,9 @@ class ResourceFactoryTest extends TestCase
 	{
 		$data = array('test' => 'factory');
 
-		$this->request->expects('getPreferredContentType')
+		$this->request->expects('getHeader')
 			->once()
+            ->with('Accept')
 			->andReturn('application/json');
 		$this->resourceConverter->expects('convert')
 			->once()

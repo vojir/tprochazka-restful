@@ -37,8 +37,8 @@ class HashAuthenticatorTest extends TestCase
     {
 		parent::setUp();
 		$this->input = $this->mockista->create('Drahak\Restful\Http\IInput');
-		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
 		$this->calculator = $this->mockista->create('Drahak\Restful\Security\IAuthTokenCalculator');
+		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->authenticator = new HashAuthenticator('topSecretKey', $this->request, $this->calculator);
     }
     

@@ -42,16 +42,17 @@ class TextResponseTest extends TestCase
 			->with(array('hello' => 'world'), FALSE)
 			->andReturn($output);
 
-		$httpRequest = $this->mockista->create('Drahak\Restful\Http\IRequest');
+		$httpRequest = $this->mockista->create('Nette\Http\IRequest');
 		$httpResponse = $this->mockista->create('Nette\Http\IResponse');
 
 		$httpResponse->expects('setContentType')
 			->once()
 			->with('application/json', 'UTF-8');
 
-		$httpRequest->expects('isPrettyPrint')
+		$httpRequest->expects('getQuery')
 			->once()
-			->andReturn(FALSE);
+			->with('prettyPrint')
+			->andReturn('false');
 
 		ob_start();
 		$this->response->send($httpRequest, $httpResponse);

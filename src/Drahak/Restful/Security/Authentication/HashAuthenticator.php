@@ -4,7 +4,7 @@ namespace Drahak\Restful\Security\Authentication;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Security\IAuthTokenCalculator;
 use Drahak\Restful\Security\AuthenticationException;
-use Drahak\Restful\Http\IRequest;
+use Nette\Http\IRequest;
 use Nette\Object;
 
 /**

@@ -29,7 +29,7 @@ class RequestFilterTest extends TestCase
     protected function setUp()
     {
 		parent::setUp();
-		$this->request = $this->mockista->create('Drahak\Restful\Http\IRequest');
+		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->filter = new RequestFilter($this->request);
     }
     

@@ -28,7 +28,7 @@ class ResourceRoute extends Route implements IResourceRouter
 		Http\IRequest::PUT => self::PUT,
 		Http\IRequest::HEAD => self::HEAD,
 		Http\IRequest::DELETE => self::DELETE,
-		Restful\Http\IRequest::PATCH => self::PATCH
+		'PATCH' => self::PATCH
 	);
 
 	/**

@@ -2,14 +2,13 @@
 namespace Drahak\Restful\Application;
 
 use Drahak\Restful\Application\Responses\NullResponse;
-use Drahak\Restful\Http\Caching\ICacheValidator;
 use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
-use Drahak\Restful\Http\IRequest;
 use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
+use Nette\Http\IRequest;
 use Nette\Http\Url;
 use Nette\Object;
 
@@ -50,12 +49,11 @@ class ResponseFactory extends Object implements IResponseFactory
 	 * @param MapperContext $mapperContext
 	 * @param ICacheValidator $cacheValidator
 	 */
-	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext, ICacheValidator $cacheValidator)
+	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext)
 	{
 		$this->response = $response;
 		$this->request = $request;
 		$this->mapperContext = $mapperContext;
-		$this->cacheValidator = $cacheValidator;
 	}
 
 	/**
@@ -106,7 +104,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	public function create(IResource $resource, $code = NULL)
 	{
-		$contentType = !$this->request->isJsonp() ?
+		$contentType = !$this->request->getQuery('jsonp') ?
 			$resource->getContentType() :
 			IResource::JSONP;
 
@@ -116,15 +114,6 @@ class ResponseFactory extends Object implements IResponseFactory
 
 		if (!class_exists($this->responses[$contentType])) {
 			throw new InvalidStateException('API response class does not exist.');
-		}
-
-		$this->response->setHeader(
-			$this->cacheValidator->getName(),
-			$this->cacheValidator->generate($resource)
-		);
-		if ($this->cacheValidator->match($resource)) {
-			$this->response->setCode(304); // Not modified
-			return new NullResponse();
 		}
 
 		if (!$resource->getData()) {

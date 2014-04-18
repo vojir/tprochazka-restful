@@ -5,6 +5,7 @@ use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Resource\Link;
 use Drahak\Restful\Utils\RequestFilter;
 use Nette\Http\IResponse;
+use Nette\Http\IRequest;
 use Nette\Http\Response;
 use Nette\Http\Url;
 use Nette\Object;
@@ -32,9 +33,9 @@ class ResponseFactory extends Object
 		IRequest::GET => 200,
 		IRequest::POST => 201,
 		IRequest::PUT => 200,
-		IRequest::PATCH => 200,
 		IRequest::HEAD => 200,
 		IRequest::DELETE => 200,
+		'PATCH' => 200,
 	);
 
 	/**

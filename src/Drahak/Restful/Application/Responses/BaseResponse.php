@@ -39,6 +39,20 @@ abstract class BaseResponse extends Object implements IResponse
 	}
 
 	/**
+	 * Is pretty print enabled
+	 * @param  IRequest $request 
+	 * @return boolean           
+	 */
+	protected function isPrettyPrint(IRequest $request)
+	{
+		$prettyPrint = $request->getQuery('prettyPrint');
+		if ($prettyPrint === 'false') {
+			return FALSE;
+		}
+		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
+	}
+
+	/**
 	 * Get response content type
 	 * @return string
 	 */
@@ -65,20 +79,6 @@ abstract class BaseResponse extends Object implements IResponse
 	{
 		$this->mapper = $mapper;
 		return $this;
-	}
-
-	/**
-	 * Check if given request is valid
-	 * @param IRequest $request
-	 * @throws InvalidArgumentException
-	 */
-	protected function checkRequest(IRequest $request)
-	{
-		if (!$request instanceof Drahak\Restful\Http\IRequest) {
-			throw new InvalidArgumentException(
-				get_class($this) . ' expects Drahak\Restful\Http\IRequest as a first parameter, ' . get_class($request) . ' given'
-			);
-		}
 	}
 
 }
