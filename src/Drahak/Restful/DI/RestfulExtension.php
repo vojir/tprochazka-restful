@@ -275,7 +275,7 @@ class RestfulExtension extends CompilerExtension
 				$config['security']['privateKey'],
 				isset($config['security']['requestTimeKey']) ? $config['security']['requestTimeKey'] : 'timestamp'
 			))
-			->addSetup('Nette\Diagnostics\Debugger::$bar->addPanel(?)', array('@self'));
+			->addSetup('Nette\Diagnostics\Debugger::getBar()->addPanel(?)', array('@self'));
 
 		$container->getDefinition('application')
 			->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@panel'), 'getTab')));
