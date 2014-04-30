@@ -3,8 +3,10 @@ namespace Drahak\Restful\Mapping;
 
 use DOMDocument;
 use Traversable;
-use Nette\Object;
 use SimpleXMLElement;
+use Nette\Object;
+use Nette\Utils\Json;
+use Nette\Utils\JsonException;
 use Drahak\Restful\InvalidArgumentException;
 
 /**
@@ -125,6 +127,8 @@ class XmlMapper extends Object implements IMapper
 	 * Parse XML to array
 	 * @param string $data
 	 * @return array
+	 * 
+	 * @throws  MappingException If XML data is not valid
 	 */
 	public function parse($data)
 	{
@@ -134,10 +138,24 @@ class XmlMapper extends Object implements IMapper
 	/**
 	 * @param string $data
 	 * @return array
+	 *
+	 * @throws  MappingException If XML data is not valid
 	 */
 	private function fromXml($data)
 	{
-		return json_decode(json_encode((array) simplexml_load_string($data)), 1);
+		try {
+			$useErrors = libxml_use_internal_errors(true);
+			$xml = simplexml_load_string($data); 
+			if (!$xml) {
+				$error = libxml_get_last_error();
+				throw new MappingException('Input is not valid XML document: ' . $error->message . ' on line ' . $error->line);
+			}
+			libxml_clear_errors();
+			libxml_use_internal_errors($useErrors);
+			return Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY);
+		} catch (JsonException $e) {
+			throw new MappingException('Error in parsing response: ' . $e->getMessage());
+		}
 	}
 
 	/**

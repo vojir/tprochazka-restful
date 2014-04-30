@@ -82,5 +82,18 @@ class XmlMapperTest extends TestCase
 		Assert::equal($array['user']['name'], 'test');
 	}
 
+	public function testThrowsMappingExceptionIfInvalidXMLisGiven()
+	{
+		Assert::throws(function() {
+			$this->mapper->parse('<?xml version="1.0" encoding="UTF-8"?>
+				<envelope>
+				   <user>
+				     <name>test
+				     <phone>500</phone>
+				  </user>
+				</envelope>');
+		}, 'Drahak\Restful\Mapping\MappingException');
+	}
+
 }
 \run(new XmlMapperTest());
