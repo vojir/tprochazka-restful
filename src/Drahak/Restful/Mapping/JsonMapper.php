@@ -33,14 +33,14 @@ class JsonMapper extends Object implements IMapper
 	/**
 	 * Convert client request data to array or traversable
 	 * @param string $data
-	 * @return array to be compatible with other mappers
+	 * @return array 
 	 *
 	 * @throws MappingException
 	 */
 	public function parse($data)
 	{
 		try {
-			return (array)Json::decode($data);
+			return Json::decode($data, Json::FORCE_ARRAY);
 		} catch (JsonException $e) {
 			throw new MappingException('Error in parsing request: ' . $e->getMessage());
 		}

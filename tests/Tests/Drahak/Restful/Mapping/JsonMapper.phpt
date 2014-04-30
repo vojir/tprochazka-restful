@@ -52,6 +52,12 @@ class JsonMapperTest extends TestCase
 		Assert::equal($array['node'], 'value');
 	}
 
+	public function testConvertsJsonRecursivelyToArray()
+	{
+		$array = $this->mapper->parse('{"user":{"name":"test","phone":500}}');
+		Assert::equal($array['user']['name'], 'test');
+	}
+
 	public function testThrowsExceptionWhenJsonIsInvalid()
 	{
 		Assert::throws(function() {
