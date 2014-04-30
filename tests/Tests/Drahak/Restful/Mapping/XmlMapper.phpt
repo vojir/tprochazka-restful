@@ -70,5 +70,17 @@ class XmlMapperTest extends TestCase
 		Assert::equal($array['node'], 'value');
 	}
 
+	public function testConvertsXmlRecursivelyToArray()
+	{
+		$array = $this->mapper->parse('<?xml version="1.0" encoding="UTF-8"?>
+			<envelope>
+			   <user>
+			     <name>test</name>
+			     <phone>500</phone>
+			  </user>
+			</envelope>');
+		Assert::equal($array['user']['name'], 'test');
+	}
+
 }
 \run(new XmlMapperTest());

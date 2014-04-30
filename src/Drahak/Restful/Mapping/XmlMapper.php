@@ -137,8 +137,7 @@ class XmlMapper extends Object implements IMapper
 	 */
 	private function fromXml($data)
 	{
-		$xml = new SimpleXMLElement($data);
-		return (array)$xml;
+		return json_decode(json_encode((array) simplexml_load_string($data)), 1);
 	}
 
 	/**
