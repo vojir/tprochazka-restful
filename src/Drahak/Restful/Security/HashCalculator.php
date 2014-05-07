@@ -4,7 +4,9 @@ namespace Drahak\Restful\Security;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Mapping\IMapper;
+use Drahak\Restful\Mapping\MapperContext;
 use Nette\Object;
+use Nette\Http\IRequest;
 
 /**
  * Default auth token calculator implementation
@@ -26,11 +28,12 @@ class HashCalculator extends Object implements IAuthTokenCalculator
 	private $mapper;
 
 	/**
-	 * @param IMapper $mapper
+	 * @param MapperContext $mapper
+	 * @param IRequest $httpRequest
 	 */
-	public function __construct(IMapper $mapper)
+	public function __construct(MapperContext $mapperContext, IRequest $httpRequest)
 	{
-		$this->mapper = $mapper;
+		$this->mapper = $mapperContext->getMapper($httpRequest->getHeader('content-type'));
 	}
 
 	/**

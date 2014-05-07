@@ -34,7 +34,12 @@ class HashCalculatorTest extends TestCase
 		parent::setUp();
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\QueryMapper');
 		$this->input = $this->mockista->create('Drahak\Restful\Http\IInput');
-		$this->calculator = new HashCalculator($this->mapper);
+
+		$request = $this->mockista->create('Nette\Http\IRequest');
+		$request->expects('getHeader')->once()->with('content-type')->andReturn('text/plain');
+		$mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext'); 
+		$mapperContext->expects('getMapper')->once()->with('text/plain')->andReturn($this->mapper);
+		$this->calculator = new HashCalculator($mapperContext, $request);
     }
     
     public function testCalculateHash()
