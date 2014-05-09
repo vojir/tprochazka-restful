@@ -6,9 +6,9 @@ use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Application\IResponseFactory;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Http\Request;
+use Drahak\Restful\IResource;
 use Drahak\Restful\IResourceFactory;
 use Drahak\Restful\InvalidStateException;
-use Drahak\Restful\IResource;
 use Drahak\Restful\Converters;
 use Drahak\Restful\Resource\Link;
 use Drahak\Restful\Security\AuthenticationContext;
@@ -174,8 +174,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 		$this->resource->code = $code;
 		$this->resource->status = 'error';
 		$this->resource->message = $e->getMessage();
-		$this->resource->setContentType(IResource::JSON);
-
+		
 		if (isset($e->errors) && $e->errors) {
 			$this->resource->errors = $e->errors;
 		}
