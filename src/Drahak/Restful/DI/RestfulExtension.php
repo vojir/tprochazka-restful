@@ -288,7 +288,6 @@ class RestfulExtension extends CompilerExtension
 	{
 		$container->addDefinition($this->prefix('security.hashCalculator'))
 			->setClass('Drahak\Restful\Security\HashCalculator')
-			->setArguments(array($this->prefix('@queryMapper')))
 			->addSetup('$service->setPrivateKey(?)', array($config['security']['privateKey']));
 
 		$container->addDefinition($this->prefix('security.hashAuthenticator'))
