@@ -80,7 +80,25 @@ class ValidationScopeTest extends TestCase
 		Assert::equal($errors[0]->message, 'Please provide age as an integer');			
 	}
 
-	public function testValidateMissingValuesWhenUsingDotNotation()
+	public function testValidateMissingValue()
+	{
+		$exception = new ValidationException('user.name', 'Required field user.name is missing');
+
+		$ageField = $this->schema->field('user.name');
+		$ageField->addRule(IValidator::MIN_LENGTH, "Min 10 chars", 10);
+		$minLengthRule = $ageField->rules[0];
+
+		$this->validator->expects('validate')
+			->once()
+			->with(NULL, $minLengthRule)
+			->andThrow($exception);	
+
+		$errors = $this->schema->validate(array());
+		Assert::equal($errors[0]->field, 'user.name');
+		Assert::equal($errors[0]->message, 'Required field user.name is missing');			
+	}
+
+	public function testValidateInvalidValuesWhenUsingDotNotation()
 	{
 		$exception = new ValidationException('user.name', 'Required field user.name is missing');
 

@@ -81,7 +81,7 @@ class ValidationScope extends Object implements IValidationScope
 	{
 		$errors = array();
 
-        if (Arrays::isList($data)) { 
+        if (Arrays::isList($data) && count($data)) { 
             foreach ($data as $item) {
                 $newErrors = $this->validateDeeply($field, $item, $path);
                 $errors = array_merge($errors, $newErrors);
@@ -98,9 +98,10 @@ class ValidationScope extends Object implements IValidationScope
 					$newErrors = $this->validateDeeply($field, $value, $newPath);
 					$errors = array_merge($errors, $newErrors);
 					break; // because recursion already handled this path validation
-				} else if ($isLast) {
+				} else if ($isLast || $value === NULL) {
 					$newErrors = $field->validate($value);
 					$errors = array_merge($errors, $newErrors);  
+					break;
 				} 
 			}
         }
