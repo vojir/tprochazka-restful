@@ -61,13 +61,14 @@ class Field extends Object implements IField
 	 * @param mixed|null $argument
 	 * @return Field
 	 */
-	public function addRule($expression, $message = NULL, $argument = NULL)
+	public function addRule($expression, $message = NULL, $argument = NULL, $code = 0)
 	{
 		$rule = new Rule;
 		$rule->field = $this->name;
 		$rule->expression = $expression;
 		$rule->message = $message;
 		$rule->argument = $argument;
+		$rule->code = $code;
 
 		if ($message === NULL && isset(self::$defaultMessages[$expression])) {
 			$rule->message = self::$defaultMessages[$expression];

@@ -87,5 +87,12 @@ class FieldTest extends TestCase
 		Assert::equal($result, array());
 	}
 
+	public function testSetValidationRuleCode()
+	{
+		$this->field->addRule(IValidator::EMAIL, 'Please enter valid email address', NULL, 4025);
+		$rule = $this->field->getRules()[0];
+		Assert::equal($rule->code, 4025);
+	}
+
 }
 \run(new FieldTest());
