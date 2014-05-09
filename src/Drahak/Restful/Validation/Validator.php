@@ -48,7 +48,7 @@ class Validator extends Object implements IValidator
 
 		$expression = $this->parseExpression($rule);
 		if (!Validators::is($value, $expression)) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 
@@ -79,7 +79,7 @@ class Validator extends Object implements IValidator
 		}
 
 		if (!Strings::match($value, $rule->argument[0])) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 
@@ -92,7 +92,7 @@ class Validator extends Object implements IValidator
 	public static function validateEquality($value, Rule $rule)
 	{
 		if (!in_array($value, $rule->argument)) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 
@@ -105,7 +105,7 @@ class Validator extends Object implements IValidator
 	public static function validateEmail($value, Rule $rule)
 	{
 		if (!Validators::isEmail($value)) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 
@@ -118,7 +118,7 @@ class Validator extends Object implements IValidator
 	public static function validateUrl($value, Rule $rule)
 	{
 		if (!Validators::isUrl($value)) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 
@@ -132,7 +132,7 @@ class Validator extends Object implements IValidator
 	{
 		$isUuid = (bool)preg_match("/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i", $value);
 		if (!$isUuid) {
-			throw ValidationException::createFromRule($rule);
+			throw ValidationException::createFromRule($rule, $value);
 		}
 	}
 

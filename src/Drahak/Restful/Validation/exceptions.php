@@ -39,11 +39,12 @@ class ValidationException extends LogicException
 	/**
 	 * Validation exception simple factory
 	 * @param Rule $rule
+	 * @param mixed $value 
 	 * @return ValidationException
 	 */
-	public static function createFromRule(Rule $rule)
+	public static function createFromRule(Rule $rule, $value = NULL)
 	{
-		return new self($rule->getField(), vsprintf($rule->getMessage(), $rule->getArgument()), $rule->getCode());
+		return new self($rule->getField(), ($value ? "'" . $value .  "' is invalid value: " : '') . vsprintf($rule->getMessage(), $rule->getArgument()), $rule->getCode());
 	}
 
 }
