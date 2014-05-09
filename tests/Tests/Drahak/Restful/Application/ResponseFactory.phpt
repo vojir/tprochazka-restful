@@ -49,7 +49,7 @@ class ResponseFactoryTest extends TestCase
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
-		$this->factory = new ResponseFactory($this->response, $this->request, $this->mapperContext);
+		$this->factory = new ResponseFactory('jsonp', $this->response, $this->request, $this->mapperContext);
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 	}
@@ -154,6 +154,35 @@ class ResponseFactoryTest extends TestCase
 		Assert::throws(function() use($factory) {
 			$factory->registerResponse('test/plain', 'Drahak\TestResponse');
 		}, 'Drahak\Restful\InvalidArgumentException');
+    }
+
+    public function testCreateResponseBasedOnRequestedContentTypeIfJsonpIsDisabled()
+    {
+    	$this->factory->setJsonp(FALSE);
+
+		$this->response->expects('setCode')
+			->once()
+			->with(204);
+
+		$this->resource->expects('getContentType')
+			->once()
+			->andReturn(IResource::JSON);
+		$this->resource->expects('getData')
+			->once()
+			->andReturn(array());
+
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with(IResource::JSON)
+			->andReturn($this->mapper);
+
+		$this->request->expects('getQuery')
+			->once()
+			->with('jsonp')
+			->andReturn('callback');
+
+		$response = $this->factory->create($this->resource);
+		Assert::true($response instanceof TextResponse);
     }
 
 }

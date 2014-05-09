@@ -108,11 +108,11 @@ class RestfulExtension extends CompilerExtension
 	 */
 	private function loadRestful(ContainerBuilder $container, $config)
 	{
-		Validators::assert($config['jsonpKey'], 'string');
 		Validators::assert($config['prettyPrintKey'], 'string');
 
 		$container->addDefinition($this->prefix('responseFactory'))
-			->setClass('Drahak\Restful\Application\ResponseFactory');
+			->setClass('Drahak\Restful\Application\ResponseFactory')
+			->setArguments(array($config['jsonpKey']));
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Drahak\Restful\ResourceFactory');

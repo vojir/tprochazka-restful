@@ -32,6 +32,9 @@ class ResponseFactory extends Object implements IResponseFactory
 	/** @var ICacheValidator */
 	private $cacheValidator;
 
+	/** @var string JSONP request key */
+	private $jsonp;
+
 	/** @var array */
 	private $responses = array(
 		IResource::JSON => 'Drahak\Restful\Application\Responses\TextResponse',
@@ -44,16 +47,17 @@ class ResponseFactory extends Object implements IResponseFactory
 	);
 
 	/**
+	 * @param string|boolean $jsonp key or FALSE if disabled
 	 * @param IResponse $response
 	 * @param IRequest $request
 	 * @param MapperContext $mapperContext
-	 * @param ICacheValidator $cacheValidator
 	 */
-	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext)
+	public function __construct($jsonp, IResponse $response, IRequest $request, MapperContext $mapperContext)
 	{
 		$this->response = $response;
 		$this->request = $request;
 		$this->mapperContext = $mapperContext;
+		$this->jsonp = $jsonp;
 	}
 
 	/**
@@ -104,7 +108,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	public function create(IResource $resource, $code = NULL)
 	{
-		$contentType = !$this->request->getQuery('jsonp') ?
+		$contentType = $this->jsonp === FALSE || !$this->request->getQuery($this->jsonp) ?
 			$resource->getContentType() :
 			IResource::JSONP;
 
@@ -123,6 +127,25 @@ class ResponseFactory extends Object implements IResponseFactory
 		$responseClass = $this->responses[$contentType];
 		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType), $contentType);
 		return $response;
+	}
+
+	/**
+	 * Set JSONP key
+	 * @param stirng|boolean $jsonp 
+	 */
+	public function setJsonp($jsonp)
+	{
+		$this->jsonp = $jsonp;
+		return $this;
+	}
+
+	/**
+	 * Get JSONP key 
+	 * @return string|boolean
+	 */
+	public function getJsonp()
+	{
+		return $this->jsonp;
 	}
 
 }
