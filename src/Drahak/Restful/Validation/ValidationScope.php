@@ -2,6 +2,8 @@
 namespace Drahak\Restful\Validation;
 
 use Nette\Object;
+use Nette\Utils\Arrays;
+use Nette\Utils\Strings;
 
 /**
  * ValidationScope
@@ -52,12 +54,8 @@ class ValidationScope extends Object implements IValidationScope
 		$errors = array();
 		/** @var IField $field */
 		foreach ($this->fields as $field) {
-			$value = isset($data[$field->getName()]) ? $data[$field->getName()] : NULL;
-			$fieldErrors = $field->validate($value);
-			if (!$fieldErrors) {
-				continue;
-			}
-			$errors += $fieldErrors;
+			$fieldErrors = $this->validateDeeply($field, $data, $field->getName());
+			$errors = array_merge($errors, $fieldErrors);
 		}
 		return $errors;
 	}
@@ -72,6 +70,44 @@ class ValidationScope extends Object implements IValidationScope
 		return new Field($name, $this->getValidator());
 	}
 
+	/**
+	 * Recursively validate data using dot notation
+	 * @param  IField $field 
+	 * @param  array  $data 
+	 * @param  string $path
+	 * @return array
+	 */
+	protected function validateDeeply(IField $field, $data, $path)
+	{
+		$errors = array();
+
+        if (Arrays::isList($data)) { 
+            foreach ($data as $item) {
+                $newErrors = $this->validateDeeply($field, $item, $path);
+                $errors = array_merge($errors, $newErrors);
+            }
+        } else {
+			$keys = explode(".", $path);
+			$last = count($keys) - 1;
+			foreach ($keys as $index => $key) {
+				$isLast = $index == $last;
+				$value = isset($data[$key]) ? $data[$key] : NULL;
+
+				if (is_array($value)) {
+					$newPath = Strings::replace($path, "~^$key\.~");
+					$newErrors = $this->validateDeeply($field, $value, $newPath);
+					$errors = array_merge($errors, $newErrors);
+					break; // because recursion already handled this path validation
+				} else if ($isLast) {
+					$newErrors = $field->validate($value);
+					$errors = array_merge($errors, $newErrors);  
+				} 
+			}
+        }
+
+        return $errors;
+	}
+
 	/****************** Getters & setters ******************/
 
 	/**
@@ -81,6 +117,15 @@ class ValidationScope extends Object implements IValidationScope
 	public function getValidator()
 	{
 		return $this->validator;
+	}
+
+	/**
+	 * Get schema fields
+	 * @return IField[]
+	 */
+	public function getFields()
+	{
+		return $this->fields;
 	}
 
 }
