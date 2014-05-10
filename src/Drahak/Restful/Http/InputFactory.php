@@ -4,6 +4,7 @@ namespace Drahak\Restful\Http;
 use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Mapping\IMapper;
 use Drahak\Restful\Mapping\MapperContext;
+use Drahak\Restful\Mapping\MappingException;
 use Drahak\Restful\Validation\IValidationScopeFactory;
 use Drahak\Restful\Application\BadRequestException;
 use Nette\Http\IRequest;
@@ -79,13 +80,15 @@ class InputFactory extends Object
 		if ($input = file_get_contents('php://input')) {
 			try {
 				$this->mapper = $this->mapperContext->getMapper($this->httpRequest->getHeader('Content-Type'));
+				$requestBody = $this->mapper->parse($input);
 			} catch (InvalidStateException $e) {
 				throw BadRequestException::unsupportedMediaType(
 					'No mapper defined for Content-Type ' . $this->httpRequest->getHeader('Content-Type'),
 					$e
 				);
+			} catch (MappingException $e) {
+				throw new BadRequestException($e->getMessage(), 400, $e);
 			}
-			$requestBody = $this->mapper->parse($input);
 		}
 		return $requestBody;
 	}
