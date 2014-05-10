@@ -147,9 +147,6 @@ class RestfulExtension extends CompilerExtension
 		// Input & validation
 		$container->addDefinition($this->prefix('inputFactory'))
 			->setClass('Drahak\Restful\Http\InputFactory');
-		$container->addDefinition($this->prefix('input'))
-			->setClass('Drahak\Restful\Http\Input')
-			->setFactory($this->prefix('@inputFactory') . '::create');
 
 		// Http
 		$container->addDefinition($this->prefix('httpResponseFactory'))

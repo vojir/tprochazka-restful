@@ -5,6 +5,7 @@ use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Application\IResponseFactory;
 use Drahak\Restful\Http\IInput;
+use Drahak\Restful\Http\InputFactory;
 use Drahak\Restful\Http\Request;
 use Drahak\Restful\IResource;
 use Drahak\Restful\IResourceFactory;
@@ -35,9 +36,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var IResource */
 	protected $resource;
 
-	/** @var IInput|IDataProvider */
-	protected $input;
-
 	/** @var RequestFilter */
 	protected $requestFilter;
 
@@ -50,6 +48,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/** @var AuthenticationContext */
 	protected $authentication;
 
+	/** @var IInput|IDataProvider */
+	private $input;
+
+	/** InputFactory */
+	private $inputFactory;
+
 	/**
 	 * Inject Drahak Restful
 	 * @param IResponseFactory $responseFactory
@@ -60,13 +64,29 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	 */
 	public final function injectDrahakRestful(
 		IResponseFactory $responseFactory, IResourceFactory $resourceFactory,
-		AuthenticationContext $authentication, IInput $input, RequestFilter $requestFilter)
+		AuthenticationContext $authentication, InputFactory $inputFactory, RequestFilter $requestFilter)
 	{
 		$this->responseFactory = $responseFactory;
 		$this->resourceFactory = $resourceFactory;
 		$this->authentication = $authentication;
 		$this->requestFilter = $requestFilter;
-		$this->input = $input;
+		$this->inputFactory = $inputFactory;
+	}
+
+	/**
+	 * Get input
+	 * @return IInput 
+	 */
+	public function getInput()
+	{
+		if (!$this->input) {
+			try {
+				$this->input = $this->inputFactory->create();
+			} catch(BadRequestException $e) {
+				$this->sendErrorResource($e);
+			}
+		}
+		return $this->input;
 	}
 
 	/**
@@ -85,8 +105,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
 			// Check if input is validate
-			if (!$this->input->isValid() && $validationProcessed === TRUE) {
-				$errors = $this->input->validate();
+			if (!$this->getInput()->isValid() && $validationProcessed === TRUE) {
+				$errors = $this->getInput()->validate();
 				throw BadRequestException::unprocessableEntity($errors, 'Validation Failed: ' . $errors[0]->message);
 			}
 		} catch (BadRequestException $e) {
@@ -112,7 +132,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		// Try to authenticate client
 		try {
-			$this->authentication->authenticate($this->input);
+			$this->authentication->authenticate($this->getInput());
 		} catch (SecurityException $e) {
 			$this->sendErrorResource($e);
 		}
