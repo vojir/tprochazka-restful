@@ -48,7 +48,7 @@ class ResourceFactory extends Object implements IResourceFactory
 	 */
 	private function getPreferredContentType()
 	{
-		$formats = array(
+		static $formats = array(
 			'json' => IResource::JSON,
 			'xml' => IResource::XML,
 			'jsonp' => IResource::JSONP,
@@ -56,6 +56,7 @@ class ResourceFactory extends Object implements IResourceFactory
 			'data_url' => IResource::DATA_URL
 		);
 		$accept = explode(',', $this->request->getHeader('Accept'));
+		$accept[] = $this->request->getHeader('Content-Type');
 		foreach ($accept as $mimeType) {
 			foreach ($formats as $formatMime) {
 				if (Strings::contains($mimeType, $formatMime)) {
@@ -63,7 +64,7 @@ class ResourceFactory extends Object implements IResourceFactory
 				}
 			}
 		}
-		return NULL;
+		return IResource::JSON;
 	}
 
 }
