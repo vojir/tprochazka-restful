@@ -58,26 +58,70 @@ class ApiRequestFactoryTest extends TestCase
 
 	public function testCreatesRequestWithMethodThatIsInOverrideHeader() 
 	{
+		$this->request->expects('getMethod')
+			->once()
+			->andReturn('POST');
+	
 		$this->request->expects('getHeader')
 			->with(ApiRequestFactory::OVERRIDE_HEADER)
-			->andReturn('POST');
+			->andReturn('DELETE');
 
 		$request = $this->apiRequestFactory->createHttpRequest();
-		Assert::equal($request->getMethod(), 'POST');		
+		Assert::equal($request->getMethod(), 'DELETE');		
 	}
 
 	public function testCreateRequestWithMethodThatIsInQueryParameter()
 	{
+		$this->request->expects('getMethod')
+			->once()
+			->andReturn('POST');
+
 		$this->request->expects('getHeader')
 			->with(ApiRequestFactory::OVERRIDE_HEADER)
 			->andReturn(NULL);
 
 		$this->request->expects('getQuery')
 			->with(ApiRequestFactory::OVERRIDE_PARAM)
-			->andReturn('POST');
+			->andReturn('DELETE');
 
 		$request = $this->apiRequestFactory->createHttpRequest();
-		Assert::equal($request->getMethod(), 'POST');
+		Assert::equal($request->getMethod(), 'DELETE');
+	}
+
+	public function testDoesNotOverrideMethodWithHeaderIfRequestedWithGetMethod()
+	{
+		$this->request->expects('getMethod')
+			->once()
+			->andReturn('GET');
+
+		$this->request->expects('getHeader')
+			->with(ApiRequestFactory::OVERRIDE_HEADER)
+			->andReturn('DELETE');
+
+		$this->request->expects('getQuery')
+			->with(ApiRequestFactory::OVERRIDE_PARAM)
+			->andReturn(NULL);
+
+		$request = $this->apiRequestFactory->createHttpRequest();
+		Assert::equal($request->getMethod(), 'GET');	
+	}
+
+	public function testDoesNotOverrideMethodWithQueryParameterIfRequestedWithGetMethod()
+	{
+		$this->request->expects('getMethod')
+			->once()
+			->andReturn('GET');
+
+		$this->request->expects('getHeader')
+			->with(ApiRequestFactory::OVERRIDE_HEADER)
+			->andReturn(NULL);
+
+		$this->request->expects('getQuery')
+			->with(ApiRequestFactory::OVERRIDE_PARAM)
+			->andReturn('DELETE');
+
+		$request = $this->apiRequestFactory->createHttpRequest();
+		Assert::equal($request->getMethod(), 'GET');	
 	}
 
 	private function createRequestMock()
