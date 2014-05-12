@@ -97,10 +97,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	protected function startup()
 	{
 		parent::startup();
-		$this->resource = $this->resourceFactory->create();
 		$this->autoCanonicalize = FALSE;
 
 		try {
+			// Create resource object
+			$this->resource = $this->resourceFactory->create();
+
 			// calls $this->validate<Action>()
 			$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
@@ -115,6 +117,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 				return;
 			}
 			throw $e;
+		} catch (InvalidStateException $e) {
+			$this->sendErrorResource($e);
 		}
 	}
 
@@ -190,10 +194,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$code = 400;
 		}
 
-		$this->resource = $this->resourceFactory->create();
-		$this->resource->code = $code;
-		$this->resource->status = 'error';
-		$this->resource->message = $e->getMessage();
+		$error = array(
+			'code' => $code,
+			'status' => 'error',
+			'message' => $e->getMessage()
+		);
+		$this->resource = $this->resourceFactory->create($error, IResource::JSON);
 		
 		if (isset($e->errors) && $e->errors) {
 			$this->resource->errors = $e->errors;
