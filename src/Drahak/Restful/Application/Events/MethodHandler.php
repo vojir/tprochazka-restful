@@ -15,7 +15,7 @@ use Nette\Object;
  * @package Drahak\Restful\Application
  * @author Drahomír Hanák
  */
-class MethodHandler extends Object implements IApplicationEvent
+class MethodHandler extends Object
 {
 
 	/** @var IRequest */
