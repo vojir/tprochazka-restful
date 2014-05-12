@@ -44,10 +44,6 @@ class ResourceFactoryTest extends TestCase
             ->once()
             ->with('Accept')
             ->andReturn('application/json');
-        $this->request->expects('getHeader')
-            ->once()
-            ->with('Content-Type')
-            ->andReturn('application/xml');
 
         $resource = $this->factory->create();
         Assert::true($resource instanceof IResource);
@@ -62,10 +58,6 @@ class ResourceFactoryTest extends TestCase
             ->once()
             ->with('Accept')
             ->andReturn('application/json');
-		$this->request->expects('getHeader')
-			->once()
-            ->with('Content-Type')
-			->andReturn('application/xml');
 		$this->resourceConverter->expects('convert')
 			->once()
 			->with($data)
@@ -77,46 +69,42 @@ class ResourceFactoryTest extends TestCase
 		Assert::same($resource->getData(), $data);
 	}
 
-    public function testUseRequestedContentTypeAsResponseIfAcceptHeaderIsMissing()
-    {
-        $data = array();
-
+	public function testUseFirstAcceptableContentTypeFromAcceptHeader()
+	{
         $this->request->expects('getHeader')
             ->once()
             ->with('Accept')
-            ->andReturn('*/*');
-        $this->request->expects('getHeader')
-            ->once()
-            ->with('Content-Type')
-            ->andReturn('application/xml');
-        $this->resourceConverter->expects('convert')
-            ->once()
-            ->with($data)
-            ->andReturn($data);
+            ->andReturn('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8');
+		$this->resourceConverter->expects('convert')->once();
 
-        $resource = $this->factory->create($data);
-        Assert::equal($resource->getContentType(), 'application/xml');
-    }
+		$resource = $this->factory->create();
+		Assert::equal($resource->getContentType(), 'application/xml');
+	}
 
-    public function testUseJsonIfNeitherAcceptNorContentTypeHeaderMachesAcceptableContentTypes()
-    {
-        $data = array();
+	public function testThrowsExceptionIfAcceptHeaderIsUnknown()
+	{
         $this->request->expects('getHeader')
             ->once()
             ->with('Accept')
-            ->andReturn(NULL);
+            ->andReturn('text/html,text/plain,text/*');
+		$this->resourceConverter->expects('convert')->once();
+
+		Assert::exception(function() {
+			$this->factory->create();
+		}, 'Drahak\Restful\InvalidStateException');	
+	}
+
+	public function testUseDefaultContentTypeWhenAvailable()
+	{
         $this->request->expects('getHeader')
             ->once()
-            ->with('Content-Type')
-            ->andReturn(NULL);
-        $this->resourceConverter->expects('convert')
-            ->once()
-            ->with($data)
-            ->andReturn($data);
+            ->with('Accept')
+            ->andReturn('text/html,text/plain,text/*');
+		$this->resourceConverter->expects('convert')->once();		
 
-        $resource = $this->factory->create($data);
-        Assert::equal($resource->getContentType(), 'application/json');
-    }
+		$resource = $this->factory->create(array(), IResource::XML);
+		Assert::equal($resource->getContentType(), 'application/xml');
+	}
 
 }
 \run(new ResourceFactoryTest());
