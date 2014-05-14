@@ -103,6 +103,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			// Create resource object
 			$this->resource = $this->resourceFactory->create();
 
+			// Check if Accept header is invalid
+			$accept = $this->getHttpRequest()->getHeader('Accept');
+			if (!$this->responseFactory->isAcceptable($accept)) {
+				throw new InvalidStateException('Cannot determine response with content type ' . $accept, 400);
+			}
+
 			// calls $this->validate<Action>()
 			$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
@@ -201,11 +207,9 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->resource->errors = $e->errors;
 		}
 
-		try {
-			$this->sendResource(NULL, $code);
-		} catch (InvalidStateException $e) {
-			$this->sendResource(IResource::JSON, $code);
-		}
+		$accept = $request->getHeader('Accept');
+		$contentType = !$accept || !$this->responseFactory->isAcceptable($accept) ? IResource::JSON : NULL;
+		$this->sendResource($contentType, $code);
 	}
 
 	/**
