@@ -20,8 +20,6 @@ use Nette\MemberAccessException;
 class Resource extends Object implements ArrayAccess, Serializable, IteratorAggregate, IResource
 {
 
-	/** @var string */
-	private $contentType;
 
 	/** @var array */
 	private $data = array();
@@ -32,26 +30,6 @@ class Resource extends Object implements ArrayAccess, Serializable, IteratorAggr
 	public function __construct(array $data = array())
 	{
 		$this->data = $data;
-	}
-
-	/**
-	 * Set result content type
-	 * @param string $mime
-	 * @return Resource
-	 */
-	public function setContentType($mime)
-	{
-		$this->contentType = $mime;
-		return $this;
-	}
-
-	/**
-	 * Get result mime type
-	 * @return string
-	 */
-	public function getContentType()
-	{
-		return $this->contentType;
 	}
 
 	/**
