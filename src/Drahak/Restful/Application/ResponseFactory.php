@@ -111,7 +111,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	{
 		if ($contentType === NULL) {
 			$contentType = $this->jsonp === FALSE || !$this->request->getQuery($this->jsonp) ?
-				$this->getPreferredContentType() :
+				$this->getPreferredContentType($this->request->getHeader('Accept')) :
 				IResource::JSONP;
 		}
 
@@ -130,6 +130,21 @@ class ResponseFactory extends Object implements IResponseFactory
 		$responseClass = $this->responses[$contentType];
 		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType), $contentType);
 		return $response;
+	}
+
+	/**
+	 * Is given content type acceptable for response
+	 * @param  string  $contentType 
+	 * @return boolean              
+	 */
+	public function isAcceptable($contentType)
+	{
+		try {
+			$this->getPreferredContentType($this->request->getHeader('Accept'));
+			return TRUE;
+		} catch (InvalidStateException $e) {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -153,23 +168,24 @@ class ResponseFactory extends Object implements IResponseFactory
 
 	/**
 	 * Get preferred request content type
+	 * @param  string $contentType may be separed with comma
 	 * @return string
 	 * 
 	 * @throws  InvalidStateException If Accept header is unknown
 	 */
-	private function getPreferredContentType()
+	private function getPreferredContentType($contentType)
 	{
-		$acceptHeader = $this->request->getHeader('Accept');
-		$accept = explode(',', $acceptHeader);
+		$accept = explode(',', $contentType);
 		$acceptableTypes = array_keys($this->responses);
 		foreach ($accept as $mimeType) {
+			if ($mimeType === '*/*') return $acceptableTypes[0];
 			foreach ($acceptableTypes as $formatMime) {
 				if (Strings::contains($mimeType, $formatMime)) {
 					return $formatMime;
 				}
 			}
 		}
-		throw new InvalidStateException('Unknown Accept header: ' . $acceptHeader, 400);
+		throw new InvalidStateException('Unknown Accept header: ' . $contentType);
 	}
 
 }

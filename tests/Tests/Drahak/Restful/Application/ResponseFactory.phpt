@@ -193,5 +193,28 @@ class ResponseFactoryTest extends TestCase
 		Assert::true($response instanceof TextResponse);
     }
 
+    public function testSelectsFirstContentTypeIfAcceptHeaderAcceptsAll()
+    {	
+		$this->request->expects('getHeader')
+			->once()
+			->with('Accept')
+			->andReturn('*/*');
+		$this->resource->expects('getData')
+			->once()
+			->andReturn('test');
+		$this->request->expects('getQuery')
+			->once()
+			->with('jsonp')
+			->andReturn(NULL);
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with(IResource::JSON)
+			->andReturn($this->mapper);
+
+		$response = $this->factory->create($this->resource);
+
+		Assert::true($response instanceof TextResponse);
+    }
+
 }
 \run(new ResponseFactoryTest());
