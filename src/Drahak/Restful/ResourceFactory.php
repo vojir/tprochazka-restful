@@ -20,15 +20,6 @@ class ResourceFactory extends Object implements IResourceFactory
 	/** @var ResourceConverter */
 	private $resourceConverter;
 
-	/** @var string[] */
-	protected $accept = array(
-		IResource::JSON,
-		IResource::XML,
-		IResource::JSONP,
-		IResource::QUERY,
-		IResource::DATA_URL
-	);
-
 	/**
 	 * @param IRequest $request
 	 * @param ResourceConverter $resourceConverter
@@ -42,44 +33,13 @@ class ResourceFactory extends Object implements IResourceFactory
 	/**
 	 * Create new API resource
 	 * @param array $data
-	 * @param stirng $defaultContentType
 	 * @return IResource
 	 *
 	 * @throws  InvalidStateException If Accept header is unknown
 	 */
-	public function create(array $data = array(), $defaultContentType = NULL)
+	public function create(array $data = array())
 	{
-		$resource = new ConvertedResource($this->resourceConverter, $data);
-		try {
-			$resource->setContentType($this->getPreferredContentType());
-			return $resource;
-		} catch (InvalidStateException $e) {
-			if ($defaultContentType !== NULL) {
-				$resource->setContentType($defaultContentType);
-				return $resource;
-			}
-			throw $e;
-		}
-	}
-
-	/**
-	 * Get preferred request content type
-	 * @return string
-	 * 
-	 * @throws  InvalidStateException If Accept header is unknown
-	 */
-	private function getPreferredContentType()
-	{
-		$acceptHeader = $this->request->getHeader('Accept');
-		$accept = explode(',', $acceptHeader);
-		foreach ($accept as $mimeType) {
-			foreach ($this->accept as $formatMime) {
-				if (Strings::contains($mimeType, $formatMime)) {
-					return $formatMime;
-				}
-			}
-		}
-		throw new InvalidStateException('Unknown Accept header: ' . $acceptHeader, 400);
+		return new ConvertedResource($this->resourceConverter, $data);
 	}
 
 }

@@ -6,7 +6,7 @@ namespace Drahak\Restful;
  * @package Drahak\Restful
  * @author Drahomír Hanák
  */
-interface IResource extends IResourceElement
+interface IResource 
 {
 
 	/** Result types */
@@ -20,16 +20,9 @@ interface IResource extends IResourceElement
 	const NULL = 'NULL';
 
 	/**
-	 * Get content type
-	 * @return string
+	 * Get element value or array data
+	 * @return array|Traversable
 	 */
-	public function getContentType();
-
-	/**
-	 * Set content type
-	 * @param string $contentType
-	 * @return void
-	 */
-	public function setContentType($contentType);
+	public function getData();
 
 }

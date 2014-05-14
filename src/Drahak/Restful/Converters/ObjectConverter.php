@@ -4,7 +4,7 @@ namespace Drahak\Restful\Converters;
 use stdClass;
 use Traversable;
 use Nette\Object;
-use Drahak\Restful\IResourceElement;
+use Drahak\Restful\IResource;
 
 /**
  * ObjectConverter
@@ -38,7 +38,7 @@ class ObjectConverter extends Object implements IConverter
 		}
 
 		foreach ($data as $key => $value) {
-			if ($value instanceof IResourceElement) {
+			if ($value instanceof IResource) {
 				$value = $value->getData();
 			}
 

@@ -2,7 +2,7 @@
 namespace Drahak\Restful\Resource;
 
 use Nette\Object;
-use Drahak\Restful\IResourceElement;
+use Drahak\Restful\IResource;
 
 /**
  * Link representation in resource
@@ -12,7 +12,7 @@ use Drahak\Restful\IResourceElement;
  * @property-read string $href
  * @property-read string $rel
  */
-class Link extends Object implements IResourceElement
+class Link extends Object implements IResource
 {
 
 	/** Link pointing on self */
