@@ -2,6 +2,7 @@
 namespace Drahak\Restful\Validation;
 
 use Exception;
+use Nette\Utils\Strings;
 use Drahak\Restful\LogicException;
 
 /**
@@ -44,7 +45,7 @@ class ValidationException extends LogicException
 	 */
 	public static function createFromRule(Rule $rule, $value = NULL)
 	{
-		return new self($rule->getField(), ($value ? "'" . $value .  "' is invalid value: " : '') . vsprintf($rule->getMessage(), $rule->getArgument()), $rule->getCode());
+		return new self($rule->getField(), ($value ? "'" . Strings::truncate($value, 60) .  "' is invalid value: " : '') . vsprintf($rule->getMessage(), $rule->getArgument()), $rule->getCode());
 	}
 
 }
