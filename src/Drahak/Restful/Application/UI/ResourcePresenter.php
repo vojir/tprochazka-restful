@@ -165,16 +165,12 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$this->resource = $this->resourceFactory->create($this->resource);
 		}
 
-		if ($contentType !== NULL) {
-			$this->resource->setContentType($contentType);
-		}
-
 		if ($code !== NULL) {
 			$this->getHttpResponse()->setCode($code);
 		}
 
 		try {
-			$response = $this->responseFactory->create($this->resource);
+			$response = $this->responseFactory->create($this->resource, $contentType);
 			$this->sendResponse($response);
 		} catch (InvalidStateException $e) {
 			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e));
@@ -199,13 +195,17 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			'status' => 'error',
 			'message' => $e->getMessage()
 		);
-		$this->resource = $this->resourceFactory->create($error, IResource::JSON);
+		$this->resource = $this->resourceFactory->create($error);
 		
 		if (isset($e->errors) && $e->errors) {
 			$this->resource->errors = $e->errors;
 		}
 
-		$this->sendResource(NULL, $code);
+		try {
+			$this->sendResource(NULL, $code);
+		} catch (InvalidStateException $e) {
+			$this->sendResource(IResource::JSON, $code);
+		}
 	}
 
 	/**

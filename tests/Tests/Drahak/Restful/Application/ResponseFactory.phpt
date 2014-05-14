@@ -60,9 +60,11 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->with(204);
 
-		$this->resource->expects('getContentType')
+		$this->request->expects('getHeader')
 			->once()
+			->with('Accept')
 			->andReturn(IResource::JSON);
+
 		$this->resource->expects('getData')
 			->once()
 			->andReturn(array());
@@ -83,9 +85,11 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateCustomResponse()
 	{
-		$this->resource->expects('getContentType')
+		$this->request->expects('getHeader')
 			->once()
+			->with('Accept')
 			->andReturn('text');
+
 		$this->resource->expects('getData')
 			->once()
 			->andReturn('test');
@@ -108,8 +112,9 @@ class ResponseFactoryTest extends TestCase
 
 	public function testCreateJsonpResponseWhenJsonpIsActive()
 	{
-		$this->resource->expects('getContentType')
+		$this->request->expects('getHeader')
 			->once()
+			->with('Accept')
 			->andReturn('text');
 		$this->resource->expects('getData')
 			->once()
@@ -131,8 +136,9 @@ class ResponseFactoryTest extends TestCase
 
 	public function testThrowsExceptionWhenResponseTypeIsNotFound()
 	{
-		$this->resource->expects('getContentType')
+		$this->request->expects('getHeader')
 			->once()
+			->with('Accept')
 			->andReturn('drahak/test');
 		$this->request->expects('getQuery')
 			->once()
@@ -164,9 +170,11 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->with(204);
 
-		$this->resource->expects('getContentType')
+		$this->request->expects('getHeader')
 			->once()
+			->with('Accept')
 			->andReturn(IResource::JSON);
+
 		$this->resource->expects('getData')
 			->once()
 			->andReturn(array());

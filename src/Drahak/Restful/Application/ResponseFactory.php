@@ -7,6 +7,7 @@ use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\IResource;
 use Drahak\Restful\Mapping\MapperContext;
 use Drahak\Restful\Utils\RequestFilter;
+use Nette\Utils\Strings;
 use Nette\Http\IResponse;
 use Nette\Http\IRequest;
 use Nette\Http\Url;
@@ -101,19 +102,21 @@ class ResponseFactory extends Object implements IResponseFactory
 	/**
 	 * Create new api response
 	 * @param IResource $resource
-	 * @param int|null $code
+	 * @param string|null $contentType
 	 * @return IResponse
 	 *
 	 * @throws InvalidStateException
 	 */
-	public function create(IResource $resource, $code = NULL)
+	public function create(IResource $resource, $contentType = NULL)
 	{
-		$contentType = $this->jsonp === FALSE || !$this->request->getQuery($this->jsonp) ?
-			$resource->getContentType() :
-			IResource::JSONP;
+		if ($contentType === NULL) {
+			$contentType = $this->jsonp === FALSE || !$this->request->getQuery($this->jsonp) ?
+				$this->getPreferredContentType() :
+				IResource::JSONP;
+		}
 
 		if (!isset($this->responses[$contentType])) {
-			throw new InvalidStateException('Unregistered API response.');
+			throw new InvalidStateException('Unregistered API response for ' . $contentType);
 		}
 
 		if (!class_exists($this->responses[$contentType])) {
@@ -146,6 +149,27 @@ class ResponseFactory extends Object implements IResponseFactory
 	public function getJsonp()
 	{
 		return $this->jsonp;
+	}
+
+	/**
+	 * Get preferred request content type
+	 * @return string
+	 * 
+	 * @throws  InvalidStateException If Accept header is unknown
+	 */
+	private function getPreferredContentType()
+	{
+		$acceptHeader = $this->request->getHeader('Accept');
+		$accept = explode(',', $acceptHeader);
+		$acceptableTypes = array_keys($this->responses);
+		foreach ($accept as $mimeType) {
+			foreach ($acceptableTypes as $formatMime) {
+				if (Strings::contains($mimeType, $formatMime)) {
+					return $formatMime;
+				}
+			}
+		}
+		throw new InvalidStateException('Unknown Accept header: ' . $acceptHeader, 400);
 	}
 
 }
