@@ -1,9 +1,10 @@
 <?php
 namespace Drahak\Restful\Http;
 
-use Drahak\Restful\InvalidStateException;
 use Drahak\Restful\Resource\Link;
 use Drahak\Restful\Utils\RequestFilter;
+use Drahak\Restful\InvalidStateException;
+use Drahak\Restful\Application\MethodOptions;
 use Nette\Http\IResponse;
 use Nette\Http\IRequest;
 use Nette\Http\Response;
@@ -28,6 +29,9 @@ class ResponseFactory extends Object
 	/** @var RequestFilter */
 	private $requestFilter;
 
+	/** @var MethodOptions */
+	private $methodOptions;
+
 	/** @var array Default response code for each request method */
 	protected $defaultCodes = array(
 		IRequest::GET => 200,
@@ -42,10 +46,11 @@ class ResponseFactory extends Object
 	 * @param IRequest $request
 	 * @param RequestFilter $requestFilter
 	 */
-	public function __construct(IRequest $request, RequestFilter $requestFilter)
+	public function __construct(IRequest $request, RequestFilter $requestFilter, MethodOptions $methodOptions)
 	{
 		$this->request = $request;
 		$this->requestFilter = $requestFilter;
+		$this->methodOptions = $methodOptions;
 	}
 
 	/**
@@ -66,8 +71,10 @@ class ResponseFactory extends Object
 	 */
 	public function createHttpResponse($code = NULL)
 	{
+		$allow = $this->methodOptions->getOptions($this->request->getUrl());
 		$response = new ResponseProxy($this->response ? $this->response : new Response);
 		$response->setCode($this->getCode($code));
+		$response->setHeader('Allow', join(', ', $allow));
 
 		try {
 			$response->setHeader('Link', $this->getPaginatorLink());
