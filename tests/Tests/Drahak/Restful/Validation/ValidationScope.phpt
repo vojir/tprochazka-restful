@@ -29,20 +29,20 @@ class ValidationScopeTest extends TestCase
 	/** @var ValidationScope */
 	private $schema;
 
-    protected function setUp()
-    {
+	protected function setUp()
+	{
 		parent::setUp();
 		$this->validator = $this->mockista->create('Drahak\Restful\Validation\Validator');
 		$this->schema = new ValidationScope($this->validator);
-    }
+	}
 
-    public function testCreateField()
-    {
+	public function testCreateField()
+	{
 		$field = $this->schema->field('test');
 		Assert::true($field instanceof IField);
 		Assert::equal($field->getName(), 'test');
 		Assert::equal($field->getValidator(), $this->validator);
-    }
+	}
 
 	public function testValidateArrayData()
 	{
@@ -80,20 +80,26 @@ class ValidationScopeTest extends TestCase
 		Assert::equal($errors[0]->message, 'Please provide age as an integer');			
 	}
 
-	public function testValidateMissingValue()
+	public function testValidateMissingValueIfTheFieldIsRequired()
 	{
 		$exception = new ValidationException('user.name', 'Required field user.name is missing');
 
 		$ageField = $this->schema->field('user.name');
+		$ageField->addRule(IValidator::REQUIRED, "Please fill user name");
 		$ageField->addRule(IValidator::MIN_LENGTH, "Min 10 chars", 10);
-		$minLengthRule = $ageField->rules[0];
+		$requiredRule = $ageField->rules[0];
+		$minLengthRule = $ageField->rules[1];
 
 		$this->validator->expects('validate')
 			->once()
-			->with(NULL, $minLengthRule)
+			->with('Ar', $requiredRule);	
+
+		$this->validator->expects('validate')
+			->once()
+			->with('Ar', $minLengthRule)
 			->andThrow($exception);	
 
-		$errors = $this->schema->validate(array());
+		$errors = $this->schema->validate(array('user' => array('name' => 'Ar')));
 		Assert::equal($errors[0]->field, 'user.name');
 		Assert::equal($errors[0]->message, 'Required field user.name is missing');			
 	}
@@ -103,12 +109,12 @@ class ValidationScopeTest extends TestCase
 		$exception = new ValidationException('user.name', 'Required field user.name is missing');
 
 		$ageField = $this->schema->field('user.name');
-		$ageField->addRule(IValidator::MIN_LENGTH, "Min 10 chars", 10);
-		$minLengthRule = $ageField->rules[0];
+		$ageField->addRule(IValidator::REQUIRED, "Please fill user name");
+		$requiredRule = $ageField->rules[0];
 
 		$this->validator->expects('validate')
 			->once()
-			->with(NULL, $minLengthRule)
+			->with(NULL, $requiredRule)
 			->andThrow($exception);	
 
 		$errors = $this->schema->validate(array('user' => 'tester'));
