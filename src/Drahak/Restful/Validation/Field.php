@@ -91,10 +91,6 @@ class Field extends Object implements IField
 
 		$errors = array();
 		foreach ($this->rules as $rule) {
-			if ($rule->expression === IValidator::OPTIONAL) {
-				continue;
-			}
-
 			try {
 				if (in_array($rule->expression, static::$numericExpressions)) {
 					$value = $this->parseNumericValue($value);
@@ -115,11 +111,11 @@ class Field extends Object implements IField
 	public function isRequired()
 	{
 		foreach ($this->rules as $rule) {
-			if ($rule->expression === IValidator::OPTIONAL) {
-				return FALSE;
+			if ($rule->expression === IValidator::REQUIRED) {
+				return TRUE;
 			}
 		}
-		return TRUE;
+		return FALSE;
 	}
 
 	/**

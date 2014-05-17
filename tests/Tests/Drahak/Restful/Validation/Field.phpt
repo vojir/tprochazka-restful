@@ -81,7 +81,6 @@ class FieldTest extends TestCase
 	public function testSkipOptionalFieldIfIsNotSet()
 	{
 		$this->field->addRule(IValidator::EMAIL);
-		$this->field->addRule(IValidator::OPTIONAL);
 
 		$result = $this->field->validate(NULL);
 		Assert::equal($result, array());
