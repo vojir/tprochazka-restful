@@ -93,5 +93,21 @@ class FieldTest extends TestCase
 		Assert::equal($rule->code, 4025);
 	}
 
+	public function testFiledIsRequiredIfItHasRequiredRule()
+	{
+		$this->field->addRule(IValidator::MAX_LENGTH);
+		$this->field->addRule(IValidator::REQUIRED);
+		$required = $this->field->isRequired();
+		Assert::true($required);
+	}
+
+	public function testFiledIsNotRequiredIfItHasNotRequiredRule()
+	{
+		$this->field->addRule(IValidator::MAX_LENGTH);
+		$this->field->addRule(IValidator::MIN_LENGTH);
+		$required = $this->field->isRequired();
+		Assert::false($required);
+	}
+
 }
 \run(new FieldTest());
