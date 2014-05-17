@@ -106,7 +106,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			// Check if Accept header is invalid
 			$accept = $this->getHttpRequest()->getHeader('Accept');
 			if (!$this->responseFactory->isAcceptable($accept)) {
-				throw new InvalidStateException('Cannot determine response with content type ' . $accept, 400);
+				throw new InvalidStateException('Cannot determine response with content type ' . $accept, 406);
 			}
 
 			// calls $this->validate<Action>()
