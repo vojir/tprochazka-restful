@@ -45,8 +45,7 @@ class MethodOptions extends Object
 	 */
 	public function getOptions(UrlScript $url)
 	{
-		$urlScript = $url;
-		return $this->checkAvailableMethods($this->router, $urlScript);
+		return $this->checkAvailableMethods($this->router, $url);
 	}
 
 	/**
@@ -77,7 +76,8 @@ class MethodOptions extends Object
 			}
 
 			if ($route instanceof Traversable) {
-				$methods += $this->checkAvailableMethods($route, $url);
+				$newMethods = $this->checkAvailableMethods($route, $url);
+				$methods = array_merge($methods, $newMethods);
 			}
 		}
 		return $methods;
