@@ -170,7 +170,8 @@ class RestfulExtension extends CompilerExtension
 			->setClass('Drahak\Restful\Application\Events\MethodHandler');
 
 		$container->getDefinition('application')
-			->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@methodHandler'), 'run')));
+			->addSetup('$service->onStartup[] = ?', array(array($this->prefix('@methodHandler'), 'run')))
+			->addSetup('$service->onError[] = ?', array(array($this->prefix('@methodHandler'), 'error')));
 	}
 
 	/**
