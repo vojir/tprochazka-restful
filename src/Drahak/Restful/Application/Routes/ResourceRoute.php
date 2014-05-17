@@ -43,6 +43,17 @@ class ResourceRoute extends Route implements IResourceRouter
 		$this->actionDictionary = array();
 		if (isset($metadata['action']) && is_array($metadata['action'])) {
 			$this->actionDictionary = $metadata['action'];
+		} else {
+			$action = isset($metadata['action']) ? $metadata['action'] : 'default'; 
+			if (is_string($metadata)) {
+				$metadataParts = explode(':', $metadata);
+				$action = end($metadataParts);
+			}
+			foreach ($this->methodDictionary as $methodName => $methodFlag) {
+				if (($this->flags & $methodFlag) == $methodFlag) {
+					$this->actionDictionary[$methodFlag] = $action;
+				}
+			}
 		}
 	}
 
