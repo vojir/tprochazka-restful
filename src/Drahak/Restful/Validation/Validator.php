@@ -21,7 +21,8 @@ class Validator extends Object implements IValidator
 		self::URL => array(__CLASS__, 'validateUrl'),
 		self::REGEXP => array(__CLASS__, 'validateRegexp'),
 		self::EQUAL => array(__CLASS__, 'validateEquality'),
-		self::UUID => array(__CLASS__, 'validateUuid')
+		self::UUID => array(__CLASS__, 'validateUuid'),
+		self::REQUIRED => array(__CLASS__, 'validateRequired')
 	);
 
 	/**
@@ -63,6 +64,20 @@ class Validator extends Object implements IValidator
 	}
 
 	/******************** Special validators ********************/
+
+	/**
+	 * Validate required ruleq
+	 * @param  string|numeric|null $value 
+	 * @param  Rule   $rule  
+	 *
+	 * @throws  ValidationException If field value is missing (is NULL)
+	 */
+	public static function validateRequired($value, Rule $rule)
+	{
+		if ($value === NULL) {
+			throw ValidationException::createFromRule($rule, $value);
+		}
+	}
 
 	/**
 	 * Validate regexp

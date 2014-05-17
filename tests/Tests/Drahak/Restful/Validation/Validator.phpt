@@ -190,6 +190,26 @@ class ValidatorTest extends TestCase
 		$this->validator->validate('bfc5b0f9-a33a-4bf5-8745-0701114ce4f3', $this->rule);
 	}
 
+	public function testPassRequiredRuleValidationIfFieldIsNotNull()
+	{
+		$this->rule->expression = IValidator::REQUIRED;
+		$this->validator->validate('a', $this->rule);
+	}
+
+	public function testPassRequiredRuleValidationIfFieldIsZero()
+	{
+		$this->rule->expression = IValidator::REQUIRED;
+		$this->validator->validate(0, $this->rule);
+	}
+
+	public function testThrowsValidationExceptionIfRequiredFiledIsNull()
+	{
+		$this->rule->expression = IValidator::REQUIRED;
+		Assert::throws(function() {
+			$this->validator->validate(NULL, $this->rule);
+		}, 'Drahak\Restful\Validation\ValidationException');
+	}
+
 	public function testThrowsExceptionWhenValueIsNotValidUUID()
 	{
 		$this->rule->expression = IValidator::UUID;
