@@ -117,6 +117,43 @@ class ValidatorTest extends TestCase
 		$this->validator->validate('asdasd', $this->rule);
 	}
 
+	public function testIsNumberWithinRange()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(10, 20);
+		$this->validator->validate(15, $this->rule);
+	}
+
+	public function testIsNumberBiggerThenGiven()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(10, NULL);
+		$this->validator->validate(15, $this->rule);
+	}
+
+	public function testIsNumberLowerThenGiven()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(NULL, 10);
+		$this->validator->validate(5, $this->rule);
+	}
+
+	public function testIsRealNumber()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(NULL, NULL);
+		$this->validator->validate(5, $this->rule);
+	}
+
+	public function testRangeRuleThrowsExceptionIfValueIsNotOfNumericType()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(0, NULL);
+		Assert::throws(function() {
+			$this->validator->validate('adfa', $this->rule);
+		}, 'Drahak\Restful\Validation\ValidationException');
+	}
+
 	public function testThrowsExceptionWhenStringIsTooLong()
 	{
 		$this->rule->expression = IValidator::MAX_LENGTH;

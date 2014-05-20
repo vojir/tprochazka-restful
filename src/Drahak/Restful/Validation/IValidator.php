@@ -27,7 +27,7 @@ interface IValidator
 	const INTEGER = 'int';
 	const NUMERIC = 'numeric';
 	const FLOAT = 'float';
-	const RANGE = 'numeric:%d..%d';
+	const RANGE = 'numeric:%s..%s';
 
 	// Special
 	const UUID = 'uuid';
