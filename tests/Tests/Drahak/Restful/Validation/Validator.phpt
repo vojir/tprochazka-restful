@@ -50,6 +50,15 @@ class ValidatorTest extends TestCase
 		}, 'Drahak\Restful\Validation\ValidationException');
 	}
 
+	public function testThrowsExceptionWhenRegularExpressionIsNotGiven()
+	{
+		$this->rule->expression = IValidator::REGEXP;
+		$this->rule->argument = NULL;
+		Assert::throws(function() {
+			$this->validator->validate('05_as', $this->rule);
+		}, 'Drahak\Restful\InvalidArgumentException');
+	}
+
 	public function testValidateEqualExpression()
 	{
 		$this->rule->expression = IValidator::EQUAL;
@@ -152,6 +161,15 @@ class ValidatorTest extends TestCase
 		Assert::throws(function() {
 			$this->validator->validate('adfa', $this->rule);
 		}, 'Drahak\Restful\Validation\ValidationException');
+	}
+
+	public function testRangeRuleThrowsExceptionIfNumberOfArgumentsIsInvalid()
+	{
+		$this->rule->expression = IValidator::RANGE;
+		$this->rule->argument = array(NULL);
+		Assert::throws(function() {
+			$this->validator->validate('adfa', $this->rule);
+		}, 'Drahak\Restful\InvalidArgumentException');
 	}
 
 	public function testThrowsExceptionWhenStringIsTooLong()

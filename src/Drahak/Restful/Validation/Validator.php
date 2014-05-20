@@ -2,7 +2,7 @@
 namespace Drahak\Restful\Validation;
 
 use Drahak\Restful\InvalidStateException;
-use Nette\InvalidArgumentException;
+use Drahak\Restful\InvalidArgumentException;
 use Nette\Object;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -60,6 +60,13 @@ class Validator extends Object implements IValidator
 	 */
 	private function parseExpression(Rule $rule)
 	{
+		$givenArgumentsCount = count((array)$rule->argument);
+		$expectedArgumentsCount = substr_count($rule->expression, '%');
+		if ($expectedArgumentsCount != $givenArgumentsCount) {
+			throw new InvalidArgumentException(
+				'Invalid number of arguments for expression "' . $rule->expression . '". Expected ' . $expectedArgumentsCount . ', ' . $givenArgumentsCount . ' given.'
+			);
+		}
 		return vsprintf($rule->expression, $rule->argument);
 	}
 
