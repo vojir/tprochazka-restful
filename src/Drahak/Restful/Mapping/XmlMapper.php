@@ -6,6 +6,7 @@ use Traversable;
 use SimpleXMLElement;
 use Nette\Object;
 use Nette\Utils\Json;
+use Nette\Utils\Arrays;
 use Nette\Utils\JsonException;
 use Drahak\Restful\InvalidArgumentException;
 
@@ -15,7 +16,6 @@ use Drahak\Restful\InvalidArgumentException;
  * @author Drahomír Hanák
  *
  * @property string|NULL $rootElement
- * @property string $itemElement
  */
 class XmlMapper extends Object implements IMapper
 {
@@ -29,9 +29,6 @@ class XmlMapper extends Object implements IMapper
 	/** @var null|string */
 	private $rootElement;
 
-	/** @var null|string */
-	private $itemElement;
-
 	/**
 	 * @param string|null $rootElement
 	 *
@@ -40,7 +37,6 @@ class XmlMapper extends Object implements IMapper
 	public function __construct($rootElement = 'root')
 	{
 		$this->rootElement = $rootElement;
-		$this->itemElement = self::ITEM_ELEMENT;
 		$this->xml = new DOMDocument('1.0', 'UTF-8');
 		$this->xml->formatOutput = TRUE;
 	}
@@ -71,31 +67,6 @@ class XmlMapper extends Object implements IMapper
 	}
 
 	/**
-	 * Set item element tag name for array lists
-	 * @param string $itemElement
-	 * @return XmlMapper
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	public function setItemElement($itemElement)
-	{
-		if (!is_string($itemElement)) {
-			throw new InvalidArgumentException('Item element must be of type string');
-		}
-		$this->itemElement = $itemElement;
-		return $this;
-	}
-
-	/**
-	 * Get item element
-	 * @return string
-	 */
-	public function getItemElement()
-	{
-		return $this->itemElement;
-	}
-
-	/**
 	 * Parse traversable or array resource data to XML
 	 * @param array|Traversable $data
 	 * @param bool $prettyPrint
@@ -113,11 +84,9 @@ class XmlMapper extends Object implements IMapper
 			$data = iterator_to_array($data, TRUE);
 		}
 
-		if ($this->rootElement) {
-			$data = array($this->rootElement => $data);
-		}
-
-		$this->toXml($data);
+		$root = $this->xml->createElement($this->rootElement);
+		$this->xml->appendChild($root);
+		$this->toXml($data, $root, self::ITEM_ELEMENT);
 		$this->xml->preserveWhiteSpace = $prettyPrint;
 		$this->xml->formatOutput = $prettyPrint;
 		return $this->xml->saveXML();
@@ -159,26 +128,26 @@ class XmlMapper extends Object implements IMapper
 	}
 
 	/**
-	 * @param $data
-	 * @param null $domElement
+	 * @param array|mixed $data
+	 * @param \DOMNode $xml
+	 * @param string|NULL $previousKey
 	 */
-	private function toXml($data, $domElement = NULL)
+	private function toXml($data, \DOMNode $xml, $previousKey = NULL)
 	{
-		$domElement = is_null($domElement) ? $this->xml : $domElement;
-
 		if (is_array($data) || $data instanceof Traversable) {
-			foreach ($data as $index => $mixedElement) {
-				if (is_int($index)) {
-					$node = $this->xml->createElement($this->itemElement);
-					$node->setAttribute('index', $index);
-				} else {
-					$node = $this->xml->createElement($index);
+			foreach ($data as $key => $value) {
+				$node = $xml;
+				if (is_int($key)) {
+					$node = $this->xml->createElement($previousKey);
+					$xml->appendChild($node);
+				} else if (!Arrays::isList($value)) {
+					$node = $this->xml->createElement($key);
+					$xml->appendChild($node);
 				}
-				$domElement->appendChild($node);
-				$this->toXml($mixedElement, $node);
+				$this->toXml($value, $node, is_string($key) ? $key : $previousKey);
 			}
 		} else {
-			$domElement->appendChild($this->xml->createTextNode($data));
+			$xml->appendChild($this->xml->createTextNode($data));
 		}
 	}
 

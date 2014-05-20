@@ -27,7 +27,7 @@ class XmlMapperTest extends TestCase
 		parent::setUp();
 		$this->mapper = new XmlMapper('root');
     }
-    
+
     public function testConvertDataArrayToXml()
     {
 		$xml = $this->mapper->stringify(array('node' => 'value'));
@@ -36,29 +36,62 @@ class XmlMapperTest extends TestCase
 		Assert::true($dom->has('root node'));
 	}
 
-	public function testConvertArrayListWithNumericIndexes()
+	public function testConvertArrayListWithNumericIndexesToXml()
 	{
 		$data = array('hello', 'world');
 		$xml = $this->mapper->stringify($data);
+		
 		$dom = Tester\DomQuery::fromXml($xml);
-
 		$items = $dom->find('root item');
 		Assert::equal(count($items), 2);
 		Assert::equal((string)$items[0], 'hello');
 		Assert::equal((string)$items[1], 'world');
-		Assert::true($items[0]->has('[index]'));
-		Assert::true($items[1]->has('[index]'));
+	}
+
+	public function testConvertArrayListWithNumericIndexesUsingParentKeyToXml()
+	{
+		$data = array(
+			'user' => array(
+				array('id' => 1, 'name' => 'Tester'),
+				array('id' => 2, 'name' => 'Test')
+			)
+		);
+		$xml = $this->mapper->stringify($data);
+
+		$dom = Tester\DomQuery::fromXml($xml);
+		$items = $dom->find('root user');
+		Assert::equal(count($items), 2);
+		Assert::equal((string)$items[0]->name, 'Tester');
+		Assert::equal((string)$items[1]->name, 'Test');
+	}
+
+	public function testConvertArrayListWithNumericIndexesInAnotherArrayListUsingLastStringParentKeyToXml()
+	{
+		$data = array(
+			'user' => array(
+				array(
+					array('id' => 1, 'name' => 'Tester'),
+					array('id' => 2, 'name' => 'Test')
+				)
+			)
+		);
+		$xml = $this->mapper->stringify($data);
+
+		$dom = Tester\DomQuery::fromXml($xml);
+		$items = $dom->find('root user user');
+		Assert::equal(count($items), 2);
+		Assert::equal((string)$items[0]->name, 'Tester');
+		Assert::equal((string)$items[1]->name, 'Test');
 	}
 
 	public function testSetCustomItemElementName()
 	{
 		$data = array('hello', 'world');
 		$this->mapper->setRootElement('base');
-		$this->mapper->setItemElement('test');
 		$xml = $this->mapper->stringify($data);
 		$dom = Tester\DomQuery::fromXml($xml);
 
-		$items = $dom->find('base test');
+		$items = $dom->find('base item');
 		Assert::equal(count($items), 2);
 		Assert::equal((string)$items[0], 'hello');
 		Assert::equal((string)$items[1], 'world');
@@ -68,7 +101,7 @@ class XmlMapperTest extends TestCase
 	{
 		$array = $this->mapper->parse('<?xml version="1.0" encoding="utf-8" ?><root><node>value</node></root>');
 		Assert::equal($array['node'], 'value');
-	}
+	} 
 
 	public function testConvertsXmlRecursivelyToArray()
 	{
