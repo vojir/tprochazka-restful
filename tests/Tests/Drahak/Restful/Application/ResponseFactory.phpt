@@ -49,7 +49,8 @@ class ResponseFactoryTest extends TestCase
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
-		$this->factory = new ResponseFactory('jsonp', $this->response, $this->request, $this->mapperContext);
+		$this->factory = new ResponseFactory($this->response, $this->request, $this->mapperContext);
+		$this->factory->setJsonp('jsonp');
 		$this->resource = $this->mockista->create('Drahak\Restful\Resource');
 		$this->mapper = $this->mockista->create('Drahak\Restful\Mapping\IMapper');
 	}

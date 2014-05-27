@@ -52,17 +52,34 @@ class ResponseFactory extends Object implements IResponseFactory
 	);
 
 	/**
-	 * @param string|boolean $jsonp key or FALSE if disabled
 	 * @param IResponse $response
 	 * @param IRequest $request
 	 * @param MapperContext $mapperContext
 	 */
-	public function __construct($jsonp, IResponse $response, IRequest $request, MapperContext $mapperContext)
+	public function __construct(IResponse $response, IRequest $request, MapperContext $mapperContext)
 	{
 		$this->response = $response;
 		$this->request = $request;
 		$this->mapperContext = $mapperContext;
+	}
+
+	/**
+	 * Set JSONP key
+	 * @param string $jsonp 
+	 */
+	public function setJsonp($jsonp)
+	{
 		$this->jsonp = $jsonp;
+		return $this;
+	}
+
+	/**
+	 * Get JSONP key
+	 * @return [type] [description]
+	 */
+	public function getJsonp()
+	{
+		return $this->jsonp;
 	}
 
 	/**
@@ -162,25 +179,6 @@ class ResponseFactory extends Object implements IResponseFactory
 		} catch (InvalidStateException $e) {
 			return FALSE;
 		}
-	}
-
-	/**
-	 * Set JSONP key
-	 * @param stirng|boolean $jsonp 
-	 */
-	public function setJsonp($jsonp)
-	{
-		$this->jsonp = $jsonp;
-		return $this;
-	}
-
-	/**
-	 * Get JSONP key 
-	 * @return string|boolean
-	 */
-	public function getJsonp()
-	{
-		return $this->jsonp;
 	}
 
 	/**
