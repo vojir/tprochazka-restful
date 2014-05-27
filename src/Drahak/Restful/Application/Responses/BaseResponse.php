@@ -28,6 +28,9 @@ abstract class BaseResponse extends Object implements IResponse
 	/** @var string */
 	protected $contentType;
 
+	/** @var boolean */
+	private $prettyPrint = TRUE;
+
 	/**
 	 * @param null $contentType
 	 * @param IMapper $mapper
@@ -39,17 +42,22 @@ abstract class BaseResponse extends Object implements IResponse
 	}
 
 	/**
-	 * Is pretty print enabled
-	 * @param  IRequest $request 
-	 * @return boolean           
+	 * Set pretty print
+	 * @param boolean $pretty 
 	 */
-	protected function isPrettyPrint(IRequest $request)
+	public function setPrettyPrint($pretty) 
 	{
-		$prettyPrint = $request->getQuery('prettyPrint');
-		if ($prettyPrint === 'false') {
-			return FALSE;
-		}
-		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
+		$this->prettyPrint = (bool)$pretty;
+		return $this;
+	}
+
+	/**
+	 * Is pretty print enabled
+	 * @return bool 
+	 */
+	public function isPrettyPrint()
+	{
+		return $this->prettyPrint;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 <?php
 namespace Drahak\Restful\Application;
 
+use Drahak\Restful\Application\Responses\BaseResponse;
 use Drahak\Restful\Application\Responses\NullResponse;
 use Drahak\Restful\InvalidArgumentException;
 use Drahak\Restful\InvalidStateException;
@@ -36,6 +37,9 @@ class ResponseFactory extends Object implements IResponseFactory
 	/** @var string JSONP request key */
 	private $jsonp;
 
+	/** @var string pretty print key */
+	private $prettyPrint = 'prettyPrint';
+
 	/** @var array */
 	private $responses = array(
 		IResource::JSON => 'Drahak\Restful\Application\Responses\TextResponse',
@@ -59,6 +63,16 @@ class ResponseFactory extends Object implements IResponseFactory
 		$this->request = $request;
 		$this->mapperContext = $mapperContext;
 		$this->jsonp = $jsonp;
+	}
+
+	/**
+	 * Set pretty print key
+	 * @param string $prettyPrint 
+	 */
+	public function setPrettyPrint($prettyPrint)
+	{
+		$this->prettyPrint = $prettyPrint;
+		return $this;
 	}
 
 	/**
@@ -129,6 +143,9 @@ class ResponseFactory extends Object implements IResponseFactory
 
 		$responseClass = $this->responses[$contentType];
 		$response = new $responseClass($resource->getData(), $this->mapperContext->getMapper($contentType), $contentType);
+		if ($response instanceof BaseResponse) {
+			$response->setPrettyPrint($this->isPrettyPrint());
+		}
 		return $response;
 	}
 
@@ -167,13 +184,27 @@ class ResponseFactory extends Object implements IResponseFactory
 	}
 
 	/**
+	 * Is pretty print enabled
+	 * @param  IRequest $request 
+	 * @return boolean           
+	 */
+	protected function isPrettyPrint()
+	{
+		$prettyPrint = $this->request->getQuery($this->prettyPrint);
+		if ($prettyPrint === 'false') {
+			return FALSE;
+		}
+		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
+	}
+
+	/**
 	 * Get preferred request content type
 	 * @param  string $contentType may be separed with comma
 	 * @return string
 	 * 
 	 * @throws  InvalidStateException If Accept header is unknown
 	 */
-	private function getPreferredContentType($contentType)
+	protected function getPreferredContentType($contentType)
 	{
 		$accept = explode(',', $contentType);
 		$acceptableTypes = array_keys($this->responses);

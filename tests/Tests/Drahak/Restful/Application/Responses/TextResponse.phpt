@@ -39,7 +39,7 @@ class TextResponseTest extends TestCase
 
 		$this->mapper->expects('stringify')
 			->once()
-			->with(array('hello' => 'world'), FALSE)
+			->with(array('hello' => 'world'), TRUE)
 			->andReturn($output);
 
 		$httpRequest = $this->mockista->create('Nette\Http\IRequest');
@@ -48,11 +48,6 @@ class TextResponseTest extends TestCase
 		$httpResponse->expects('setContentType')
 			->once()
 			->with('application/json', 'UTF-8');
-
-		$httpRequest->expects('getQuery')
-			->once()
-			->with('prettyPrint')
-			->andReturn('false');
 
 		ob_start();
 		$this->response->send($httpRequest, $httpResponse);

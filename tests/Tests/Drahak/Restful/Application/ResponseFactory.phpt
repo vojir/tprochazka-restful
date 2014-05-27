@@ -79,6 +79,11 @@ class ResponseFactoryTest extends TestCase
 			->with('jsonp')
 			->andReturn(FALSE);
 
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
+			->andReturn(FALSE);
+
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof TextResponse);
 	}
@@ -104,6 +109,11 @@ class ResponseFactoryTest extends TestCase
 			->with('jsonp')
 			->andReturn(FALSE);
 
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
+			->andReturn(FALSE);
+
 		$this->factory->registerResponse('text', 'Nette\Application\Responses\TextResponse');
 		$response = $this->factory->create($this->resource);
 
@@ -123,6 +133,10 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->with('jsonp')
 			->andReturn('callback');
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
+			->andReturn(FALSE);
 		$this->mapperContext->expects('getMapper')
 			->once()
 			->with(IResource::JSONP)
@@ -143,6 +157,10 @@ class ResponseFactoryTest extends TestCase
 		$this->request->expects('getQuery')
 			->once()
 			->with('jsonp')
+			->andReturn(FALSE);
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
 			->andReturn(FALSE);
 
 		Assert::throws(function() {
@@ -189,6 +207,11 @@ class ResponseFactoryTest extends TestCase
 			->with('jsonp')
 			->andReturn('callback');
 
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
+			->andReturn(FALSE);
+
 		$response = $this->factory->create($this->resource);
 		Assert::true($response instanceof TextResponse);
     }
@@ -206,6 +229,10 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->with('jsonp')
 			->andReturn(NULL);
+		$this->request->expects('getQuery')
+			->once()
+			->with('prettyPrint')
+			->andReturn(FALSE);
 		$this->mapperContext->expects('getMapper')
 			->once()
 			->with(IResource::JSON)
@@ -214,6 +241,41 @@ class ResponseFactoryTest extends TestCase
 		$response = $this->factory->create($this->resource);
 
 		Assert::true($response instanceof TextResponse);
+    }
+
+    public function testUseCustomPrettyPrintKeyName()
+    {
+
+		$this->response->expects('setCode')
+			->once()
+			->with(204);
+
+		$this->request->expects('getHeader')
+			->once()
+			->with('Accept')
+			->andReturn(IResource::JSON);
+
+		$this->resource->expects('getData')
+			->once()
+			->andReturn(array());
+
+		$this->mapperContext->expects('getMapper')
+			->once()
+			->with(IResource::JSON)
+			->andReturn($this->mapper);
+
+		$this->request->expects('getQuery')
+			->once()
+			->with('jsonp')
+			->andReturn(FALSE);
+
+		$this->request->expects('getQuery')
+			->once()
+			->with('pretty')
+			->andReturn(FALSE);
+
+		$this->factory->prettyPrint = 'pretty';
+		$this->factory->create($this->resource);
     }
 
 }

@@ -64,14 +64,10 @@ class JsonpResponseTest extends TestCase
 			->once()
 			->with('jsonp')
 			->andReturn('callbackFn');
-		$this->httpRequest->expects('getQuery')
-			->once()
-			->with('prettyPrint')
-			->andReturn(FALSE);
 
 		$this->mapper->expects('stringify')
 			->once()
-			->with($data, FALSE)
+			->with($data, TRUE)
 			->andReturn($output);
 
 		ob_start();
@@ -93,7 +89,7 @@ class JsonpResponseTest extends TestCase
 
 		$this->mapper->expects('stringify')
 			->once()
-			->with($data, FALSE)
+			->with($data, TRUE)
 			->andReturn($output);
 
 		$this->httpResponse->expects('setContentType')
@@ -109,10 +105,6 @@ class JsonpResponseTest extends TestCase
 			->once()
 			->with('jsonp')
 			->andReturn('ěščřžýáíéAnd+_-! ?');
-		$this->httpRequest->expects('getQuery')
-			->once()
-			->with('prettyPrint')
-			->andReturn('false');
 
 		ob_start();
 		$this->response->send($this->httpRequest, $this->httpResponse);

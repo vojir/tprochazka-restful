@@ -112,7 +112,8 @@ class RestfulExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('responseFactory'))
 			->setClass('Drahak\Restful\Application\ResponseFactory')
-			->setArguments(array($config['jsonpKey']));
+			->setArguments(array($config['jsonpKey']))
+			->addSetup('$service->setPrettyPrint(?)', array($config['prettyPrintKey']));
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Drahak\Restful\ResourceFactory');

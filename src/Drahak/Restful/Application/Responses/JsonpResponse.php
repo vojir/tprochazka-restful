@@ -43,7 +43,7 @@ class JsonpResponse extends BaseResponse
 		$data['headers'] = $httpResponse->getHeaders();
 
 		$callback = $httpRequest->getQuery('jsonp') ? Strings::webalize($httpRequest->getQuery('jsonp'), NULL, FALSE) : '';
-		echo $callback . '(' . $this->mapper->stringify($data, $this->isPrettyPrint($httpRequest)) . ');';
+		echo $callback . '(' . $this->mapper->stringify($data, $this->isPrettyPrint()) . ');';
 	}
 
 
