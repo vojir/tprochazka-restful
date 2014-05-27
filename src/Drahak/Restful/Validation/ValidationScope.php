@@ -2,7 +2,7 @@
 namespace Drahak\Restful\Validation;
 
 use Nette\Object;
-use Nette\Utils\Arrays;
+use Nette\Utils\Validators;
 use Nette\Utils\Strings;
 
 /**
@@ -81,7 +81,7 @@ class ValidationScope extends Object implements IValidationScope
 	{
 		$errors = array();
 
-        if (Arrays::isList($data) && count($data)) { 
+        if (Validators::isList($data) && count($data)) { 
             foreach ($data as $item) {
                 $newErrors = $this->validateDeeply($field, $item, $path);
                 $errors = array_merge($errors, $newErrors);
