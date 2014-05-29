@@ -35,20 +35,16 @@ class ResponseFactoryTest extends TestCase
 	private $filter;
 
 	/** @var MockInterface */
-	private $methodOptions;
-
-	/** @var MockInterface */
 	private $url;
 
 	public function setUp()
 	{
 		parent::setUp();
 		$this->filter = $this->mockista->create('Drahak\Restful\Utils\RequestFilter');
-		$this->methodOptions = $this->mockista->create('Drahak\Restful\Application\MethodOptions');
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->url = new Nette\Http\UrlScript('http://resource/');
-		$this->factory = new ResponseFactory($this->request, $this->filter, $this->methodOptions);
+		$this->factory = new ResponseFactory($this->request, $this->filter);
 		$this->factory->setResponse($this->response);
 	}
 	
@@ -64,7 +60,6 @@ class ResponseFactoryTest extends TestCase
 			->with(422);
 
 		$this->request->expects('getUrl')->once()->andReturn($this->url);
-		$this->methodOptions->expects('getOptions')->once()->with($this->url)->andReturn(array());
 		$this->response->expects('setHeader')->once()->with('Allow', '');
 
 		$response = $this->factory->createHttpResponse(422);
@@ -84,8 +79,6 @@ class ResponseFactoryTest extends TestCase
 			->with(200);
 
 		$this->request->expects('getUrl')->twice()->andReturn($this->url);
-		$this->methodOptions->expects('getOptions')->once()->with($this->url)->andReturn(array());
-		$this->response->expects('setHeader')->once()->with('Allow', '');
 
 		$this->response->expects('setHeader')
 			->once()
@@ -109,8 +102,6 @@ class ResponseFactoryTest extends TestCase
 			->with(200);
 
 		$this->request->expects('getUrl')->once()->andReturn($this->url);
-		$this->methodOptions->expects('getOptions')->once()->with($this->url)->andReturn(array('GET', 'POST', 'PUT', 'DELETE'));
-		$this->response->expects('setHeader')->once()->with('Allow', 'GET, POST, PUT, DELETE');
 
 		$response = $this->factory->createHttpResponse(200);
 		Assert::true($response instanceof ResponseProxy);
@@ -130,8 +121,6 @@ class ResponseFactoryTest extends TestCase
 
 		$this->request->expects('getMethod')->once()->andReturn('POST');
 		$this->request->expects('getUrl')->once()->andReturn($this->url);
-		$this->methodOptions->expects('getOptions')->once()->with($this->url)->andReturn(array('GET', 'POST', 'PUT', 'DELETE'));
-		$this->response->expects('setHeader')->once()->with('Allow', 'GET, POST, PUT, DELETE');
 
 		$response = $this->factory->createHttpResponse();
 		Assert::true($response instanceof ResponseProxy);

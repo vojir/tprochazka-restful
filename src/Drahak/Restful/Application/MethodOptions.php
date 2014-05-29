@@ -56,7 +56,7 @@ class MethodOptions extends Object
 	 */
 	private function checkAvailableMethods(IRouter $router, UrlScript $url)
 	{
-		static $methods = array();
+		$methods = array();
 		foreach ($router as $route) {
 			if ($route instanceof IResourceRouter && !$route instanceof Traversable) {
 				$methodFlag = $this->getMethodFlag($route);

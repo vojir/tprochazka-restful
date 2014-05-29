@@ -22,6 +22,9 @@ class MethodHandler extends Object
 	/** @var IRequest */
 	private $request;
 
+	/** @var IResponse */
+	private $response;
+
 	/** @var MethodOptions */
 	private $methods;
 
@@ -29,9 +32,10 @@ class MethodHandler extends Object
 	 * @param IRequest $request
 	 * @param MethodOptions $methods
 	 */
-	public function __construct(IRequest $request, MethodOptions $methods)
+	public function __construct(IRequest $request, IResponse $response, MethodOptions $methods)
 	{
 		$this->request = $request;
+		$this->response = $response;
 		$this->methods = $methods;
 	}
 
@@ -71,8 +75,11 @@ class MethodHandler extends Object
 	{
 		$methods = $this->methods->getOptions($this->request->getUrl());
 		if (!$methods) return;
+
+		$allow = implode(', ', $methods);
+		$this->response->setHeader('Allow', $allow);
 		throw BadRequestException::methodNotSupported(
-			'Method not supported. Available methods: ' . implode(', ', $methods));
+			'Method not supported. Available methods: ' . $allow);
 	}
 
 }
