@@ -46,7 +46,6 @@ class ResponseFactory extends Object implements IResponseFactory
 		IResource::JSONP => 'Drahak\Restful\Application\Responses\JsonpResponse',
 		IResource::QUERY => 'Drahak\Restful\Application\Responses\TextResponse',
 		IResource::XML => 'Drahak\Restful\Application\Responses\TextResponse',
-		IResource::DATA_URL => 'Drahak\Restful\Application\Responses\TextResponse',
 		IResource::FILE => 'Drahak\Restful\Application\Responses\FileResponse',
 		IResource::NULL => 'Drahak\Restful\Application\Responses\NullResponse'
 	);
