@@ -128,5 +128,16 @@ class XmlMapperTest extends TestCase
 		}, 'Drahak\Restful\Mapping\MappingException');
 	}
 
+	public function testResetDocumentContentOnEveryCall()
+	{
+		$data = array('node' => 'value');
+		$this->mapper->stringify($data);
+		$xml = $this->mapper->stringify($data);
+		
+		$dom = Tester\DomQuery::fromXml($xml);
+		$nodes = $dom->find('root node');
+		Assert::equal(count($nodes), 1);
+	}
+
 }
 \run(new XmlMapperTest());

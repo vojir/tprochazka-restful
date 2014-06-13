@@ -84,9 +84,8 @@ class XmlMapper extends Object implements IMapper
 			$data = iterator_to_array($data, TRUE);
 		}
 
-		$root = $this->xml->createElement($this->rootElement);
-		$this->xml->appendChild($root);
-		$this->toXml($data, $root, self::ITEM_ELEMENT);
+		$this->xml->loadXML('<' . $this->rootElement . ' />');
+		$this->toXml($data, $this->xml->firstChild, self::ITEM_ELEMENT);
 		$this->xml->preserveWhiteSpace = $prettyPrint;
 		$this->xml->formatOutput = $prettyPrint;
 		return $this->xml->saveXML();
