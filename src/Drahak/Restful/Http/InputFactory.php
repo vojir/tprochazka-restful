@@ -9,6 +9,7 @@ use Drahak\Restful\Validation\IValidationScopeFactory;
 use Drahak\Restful\Application\BadRequestException;
 use Nette\Http\IRequest;
 use Nette\Object;
+use Nette;
 
 /**
  * InputFactory
@@ -77,7 +78,11 @@ class InputFactory extends Object
 	protected function parseRequestBody()
 	{
 		$requestBody = array();
-		if ($input = file_get_contents('php://input')) {
+		$input = Nette\Framework::VERSION_ID >= 20200 ? // Nette 2.2.0 and/or newer
+			$this->httpRequest->getRawBody() :
+			file_get_contents('php://input');
+
+		if ($input) {
 			try {
 				$this->mapper = $this->mapperContext->getMapper($this->httpRequest->getHeader('Content-Type'));
 				$requestBody = $this->mapper->parse($input);
