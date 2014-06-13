@@ -38,11 +38,10 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function __construct($mask, $metadata = array(), $flags = IResourceRouter::GET)
 	{
-		parent::__construct($mask, $metadata, $flags);
-
 		$this->actionDictionary = array();
 		if (isset($metadata['action']) && is_array($metadata['action'])) {
 			$this->actionDictionary = $metadata['action'];
+			$metadata['action'] = 'default';  
 		} else {
 			$action = isset($metadata['action']) ? $metadata['action'] : 'default'; 
 			if (is_string($metadata)) {
@@ -55,6 +54,8 @@ class ResourceRoute extends Route implements IResourceRouter
 				}
 			}
 		}
+
+		parent::__construct($mask, $metadata, $flags);
 	}
 
 	/**
@@ -140,6 +141,12 @@ class ResourceRoute extends Route implements IResourceRouter
 	 */
 	public function constructUrl(Application\Request $appRequest, Http\Url $refUrl)
 	{
+		if (count($this->actionDictionary) > 0) {
+			$params = $appRequest->parameters;
+			$params['action'] = 'default'; // so the request matches with route with action dictionary
+			$appRequest->setParameters($params);
+		}
+
 		$url = parent::constructUrl($appRequest, $refUrl);
 		if ($url === NULL) {
 			return NULL;
