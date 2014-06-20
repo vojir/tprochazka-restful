@@ -31,6 +31,7 @@ interface IValidator
 
 	// Special
 	const UUID = 'uuid';
+	const CALLBACK = 'callback';
 
 	/**
 	 * Validate value with rule

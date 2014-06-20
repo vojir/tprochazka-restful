@@ -282,5 +282,25 @@ class ValidatorTest extends TestCase
 		}, 'Drahak\Restful\InvalidStateException');
 	}
 
+	public function testPassCallbackRuleIfItReturnsTrue()
+	{
+		$this->rule->expression = IValidator::CALLBACK;
+		$this->rule->argument = function($value) {
+			return true;
+		};
+		$this->validator->validate('test', $this->rule);
+	}
+
+	public function testThrowsValidationExceptionIfCallbackValidatorResurnsFalse()
+	{
+		$this->rule->expression = IValidator::CALLBACK;
+		$this->rule->argument = function($value) {
+			return false;
+		};
+		Assert::exception(function() {
+			$this->validator->validate('test', $this->rule);
+		}, 'Drahak\Restful\Validation\ValidationException');
+	}
+
 }
 \run(new ValidatorTest());

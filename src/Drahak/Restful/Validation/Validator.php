@@ -22,6 +22,7 @@ class Validator extends Object implements IValidator
 		self::REGEXP => array(__CLASS__, 'validateRegexp'),
 		self::EQUAL => array(__CLASS__, 'validateEquality'),
 		self::UUID => array(__CLASS__, 'validateUuid'),
+		self::CALLBACK => array(__CLASS__, 'validateCallback'),
 		self::REQUIRED => array(__CLASS__, 'validateRequired')
 	);
 
@@ -73,7 +74,23 @@ class Validator extends Object implements IValidator
 	/******************** Special validators ********************/
 
 	/**
-	 * Validate required ruleq
+	 * Validate callback rule
+	 * @param  string|numeric|null $value 
+	 * @param  Rule   $rule  
+	 *
+	 * @throws  ValidationException If callback returns false
+	 */
+	public static function validateCallback($value, Rule $rule)
+	{
+		$callback = $rule->argument[0];
+		$result = $callback($value);
+		if ($result === FALSE) {
+			throw ValidationException::createFromRule($rule, $value);
+		}
+	}
+
+	/**
+	 * Validate required rule
 	 * @param  string|numeric|null $value 
 	 * @param  Rule   $rule  
 	 *
