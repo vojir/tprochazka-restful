@@ -126,7 +126,8 @@ class RequestFilter extends Object
 	 */
 	protected function createFieldList()
 	{
-		return array_filter(explode(',', $this->request->getQuery(self::FIELDS_KEY)));
+		$fields = $this->request->getQuery(self::FIELDS_KEY);
+		return is_string($fields) ? array_filter(explode(',', $fields)) : $fields;
 	}
 
 	/**

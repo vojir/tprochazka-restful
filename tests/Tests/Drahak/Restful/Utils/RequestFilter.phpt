@@ -33,7 +33,7 @@ class RequestFilterTest extends TestCase
 		$this->filter = new RequestFilter($this->request);
     }
     
-    public function testGetFieldsList()
+    public function testGetFieldsListFromString()
     {
 		$this->request->expects('getQuery')
 			->once()
@@ -43,6 +43,19 @@ class RequestFilterTest extends TestCase
 		$result = $this->filter->getFieldList();
 		Assert::type('array', $result);
 		Assert::same($result, array('-any','item','list'));
+    }
+
+    public function testGetFieldListFromArrayInUrl() 
+    {
+    	$fields = array('-any', 'item', 'list');
+		$this->request->expects('getQuery')
+			->once()
+			->with(RequestFilter::FIELDS_KEY)
+			->andReturn($fields);
+
+		$result = $this->filter->getFieldList();
+		Assert::type('array', $result);
+		Assert::equal($result, $fields);
     }
 
 	public function testGetSortList()
