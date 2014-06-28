@@ -120,10 +120,26 @@ class XmlMapper extends Object implements IMapper
 			}
 			libxml_clear_errors();
 			libxml_use_internal_errors($useErrors);
-			return Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY);
+			return $this->normalize(Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY));
 		} catch (JsonException $e) {
 			throw new MappingException('Error in parsing response: ' . $e->getMessage());
 		}
+	}
+
+	/**
+	 * Normalize data structure to accepted form
+	 * @param  array|* $value 
+	 * @return array        
+	 */
+	private function normalize($value)
+	{
+		if (count($value) === 0) return '';
+
+		foreach ($value as $key => $node) {
+			if (!is_array($node)) continue;
+			$value[$key] = $this->normalize($node);
+		}
+		return $value;
 	}
 
 	/**

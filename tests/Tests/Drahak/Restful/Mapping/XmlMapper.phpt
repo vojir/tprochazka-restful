@@ -128,6 +128,20 @@ class XmlMapperTest extends TestCase
 		}, 'Drahak\Restful\Mapping\MappingException');
 	}
 
+	public function testConvertsEmptyElementsToEmptyString()
+	{
+		$array = $this->mapper->parse('<?xml version="1.0" encoding="UTF-8"?>
+			<envelope>
+			   <user>
+			     <name>test</name>
+			     <phone></phone>
+			     <friends></friends>
+			  </user>
+			</envelope>');
+		Assert::equal($array['user']['phone'], '');
+		Assert::equal($array['user']['friends'], '');
+	}
+	
 	public function testResetDocumentContentOnEveryCall()
 	{
 		$data = array('node' => 'value');
