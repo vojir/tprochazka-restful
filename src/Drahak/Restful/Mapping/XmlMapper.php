@@ -133,6 +133,7 @@ class XmlMapper extends Object implements IMapper
 	 */
 	private function normalize($value)
 	{
+		if (isset($value['@attributes'])) unset($value['@attributes']);
 		if (count($value) === 0) return '';
 
 		foreach ($value as $key => $node) {

@@ -142,6 +142,21 @@ class XmlMapperTest extends TestCase
 		Assert::equal($array['user']['friends'], '');
 	}
 	
+	public function testRemoveAttributes()
+	{
+		$array = $this->mapper->parse('<?xml version="1.0" encoding="UTF-8"?>
+			<envelope>
+			   <user id="5">
+			     <name>test</name>
+			     <age type="int"></age>
+			  </user>
+			</envelope>');
+		Assert::same($array['user'], array(
+			'name' => 'test',
+			'age' => ''
+		));
+	}
+
 	public function testResetDocumentContentOnEveryCall()
 	{
 		$data = array('node' => 'value');
