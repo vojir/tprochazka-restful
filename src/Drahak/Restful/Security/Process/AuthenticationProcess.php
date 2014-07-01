@@ -17,7 +17,7 @@ abstract class AuthenticationProcess extends Object
 	 * @param IInput $input
 	 * @return bool
 	 */
-	public final function authenticate(IInput $input)
+	public function authenticate(IInput $input)
 	{
 		$this->authRequestData($input);
 		$this->authRequestTimeout($input);
