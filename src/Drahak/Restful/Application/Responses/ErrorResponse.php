@@ -13,13 +13,40 @@ class ErrorResponse extends Object implements IResponse {
 	private $code;
 
 	/**
-	 * @param IResponse $response Wrapped response with data
+	 * @param BaseResponse $response Wrapped response with data
 	 * @param int $errorCode
 	 */
-	public function __construct($response, $code = 500)
+	public function __construct(BaseResponse $response, $code = 500)
 	{
 		$this->response = $response;
 		$this->code = $code;
+	}
+
+	/**
+	 * Get response data
+	 * @return array|\stdClass|\Traversable
+	 */
+	public function getData()
+	{
+		return $this->response->getData();
+	}
+
+	/**
+	 * Get response content type
+	 * @return string
+	 */
+	public function getContentType()
+	{
+		return $this->response->contentType;
+	}
+
+	/**
+	 * Get response data
+	 * @return array|\stdClass|\Traversable
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 
 	/**
