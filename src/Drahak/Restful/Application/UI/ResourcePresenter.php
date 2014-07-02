@@ -4,6 +4,7 @@ namespace Drahak\Restful\Application\UI;
 use Drahak\Restful\Application\BadRequestException;
 use Drahak\Restful\Application\IResourcePresenter;
 use Drahak\Restful\Application\IResponseFactory;
+use Drahak\Restful\Application\Responses\ErrorResponse;
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Http\InputFactory;
 use Drahak\Restful\Http\Request;
@@ -160,19 +161,14 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	/**
 	 * Get REST API response
 	 * @param string $contentType
-	 * @param int $code
 	 * @return IResponse
 	 *
 	 * @throws InvalidStateException
 	 */
-	public function sendResource($contentType = NULL, $code = NULL)
+	public function sendResource($contentType = NULL)
 	{
 		if (!($this->resource instanceof IResource)) {
 			$this->resource = $this->resourceFactory->create($this->resource);
-		}
-
-		if ($code !== NULL) {
-			$this->getHttpResponse()->setCode($code);
 		}
 
 		try {
@@ -209,7 +205,13 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 
 		$accept = $request->getHeader('Accept');
 		$contentType = !$accept || !$this->responseFactory->isAcceptable($accept) ? IResource::JSON : NULL;
-		$this->sendResource($contentType, $code);
+		try {
+			$response = $this->responseFactory->create($this->resource, $contentType);
+			$response = new ErrorResponse($response, $code);
+			$this->sendResponse($response);
+		} catch (InvalidStateException $e) {
+			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e));
+		}
 	}
 
 	/**
