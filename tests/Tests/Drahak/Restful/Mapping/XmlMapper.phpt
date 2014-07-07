@@ -168,5 +168,13 @@ class XmlMapperTest extends TestCase
 		Assert::equal(count($nodes), 1);
 	}
 
+	public function testDoesNotConvertAccentsToXMLentities()
+	{
+		$data = array('node' => 'ěščřžýáíé');
+		$xml = $this->mapper->stringify($data, FALSE);
+
+		Assert::equal(trim($xml), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root><node>ěščřžýáíé</node></root>");
+	}
+
 }
 \run(new XmlMapperTest());

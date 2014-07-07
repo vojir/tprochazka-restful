@@ -37,8 +37,6 @@ class XmlMapper extends Object implements IMapper
 	public function __construct($rootElement = 'root')
 	{
 		$this->rootElement = $rootElement;
-		$this->xml = new DOMDocument('1.0', 'UTF-8');
-		$this->xml->formatOutput = TRUE;
 	}
 
 	/**
@@ -84,10 +82,12 @@ class XmlMapper extends Object implements IMapper
 			$data = iterator_to_array($data, TRUE);
 		}
 
-		$this->xml->loadXML('<' . $this->rootElement . ' />');
-		$this->toXml($data, $this->xml->firstChild, self::ITEM_ELEMENT);
-		$this->xml->preserveWhiteSpace = $prettyPrint;
+		$this->xml = new DOMDocument('1.0', 'UTF-8');
 		$this->xml->formatOutput = $prettyPrint;
+		$this->xml->preserveWhiteSpace = $prettyPrint;
+		$root = $this->xml->createElement($this->rootElement);
+		$this->xml->appendChild($root);
+		$this->toXml($data, $root, self::ITEM_ELEMENT);
 		return $this->xml->saveXML();
 	}
 
