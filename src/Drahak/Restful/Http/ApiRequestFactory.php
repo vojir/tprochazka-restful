@@ -38,7 +38,7 @@ class ApiRequestFactory
 
 		return new Request(
 			$request->getUrl(), $request->getQuery(), $request->getPost(), $request->getFiles(), $request->getCookies(), $request->getHeaders(),
-			$this->getPreferredMethod($request), $request->getRemoteAddress(), $request->getRemoteHost()
+			$this->getPreferredMethod($request), $request->getRemoteAddress()
 		);
 	}
 
