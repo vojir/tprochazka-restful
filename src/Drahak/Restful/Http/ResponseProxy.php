@@ -190,4 +190,17 @@ class ResponseProxy extends Object implements IResponse
 		return $this;
 	}
 
+	/**
+	 * Calls response class methods
+	 * @param  string $name 
+	 * @param  array $args 
+	 * @return mixed
+	 */
+	public function __call($name, $args) {
+        if ($this->response->getReflection()->hasMethod($name)) {
+            return call_user_func_array(array($this->response, $name), $args);
+        } else {
+            return parent::__call($name, $args);
+        }
+	}
 }
