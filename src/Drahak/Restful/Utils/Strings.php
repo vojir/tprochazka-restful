@@ -55,7 +55,7 @@ class Strings extends Nette\Utils\Strings
 		$replace = array(' ', '-');
 		return self::trim(
 			self::lower(
-				str_replace($replace, '_', self::replace(ltrim($string, '!'), '/([^_]+[a-z -]{1})([A-Z])/', '$1_$2'))
+				str_replace($replace, '_', self::replace(ltrim($string, '!'), '/([^_]+[a-z -]{1})([A-Z])/U', '$1_$2'))
 			)
 		);
 	}
