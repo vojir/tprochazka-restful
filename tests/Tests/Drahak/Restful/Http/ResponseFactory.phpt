@@ -63,8 +63,8 @@ class ResponseFactoryTest extends TestCase
 		$this->response->expects('setHeader')->once()->with('Allow', '');
 
 		$response = $this->factory->createHttpResponse(422);
-		Assert::true($response instanceof ResponseProxy);
-		Assert::equal($response->getCode(), 422);
+		Assert::true($response instanceof \Nette\Http\IResponse);
+		Assert::same($response, $this->response);
 	}
 
 	public function testCreateHttpResponseWithPaginator()
@@ -104,8 +104,8 @@ class ResponseFactoryTest extends TestCase
 		$this->request->expects('getUrl')->once()->andReturn($this->url);
 
 		$response = $this->factory->createHttpResponse(200);
-		Assert::true($response instanceof ResponseProxy);
-		Assert::equal($response->getCode(), 200);	
+		Assert::true($response instanceof \Nette\Http\IResponse);
+		Assert::same($response, $this->response);
 	}
 
 	public function testCreateHttpResponseWithDefaultStatusCodeDeterminedFromRequestMethod()
@@ -123,8 +123,8 @@ class ResponseFactoryTest extends TestCase
 		$this->request->expects('getUrl')->once()->andReturn($this->url);
 
 		$response = $this->factory->createHttpResponse();
-		Assert::true($response instanceof ResponseProxy);
-		Assert::equal($response->getCode(), 201);	
+		Assert::true($response instanceof \Nette\Http\IResponse);
+		Assert::same($response, $this->response);
 	}
 
 	/**

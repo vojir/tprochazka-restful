@@ -160,7 +160,6 @@ class RestfulExtension extends CompilerExtension
 			->setFactory($this->prefix('@httpRequestFactory') . '::createHttpRequest');
 
 		$container->getDefinition('httpResponse')
-			->setClass('Drahak\Restful\Http\ResponseProxy')
 			->setFactory($this->prefix('@httpResponseFactory') . '::createHttpResponse');
 
 		$container->addDefinition($this->prefix('requestFilter'))

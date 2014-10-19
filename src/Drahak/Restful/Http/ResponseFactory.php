@@ -66,7 +66,7 @@ class ResponseFactory extends Object
 	 */
 	public function createHttpResponse($code = NULL)
 	{
-		$response = new ResponseProxy($this->response ? $this->response : new Response);
+		$response = $this->response ? $this->response : new Response();
 		$response->setCode($this->getCode($code));
 	
 		try {
