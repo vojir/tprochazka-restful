@@ -205,6 +205,9 @@ class ResponseFactory extends Object implements IResponseFactory
 	{
 		$accept = explode(',', $contentType);
 		$acceptableTypes = array_keys($this->responses);
+		if(!$contentType) {
+			return $acceptableTypes[0];
+		}
 		foreach ($accept as $mimeType) {
 			if ($mimeType === '*/*') return $acceptableTypes[0];
 			foreach ($acceptableTypes as $formatMime) {
