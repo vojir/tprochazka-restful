@@ -174,6 +174,26 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	}
 
 	/**
+	 * Create error response from exception
+	 * @param \Exception $e
+	 * @return \Drahak\Restful\IResource
+	 */ 
+	protected function createErrorResource(\Exception $e)
+	{
+		$resource = $this->resourceFactory->create(array(
+			'code' => $e->getCode(),
+			'status' => 'error',
+			'message' => $e->getMessage()
+		));
+		
+		if (isset($e->errors) && $e->errors) {
+			$resource->errors = $e->errors;
+		}
+
+		return $resource;
+	}
+
+	/**
 	 * Send error resource to output
 	 * @param \Exception $e
 	 */
@@ -181,22 +201,8 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 	{
 		/** @var Request $request */
 		$request = $this->getHttpRequest();
-                
-		$code = $e->getCode() ? $e->getCode() : 500;
-		if ($code < 100 || $code > 599) {
-			$code = 400;
-		}
-
-		$error = array(
-			'code' => $code,
-			'status' => 'error',
-			'message' => $e->getMessage()
-		);
-		$this->resource = $this->resourceFactory->create($error);
-		
-		if (isset($e->errors) && $e->errors) {
-			$this->resource->errors = $e->errors;
-		}
+        
+        $this->resource = $this->createErrorResource($e);
 
                 // if the $contentType is not forced and the user has requested an unacceptable content-type, default to JSON
 		$accept = $request->getHeader('Accept');
@@ -206,7 +212,7 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
                 
 		try {
 			$response = $this->responseFactory->create($this->resource, $contentType);
-			$response = new ErrorResponse($response, $code);
+			$response = new ErrorResponse($response, ($e->getCode() > 99 && $e->getCode() < 600 ? $e->getCode() : 400));
 			$this->sendResponse($response);
 		} catch (InvalidStateException $e) {
 			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e), $contentType);
