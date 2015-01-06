@@ -509,7 +509,7 @@ X-Total-Count: 1000
 In case you want to load just a part of a resource (e.g. it's expensive to load whole resource data), you should add `fields` parameter to query params with list of desired fields (e.q. `fields=user_id,name,email`). In `RequestFilter`, you can get this list (`array('user_id', 'name', 'email')`) by calling `getFieldsList()` method.
 
 ### Sort list
-If you want to sort data provided by resource you will probably need properties according to which you sort it. To make it as easy as possible you can get it from `sort` query parameter (such as `query=name,-created_at`) as `array('name' => 'ASC', 'created_at' => 'DESC')` by calling `RequestFilter` method `getSortList()`
+If you want to sort data provided by resource you will probably need properties according to which you sort it. To make it as easy as possible you can get it from `sort` query parameter (such as `sort=name,-created_at`) as `array('name' => 'ASC', 'created_at' => 'DESC')` by calling `RequestFilter` method `getSortList()`
 
 ___
 
