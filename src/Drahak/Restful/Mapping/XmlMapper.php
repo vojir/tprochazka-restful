@@ -114,13 +114,15 @@ class XmlMapper extends Object implements IMapper
 		try {
 			$useErrors = libxml_use_internal_errors(true);
 			$xml = simplexml_load_string($data); 
-			if (!$xml) {
+			if ($xml === FALSE) {
 				$error = libxml_get_last_error();
 				throw new MappingException('Input is not valid XML document: ' . $error->message . ' on line ' . $error->line);
 			}
 			libxml_clear_errors();
 			libxml_use_internal_errors($useErrors);
-			return $this->normalize(Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY));
+
+			$data = Json::decode(Json::encode((array) $xml), Json::FORCE_ARRAY);
+			return $data ? $this->normalize($data) : array();
 		} catch (JsonException $e) {
 			throw new MappingException('Error in parsing response: ' . $e->getMessage());
 		}

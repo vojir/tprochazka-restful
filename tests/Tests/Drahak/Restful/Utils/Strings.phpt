@@ -34,7 +34,7 @@ class StringsTest extends TestCase
 	public function testConvertsStringToSnakeCase()
 	{
 		$snake = Strings::toSnakeCase('I really_do not_like_WhenPeople do not_comply WithStandards');
-		Assert::equal($snake, 'i_really_do_not_like_when_people_do_not_comply_with_standards');
+		Assert::equal($snake, 'i_really_do_not_like_when_people_do_not_comply__with_standards');
 	}
 
 	public function testConvertsStringToPascalCase()
