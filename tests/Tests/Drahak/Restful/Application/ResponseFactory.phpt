@@ -279,5 +279,15 @@ class ResponseFactoryTest extends TestCase
 		$this->factory->create($this->resource);
     }
 
+    public function testAcceptContentTypeIfItsIsRegistered()
+    {
+    	Assert::true($this->factory->isAcceptable(IResource::JSON));
+    }
+
+    public function testRejectContentTypeIfItsIsNotRegistered()
+    {
+    	Assert::false($this->factory->isAcceptable('data/custom'));
+    }
+
 }
 \run(new ResponseFactoryTest());

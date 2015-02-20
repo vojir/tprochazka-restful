@@ -173,7 +173,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	public function isAcceptable($contentType)
 	{
 		try {
-			$this->getPreferredContentType($this->request->getHeader('Accept'));
+			$this->getPreferredContentType($contentType);
 			return TRUE;
 		} catch (InvalidStateException $e) {
 			return FALSE;
