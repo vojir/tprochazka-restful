@@ -73,10 +73,12 @@ class MethodHandler extends Object
 	 */
 	protected function checkAllowedMethods()
 	{
-		$methods = $this->methods->getOptions($this->request->getUrl());
-		if (!$methods) return;
+		$availableMethods = $this->methods->getOptions($this->request->getUrl());
+		if (!$availableMethods || in_array($this->request->method, $availableMethods)) {
+			return;
+		}
 
-		$allow = implode(', ', $methods);
+		$allow = implode(', ', $availableMethods);
 		$this->response->setHeader('Allow', $allow);
 		throw BadRequestException::methodNotSupported(
 			'Method not supported. Available methods: ' . $allow);
