@@ -31,7 +31,7 @@ class NullMapper extends Object implements IMapper
 	 */
 	public function parse($data)
 	{
-		return $data;
+		return array();
 	}
 
 
