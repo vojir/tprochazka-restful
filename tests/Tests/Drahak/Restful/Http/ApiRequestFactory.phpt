@@ -128,6 +128,7 @@ class ApiRequestFactoryTest extends TestCase
 	{
 		$url = $this->mockista->create('Nette\Http\UrlScript');
 		$url->expects('__get')->once()->with('query')->andReturn('');
+		$url->expects('setQuery')->once();
 
 		$request = $this->mockista->create('Nette\Http\IRequest');
 		$request->expects('getUrl')->once()->andReturn($url);

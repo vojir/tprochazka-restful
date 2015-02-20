@@ -35,9 +35,11 @@ class ApiRequestFactory
 	public function createHttpRequest()
 	{
 		$request = $this->factory->createHttpRequest();
+		$url = $request->getUrl();
+		$url->setQuery($request->getQuery());
 
 		return new Request(
-			$request->getUrl(), $request->getQuery(), $request->getPost(), $request->getFiles(), $request->getCookies(), $request->getHeaders(),
+			$url, NULL, $request->getPost(), $request->getFiles(), $request->getCookies(), $request->getHeaders(),
 			$this->getPreferredMethod($request), $request->getRemoteAddress()
 		);
 	}
