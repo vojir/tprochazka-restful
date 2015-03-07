@@ -43,6 +43,7 @@ class MethodHandlerTest extends TestCase
 		parent::setUp();
 		$this->methodOptions = $this->mockista->create('Drahak\Restful\Application\MethodOptions');
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
+		$this->request->method = 'METHOD';
 		$this->response = $this->mockista->create('Nette\Http\IResponse');
 		$this->application = $this->mockista->create('Nette\Application\Application');
 		$this->router = $this->mockista->create('Nette\Application\IRouter');
@@ -50,11 +51,17 @@ class MethodHandlerTest extends TestCase
 		$this->methodHandler = new MethodHandler($this->request, $this->response, $this->methodOptions);
 	}
 
+	protected function tearDown()
+	{
+		$this->mockista->assertExpectations();
+	}
+
 	public function testPassesIfRouterMatchesCurrentRequest()
 	{
 		$this->application->expects('getRouter')->once()->andReturn($this->router);
 		$this->router->expects('match')->once()->with($this->request)->andReturn(TRUE);
 		$this->methodHandler->run($this->application);
+		Assert::true(true);
 	}
 
 	public function testPassesIfRouterDoesntMatchButThereAreNoAvailableMethods()
@@ -66,6 +73,7 @@ class MethodHandlerTest extends TestCase
 		$this->methodOptions->expects('getOptions')->once()->with($url)->andReturn(array());
 
 		$this->methodHandler->run($this->application);
+		Assert::true(true);
 	}
 
 	public function testThrowsExceptionIfRouteDoesntMatchAndThereAreAvailableMethods()
@@ -85,6 +93,7 @@ class MethodHandlerTest extends TestCase
 	public function testPassesIfApplicationErrorAppearsButItIsNotBadRequestException()
 	{
 		$this->methodHandler->error($this->application, new \Exception('Something went wrong.'));
+		Assert::true(true);
 	}
 
 	public function testThrowsExceptionIfBadRequestExceptionAppears()

@@ -38,7 +38,7 @@ class ValidatorTest extends TestCase
     {
 		$this->rule->expression = IValidator::REGEXP;
 		$this->rule->argument = "/[a-z0-9]*/i";
-		$this->validator->validate('05das', $this->rule);
+		Assert::true($this->validator->validate('05das', $this->rule));
     }
 
 	public function testThrowsExceptionWhenRegularExpressionNotMatch()
@@ -63,7 +63,7 @@ class ValidatorTest extends TestCase
 	{
 		$this->rule->expression = IValidator::EQUAL;
 		$this->rule->argument = 10;
-		$this->validator->validate('10', $this->rule);
+		Assert::true($this->validator->validate('10', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenValuesAreNotSame()
@@ -78,7 +78,7 @@ class ValidatorTest extends TestCase
 	public function testValidateEmailExpression()
 	{
 		$this->rule->expression = IValidator::EMAIL;
-		$this->validator->validate('test@domain.com', $this->rule);
+		Assert::true($this->validator->validate('test@domain.com', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenEmailIsInvalid()
@@ -92,7 +92,7 @@ class ValidatorTest extends TestCase
 	public function testValidateUrl()
 	{
 		$this->rule->expression = IValidator::URL;
-		$this->validator->validate('http://www.domain.com', $this->rule);
+		Assert::true($this->validator->validate('http://www.domain.com', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenUrlIsInvalid()
@@ -107,7 +107,7 @@ class ValidatorTest extends TestCase
 	{
 		$this->rule->expression = IValidator::MIN_LENGTH;
 		$this->rule->argument = 10;
-		$this->validator->validate('asdasfdsb515sdvbsbf', $this->rule);
+		Assert::true($this->validator->validate('asdasfdsb515sdvbsbf', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenStingLengthIsTooShort()
@@ -123,35 +123,35 @@ class ValidatorTest extends TestCase
 	{
 		$this->rule->expression = IValidator::MAX_LENGTH;
 		$this->rule->argument = 10;
-		$this->validator->validate('asdasd', $this->rule);
+		Assert::true($this->validator->validate('asdasd', $this->rule));
 	}
 
 	public function testIsNumberWithinRange()
 	{
 		$this->rule->expression = IValidator::RANGE;
 		$this->rule->argument = array(10, 20);
-		$this->validator->validate(15, $this->rule);
+		Assert::true($this->validator->validate(15, $this->rule));
 	}
 
 	public function testIsNumberBiggerThenGiven()
 	{
 		$this->rule->expression = IValidator::RANGE;
 		$this->rule->argument = array(10, NULL);
-		$this->validator->validate(15, $this->rule);
+		Assert::true($this->validator->validate(15, $this->rule));
 	}
 
 	public function testIsNumberLowerThenGiven()
 	{
 		$this->rule->expression = IValidator::RANGE;
 		$this->rule->argument = array(NULL, 10);
-		$this->validator->validate(5, $this->rule);
+		Assert::true($this->validator->validate(5, $this->rule));
 	}
 
 	public function testIsRealNumber()
 	{
 		$this->rule->expression = IValidator::RANGE;
 		$this->rule->argument = array(NULL, NULL);
-		$this->validator->validate(5, $this->rule);
+		Assert::true($this->validator->validate(5, $this->rule));
 	}
 
 	public function testRangeRuleThrowsExceptionIfValueIsNotOfNumericType()
@@ -185,7 +185,7 @@ class ValidatorTest extends TestCase
 	{
 		$this->rule->expression = IValidator::LENGTH;
 		$this->rule->argument = array(5, 10);
-		$this->validator->validate('ad6as46', $this->rule);
+		Assert::true($this->validator->validate('ad6as46', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenStringLegthIsOutOfRange()
@@ -200,7 +200,7 @@ class ValidatorTest extends TestCase
 	public function testValidateIntegerValue()
 	{
 		$this->rule->expression = IValidator::INTEGER;
-		$this->validator->validate(456, $this->rule);
+		Assert::true($this->validator->validate(456, $this->rule));
 	}
 
 	public function testThrowsExceptionWhenValueIsNotAnInteger()
@@ -214,7 +214,7 @@ class ValidatorTest extends TestCase
 	public function testValidateFloatValue()
 	{
 		$this->rule->expression = IValidator::FLOAT;
-		$this->validator->validate(45.45698, $this->rule);
+		Assert::true($this->validator->validate(45.45698, $this->rule));
 	}
 
 	public function testThrowsExceptionWhenValueIsNotFloat()
@@ -228,7 +228,7 @@ class ValidatorTest extends TestCase
 	public function testValidateNumericValue()
 	{
 		$this->rule->expression = IValidator::NUMERIC;
-		$this->validator->validate('45.45698', $this->rule);
+		Assert::true($this->validator->validate('45.45698', $this->rule));
 	}
 
 	public function testThrowsExceptionWhenValueIsNotNumeric()
@@ -242,19 +242,19 @@ class ValidatorTest extends TestCase
 	public function testValidateUuid()
 	{
 		$this->rule->expression = IValidator::UUID;
-		$this->validator->validate('bfc5b0f9-a33a-4bf5-8745-0701114ce4f3', $this->rule);
+		Assert::true($this->validator->validate('bfc5b0f9-a33a-4bf5-8745-0701114ce4f3', $this->rule));
 	}
 
 	public function testPassRequiredRuleValidationIfFieldIsNotNull()
 	{
 		$this->rule->expression = IValidator::REQUIRED;
-		$this->validator->validate('a', $this->rule);
+		Assert::true($this->validator->validate('a', $this->rule));
 	}
 
 	public function testPassRequiredRuleValidationIfFieldIsZero()
 	{
 		$this->rule->expression = IValidator::REQUIRED;
-		$this->validator->validate(0, $this->rule);
+		Assert::true($this->validator->validate(0, $this->rule));
 	}
 
 	public function testThrowsValidationExceptionIfRequiredFiledIsNull()
@@ -288,7 +288,7 @@ class ValidatorTest extends TestCase
 		$this->rule->argument = function($value) {
 			return true;
 		};
-		$this->validator->validate('test', $this->rule);
+		Assert::true($this->validator->validate('test', $this->rule));
 	}
 
 	public function testThrowsValidationExceptionIfCallbackValidatorResurnsFalse()

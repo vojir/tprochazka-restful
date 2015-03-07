@@ -30,7 +30,7 @@ class Validator extends Object implements IValidator
 	 * Validate value for this rule
 	 * @param mixed $value
 	 * @param Rule $rule
-	 * @return void
+	 * @return bool
 	 *
 	 * @throws ValidationException
 	 * @throws InvalidStateException
@@ -45,13 +45,14 @@ class Validator extends Object implements IValidator
 			}
 			$params = array($value, $rule);
 			call_user_func_array($callback, $params);
-			return;
+			return TRUE;
 		}
 
 		$expression = $this->parseExpression($rule);
 		if (!Validators::is($value, $expression)) {
 			throw ValidationException::createFromRule($rule, $value);
 		}
+		return TRUE;
 	}
 
 	/**
