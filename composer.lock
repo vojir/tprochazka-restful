@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "369b4d27a9ad8e653008919807092623",
+    "hash": "71d824f7009d778028d7b3e2e0561d7f",
     "packages": [
         {
             "name": "latte/latte",
@@ -771,40 +771,40 @@
         },
         {
             "name": "nette/nette",
-            "version": "dev-master",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/nette.git",
-                "reference": "dd83acebd56e43d6335d95483cf1cefc29f92d0f"
+                "reference": "0aeb94109a668ec6475a3288ef7e8d81ec1814ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/nette/zipball/dd83acebd56e43d6335d95483cf1cefc29f92d0f",
-                "reference": "dd83acebd56e43d6335d95483cf1cefc29f92d0f",
+                "url": "https://api.github.com/repos/nette/nette/zipball/0aeb94109a668ec6475a3288ef7e8d81ec1814ce",
+                "reference": "0aeb94109a668ec6475a3288ef7e8d81ec1814ce",
                 "shasum": ""
             },
             "require": {
-                "latte/latte": "@dev",
-                "nette/application": "@dev",
-                "nette/bootstrap": "@dev",
-                "nette/caching": "@dev",
-                "nette/component-model": "@dev",
-                "nette/database": "@dev",
-                "nette/deprecated": "@dev",
-                "nette/di": "@dev",
-                "nette/finder": "@dev",
-                "nette/forms": "@dev",
-                "nette/http": "@dev",
-                "nette/mail": "@dev",
-                "nette/neon": "@dev",
-                "nette/php-generator": "@dev",
-                "nette/reflection": "@dev",
-                "nette/robot-loader": "@dev",
-                "nette/safe-stream": "@dev",
-                "nette/security": "@dev",
-                "nette/tokenizer": "@dev",
-                "nette/utils": "@dev",
-                "tracy/tracy": "@dev"
+                "latte/latte": "2.3.0",
+                "nette/application": "2.3.1",
+                "nette/bootstrap": "2.3.0",
+                "nette/caching": "2.3.0",
+                "nette/component-model": "2.2.1",
+                "nette/database": "2.3.0",
+                "nette/deprecated": "2.2.1",
+                "nette/di": "2.3.0",
+                "nette/finder": "2.3.0",
+                "nette/forms": "2.3.0",
+                "nette/http": "2.3.0",
+                "nette/mail": "2.3.0",
+                "nette/neon": "2.3.0",
+                "nette/php-generator": "2.3.0",
+                "nette/reflection": "2.3.0",
+                "nette/robot-loader": "2.3.0",
+                "nette/safe-stream": "2.3.0",
+                "nette/security": "2.3.0",
+                "nette/tokenizer": "2.2.0",
+                "nette/utils": "2.3.0",
+                "tracy/tracy": "2.3.0"
             },
             "require-dev": {
                 "nette/tester": "~1.3"
@@ -847,7 +847,7 @@
                 "mvc",
                 "templating"
             ],
-            "time": "2015-02-25 16:28:06"
+            "time": "2015-02-25 22:49:12"
         },
         {
             "name": "nette/php-generator",
@@ -1353,6 +1353,53 @@
             "time": "2013-09-19 16:55:51"
         },
         {
+            "name": "jakub-onderka/php-parallel-lint",
+            "version": "v0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JakubOnderka/PHP-Parallel-Lint.git",
+                "reference": "2b242dcdbdd7369d2a746518ac31bb30c514b728"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JakubOnderka/PHP-Parallel-Lint/zipball/2b242dcdbdd7369d2a746518ac31bb30c514b728",
+                "reference": "2b242dcdbdd7369d2a746518ac31bb30c514b728",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "~0.3",
+                "nette/tester": "~1.3"
+            },
+            "suggest": {
+                "jakub-onderka/php-console-highlighter": "Highlight syntax in code snippet"
+            },
+            "bin": [
+                "parallel-lint"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Onderka",
+                    "email": "jakub.onderka@gmail.com"
+                }
+            ],
+            "description": "This tool check syntax of PHP files about 20x faster than serial check.",
+            "homepage": "https://github.com/JakubOnderka/PHP-Parallel-Lint",
+            "time": "2014-10-05 10:19:39"
+        },
+        {
             "name": "janmarek/mockista",
             "version": "dev-master",
             "source": {
@@ -1466,7 +1513,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "nette/nette": 20,
         "drahak/oauth2": 20,
         "janmarek/mockista": 20
     },
