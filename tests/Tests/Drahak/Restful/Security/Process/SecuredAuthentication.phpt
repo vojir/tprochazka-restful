@@ -53,7 +53,7 @@ class SecuredAuthenticationTest extends TestCase
 			->with($this->input)
 			->andReturn(TRUE);
 
-		$this->process->authenticate($this->input);
+		Assert::true($this->process->authenticate($this->input));
 	}
 
 }

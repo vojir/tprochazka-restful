@@ -55,7 +55,7 @@ class OAuth2AuthenticationTest extends TestCase
 			->with($token)
 			->andReturn(array('access_token' => $token));
 
-		$this->process->authenticate($this->inputFake);
+		Assert::true($this->process->authenticate($this->inputFake));
     }
 
 	public function testThrowsExceptionWhenTokenIsNotFoundOnInput()
