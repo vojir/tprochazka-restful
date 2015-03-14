@@ -40,7 +40,8 @@ class ApiRequestFactory
 
 		return new Request(
 			$url, NULL, $request->getPost(), $request->getFiles(), $request->getCookies(), $request->getHeaders(),
-			$this->getPreferredMethod($request), $request->getRemoteAddress()
+			$this->getPreferredMethod($request), $request->getRemoteAddress(), null,
+			function () use ($request) { return $request->getRawBody(); }
 		);
 	}
 
