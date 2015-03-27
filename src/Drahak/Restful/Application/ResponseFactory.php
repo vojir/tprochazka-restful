@@ -38,7 +38,10 @@ class ResponseFactory extends Object implements IResponseFactory
 	private $jsonp;
 
 	/** @var string pretty print key */
-	private $prettyPrint = 'prettyPrint';
+	private $prettyPrintKey = 'prettyPrint';
+        
+        /** @var boolean */
+        private $prettyPrint = TRUE;
 
 	/** @var array */
 	private $responses = array(
@@ -83,6 +86,16 @@ class ResponseFactory extends Object implements IResponseFactory
 
 	/**
 	 * Set pretty print key
+	 * @param string $prettyPrintKey 
+	 */
+	public function setPrettyPrintKey($prettyPrintKey)
+	{
+		$this->prettyPrintKey = $prettyPrintKey;
+		return $this;
+	}
+        
+        /**
+	 * Set pretty print
 	 * @param string $prettyPrint 
 	 */
 	public function setPrettyPrint($prettyPrint)
@@ -187,14 +200,17 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	protected function isPrettyPrint()
 	{
-		$prettyPrint = $this->request->getQuery($this->prettyPrint);
-		if ($prettyPrint === 'false') {
+		$prettyPrintKey = $this->request->getQuery($this->prettyPrintKey);
+		if ($prettyPrintKey === 'false') {
 			return FALSE;
 		}
-		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
+                if ($prettyPrintKey === 'true') {
+                        return TRUE;
+                }
+		return $this->prettyPrint;
 	}
 
-	/**
+        /**
 	 * Get preferred request content type
 	 * @param  string $contentType may be separed with comma
 	 * @return string
