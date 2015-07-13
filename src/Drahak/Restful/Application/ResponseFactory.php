@@ -166,7 +166,7 @@ class ResponseFactory extends Object implements IResponseFactory
 			throw new InvalidStateException('API response class does not exist.');
 		}
 
-		if (!$resource->getData()) {
+		if (!$resource->hasData()) {
 			$this->response->setCode(204); // No content
 			return new $this->responses[IResource::NULL];
 		}
