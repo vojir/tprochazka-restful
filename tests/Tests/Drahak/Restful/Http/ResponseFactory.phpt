@@ -87,7 +87,8 @@ class ResponseFactoryTest extends TestCase
 			->once()
 			->with('X-Total-Count', 100);
 
-		$this->factory->createHttpResponse(200);
+		$response = $this->factory->createHttpResponse(200);
+		Assert::true($response instanceof \Nette\Http\IResponse);
 	}
 
 	public function testCreateHttpResponseWithAllowedMethods()

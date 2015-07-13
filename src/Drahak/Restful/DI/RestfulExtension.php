@@ -54,6 +54,7 @@ class RestfulExtension extends CompilerExtension
 		'timeFormat' => 'c',
 		'cacheDir' => '%tempDir%/cache',
 		'jsonpKey' => 'jsonp',
+                'prettyPrint' => TRUE,
 		'prettyPrintKey' => 'pretty',
 		'routes' => array(
 			'presentersRoot' => '%appDir%',
@@ -113,7 +114,8 @@ class RestfulExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('responseFactory'))
 			->setClass('Drahak\Restful\Application\ResponseFactory')
 			->addSetup('$service->setJsonp(?)', array($config['jsonpKey']))
-			->addSetup('$service->setPrettyPrint(?)', array($config['prettyPrintKey']));
+			->addSetup('$service->setPrettyPrintKey(?)', array($config['prettyPrintKey']))
+			->addSetup('$service->setPrettyPrint(?)', array($config['prettyPrint']));
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Drahak\Restful\ResourceFactory');

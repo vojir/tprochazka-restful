@@ -38,6 +38,7 @@ class InputFactoryTest extends TestCase
     {
 		parent::setUp();
 		$this->request = $this->mockista->create('Nette\Http\IRequest');
+		$this->request->expects('getRawBody')->once();
 		$this->mapperContext = $this->mockista->create('Drahak\Restful\Mapping\MapperContext');
 		$this->validationScopeFactory = $this->mockista->create('Drahak\Restful\Validation\IValidationScopeFactory');
 		$this->inputFactory = new InputFactory($this->request, $this->mapperContext, $this->validationScopeFactory);

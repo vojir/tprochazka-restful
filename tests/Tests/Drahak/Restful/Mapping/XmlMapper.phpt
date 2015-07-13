@@ -157,6 +157,12 @@ class XmlMapperTest extends TestCase
 		));
 	}
 
+	public function testParseEmptyDataset()
+	{
+		$data = $this->mapper->parse('<?xml version="1.0" encoding="UTF-8"?><root></root>');
+		Assert::same(count($data), 0);
+	}
+
 	public function testResetDocumentContentOnEveryCall()
 	{
 		$data = array('node' => 'value');

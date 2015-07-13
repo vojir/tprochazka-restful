@@ -49,7 +49,7 @@ class ResourceRoute extends Route implements IResourceRouter
 				$action = end($metadataParts);
 			}
 			foreach ($this->methodDictionary as $methodName => $methodFlag) {
-				if (($this->flags & $methodFlag) == $methodFlag) {
+				if (($flags & $methodFlag) == $methodFlag) {
 					$this->actionDictionary[$methodFlag] = $action;
 				}
 			}

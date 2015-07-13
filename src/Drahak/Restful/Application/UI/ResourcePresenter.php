@@ -104,12 +104,6 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			// Create resource object
 			$this->resource = $this->resourceFactory->create();
 
-			// Check if Accept header is invalid
-			$accept = $this->getHttpRequest()->getHeader('Accept');
-			if (!$this->responseFactory->isAcceptable($accept)) {
-				throw new InvalidStateException('Cannot determine response with content type ' . $accept, 406);
-			}
-
 			// calls $this->validate<Action>()
 			$validationProcessed = $this->tryCall($this->formatValidateMethod($this->action), $this->params);
 
@@ -175,42 +169,53 @@ abstract class ResourcePresenter extends UI\Presenter implements IResourcePresen
 			$response = $this->responseFactory->create($this->resource, $contentType);
 			$this->sendResponse($response);
 		} catch (InvalidStateException $e) {
-			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e));
+			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e), $contentType);
 		}
+	}
+
+	/**
+	 * Create error response from exception
+	 * @param \Exception $e
+	 * @return \Drahak\Restful\IResource
+	 */ 
+	protected function createErrorResource(\Exception $e)
+	{
+		$resource = $this->resourceFactory->create(array(
+			'code' => $e->getCode(),
+			'status' => 'error',
+			'message' => $e->getMessage()
+		));
+		
+		if (isset($e->errors) && $e->errors) {
+			$resource->errors = $e->errors;
+		}
+
+		return $resource;
 	}
 
 	/**
 	 * Send error resource to output
 	 * @param \Exception $e
 	 */
-	protected function sendErrorResource(\Exception $e)
+	protected function sendErrorResource(\Exception $e, $contentType = NULL)
 	{
 		/** @var Request $request */
 		$request = $this->getHttpRequest();
-		$code = $e->getCode() ? $e->getCode() : 500;
-		if ($code < 100 || $code > 599) {
-			$code = 400;
-		}
+        
+        $this->resource = $this->createErrorResource($e);
 
-		$error = array(
-			'code' => $code,
-			'status' => 'error',
-			'message' => $e->getMessage()
-		);
-		$this->resource = $this->resourceFactory->create($error);
-		
-		if (isset($e->errors) && $e->errors) {
-			$this->resource->errors = $e->errors;
-		}
-
+                // if the $contentType is not forced and the user has requested an unacceptable content-type, default to JSON
 		$accept = $request->getHeader('Accept');
-		$contentType = !$accept || !$this->responseFactory->isAcceptable($accept) ? IResource::JSON : NULL;
+                if ($contentType === NULL && (!$accept || !$this->responseFactory->isAcceptable($accept))){
+                    $contentType = IResource::JSON;
+                }
+                
 		try {
 			$response = $this->responseFactory->create($this->resource, $contentType);
-			$response = new ErrorResponse($response, $code);
+			$response = new ErrorResponse($response, ($e->getCode() > 99 && $e->getCode() < 600 ? $e->getCode() : 400));
 			$this->sendResponse($response);
 		} catch (InvalidStateException $e) {
-			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e));
+			$this->sendErrorResource(BadRequestException::unsupportedMediaType($e->getMessage(), $e), $contentType);
 		}
 	}
 

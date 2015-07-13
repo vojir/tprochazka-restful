@@ -16,7 +16,7 @@ use Tests\TestCase;
 /**
  * Test: Tests\Drahak\Restful\Application\ResponseFactory.
  *
- * @testCase Tests\Drahak\Restful\Application\ResponseFactoryTest
+ * @testCase
  * @author Drahomír Hanák
  * @package Tests\Drahak\Restful\Application
  */
@@ -276,7 +276,19 @@ class ResponseFactoryTest extends TestCase
 			->andReturn(FALSE);
 
 		$this->factory->prettyPrint = 'pretty';
-		$this->factory->create($this->resource);
+		$response = $this->factory->create($this->resource);
+
+		Assert::true($response instanceof TextResponse);
+    }
+
+    public function testAcceptContentTypeIfItsIsRegistered()
+    {
+    	Assert::true($this->factory->isAcceptable(IResource::JSON));
+    }
+
+    public function testRejectContentTypeIfItsIsNotRegistered()
+    {
+    	Assert::false($this->factory->isAcceptable('data/custom'));
     }
 
 }

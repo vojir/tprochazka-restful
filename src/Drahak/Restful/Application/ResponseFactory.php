@@ -38,7 +38,10 @@ class ResponseFactory extends Object implements IResponseFactory
 	private $jsonp;
 
 	/** @var string pretty print key */
-	private $prettyPrint = 'prettyPrint';
+	private $prettyPrintKey = 'prettyPrint';
+        
+        /** @var boolean */
+        private $prettyPrint = TRUE;
 
 	/** @var array */
 	private $responses = array(
@@ -83,6 +86,16 @@ class ResponseFactory extends Object implements IResponseFactory
 
 	/**
 	 * Set pretty print key
+	 * @param string $prettyPrintKey 
+	 */
+	public function setPrettyPrintKey($prettyPrintKey)
+	{
+		$this->prettyPrintKey = $prettyPrintKey;
+		return $this;
+	}
+        
+        /**
+	 * Set pretty print
 	 * @param string $prettyPrint 
 	 */
 	public function setPrettyPrint($prettyPrint)
@@ -155,6 +168,7 @@ class ResponseFactory extends Object implements IResponseFactory
 
 		if (!$resource->getData()) {
 			$this->response->setCode(204); // No content
+			return new $this->responses[IResource::NULL];
 		}
 
 		$responseClass = $this->responses[$contentType];
@@ -173,7 +187,7 @@ class ResponseFactory extends Object implements IResponseFactory
 	public function isAcceptable($contentType)
 	{
 		try {
-			$this->getPreferredContentType($this->request->getHeader('Accept'));
+			$this->getPreferredContentType($contentType);
 			return TRUE;
 		} catch (InvalidStateException $e) {
 			return FALSE;
@@ -187,14 +201,17 @@ class ResponseFactory extends Object implements IResponseFactory
 	 */
 	protected function isPrettyPrint()
 	{
-		$prettyPrint = $this->request->getQuery($this->prettyPrint);
-		if ($prettyPrint === 'false') {
+		$prettyPrintKey = $this->request->getQuery($this->prettyPrintKey);
+		if ($prettyPrintKey === 'false') {
 			return FALSE;
 		}
-		return $prettyPrint === NULL ? TRUE : (bool)$prettyPrint;
+                if ($prettyPrintKey === 'true') {
+                        return TRUE;
+                }
+		return $this->prettyPrint;
 	}
 
-	/**
+        /**
 	 * Get preferred request content type
 	 * @param  string $contentType may be separed with comma
 	 * @return string
@@ -205,6 +222,9 @@ class ResponseFactory extends Object implements IResponseFactory
 	{
 		$accept = explode(',', $contentType);
 		$acceptableTypes = array_keys($this->responses);
+		if(!$contentType) {
+			return $acceptableTypes[0];
+		}
 		foreach ($accept as $mimeType) {
 			if ($mimeType === '*/*') return $acceptableTypes[0];
 			foreach ($acceptableTypes as $formatMime) {
