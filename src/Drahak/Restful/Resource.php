@@ -41,6 +41,15 @@ class Resource extends Object implements ArrayAccess, Serializable, IteratorAggr
 		return $this->data;
 	}
 
+	/**
+	 * get info if the resource has some data set or is empty
+	 * @return boolean
+	 */
+	public function hasData()
+	{
+		return !empty($this->data);
+	}
+
 	/******************** Serializable ********************/
 
 	/**
