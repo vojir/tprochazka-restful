@@ -6,7 +6,6 @@ use Nette\ArrayList;
 use Nette\Utils\Paginator;
 use Drahak\Restful\InvalidStateException;
 use Nette\Http\IRequest;
-use Nette\Utils\Strings;
 
 /**
  * RequestFilter
