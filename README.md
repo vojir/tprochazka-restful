@@ -26,10 +26,17 @@ The easiest way is to use [Composer](http://doc.nette.org/en/composer)
 
 	$ composer require drahak/restful:@dev
 
-Then add following code to your app bootstrap file before creating container:
+Then register the extension by adding this code to `bootstrap.php` (before creating container):
 
 ```php
 Drahak\Restful\DI\RestfulExtension::install($configurator);
+```
+
+or register it in `config.neon`:
+
+```yaml
+extensions:
+  restful: Drahak\Restful\DI\RestfulExtension
 ```
 
 Neon configuration
