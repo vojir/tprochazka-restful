@@ -84,7 +84,7 @@ Sample usage
 namespace ResourcesModule;
 
 use Drahak\Restful\IResource;
-use Drahak\Restful\Application\UI\ResourcePresenter
+use Drahak\Restful\Application\UI\ResourcePresenter;
 
 /**
  * SamplePresenter resource
