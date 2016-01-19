@@ -146,7 +146,8 @@ class RestfulExtension extends CompilerExtension
 			->addSetup('$service->addMapper(?, ?)', array(IResource::QUERY, $this->prefix('@queryMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::DATA_URL, $this->prefix('@dataUrlMapper')))
 			->addSetup('$service->addMapper(?, ?)', array(IResource::FILE, $this->prefix('@nullMapper')))
-			->addSetup('$service->addMapper(?, ?)', array(IResource::NULL, $this->prefix('@nullMapper')));
+			->addSetup('$service->addMapper(?, ?)', array(IResource::NULL, $this->prefix('@nullMapper')))
+			->addSetup('$service->addMapper(?, ?)', array(IResource::NULL_VALUE, $this->prefix('@nullMapper')));
 
 		// Input & validation
 		$container->addDefinition($this->prefix('inputFactory'))
