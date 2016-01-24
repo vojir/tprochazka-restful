@@ -76,7 +76,8 @@ class ResourceRouterPanel extends Object implements IBarPanel
 			IResourceRouter::PUT => 'PUT',
 			IResourceRouter::DELETE => 'DELETE',
 			IResourceRouter::HEAD => 'HEAD',
-			IResourceRouter::PATCH => 'PATCH'
+			IResourceRouter::PATCH => 'PATCH',
+			IResourceRouter::OPTIONS => 'OPTIONS',
 		);
 		$privateKey = $this->secretKey;
 		$requestTimeKey = $this->requestTimeKey;
