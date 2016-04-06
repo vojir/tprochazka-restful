@@ -310,7 +310,7 @@ class ResponseFactoryTest extends TestCase
 			->with('pretty')
 			->andReturn(FALSE);
 
-		$this->factory->prettyPrint = 'pretty';
+		$this->factory->prettyPrintKey = 'pretty';
 		$response = $this->factory->create($this->resource);
 
 		Assert::true($response instanceof TextResponse);
