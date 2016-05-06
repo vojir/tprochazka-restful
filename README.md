@@ -1,5 +1,8 @@
 Nette REST API
 ==============
+
+[![Build Status](https://travis-ci.org/drahak/Restful.svg?branch=master)](https://travis-ci.org/drahak/Restful)
+
 This repository is being developed.
 
 ### Content
