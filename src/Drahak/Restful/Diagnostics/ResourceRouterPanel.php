@@ -5,9 +5,13 @@ use Traversable;
 use Drahak\Restful\Application\IResourceRouter;
 use Nette\Application\IRouter;
 use Nette\Templating\Helpers;
-use Nette\Diagnostics\IBarPanel;
+use Tracy\IBarPanel;
 use Nette\Object;
 use Nette\Utils\Html;
+
+if (!interface_exists('Tracy\IBarPanel')) {
+	class_alias('Nette\Diagnostics\IBarPanel', 'Tracy\IBarPanel');
+}
 
 /**
  * ResourceRouterPanel to see REST API resource routes
