@@ -6,6 +6,7 @@ use Drahak\Restful\Converters\ResourceConverter;
 /**
  * ConvertedResource
  * @package Drahak\Restful
+ *
  */
 class ConvertedResource extends Resource
 {

@@ -3,15 +3,11 @@ namespace Drahak\Restful\Http;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Nette\Object;
-use Nette\Http;
-use Nette\Utils\Json;
-use Nette\Utils\Strings;
-use Nette\MemberAccessException;
 use Drahak\Restful\Validation\IDataProvider;
 use Drahak\Restful\Validation\IField;
 use Drahak\Restful\Validation\IValidationScope;
 use Drahak\Restful\Validation\IValidationScopeFactory;
+use Nette\SmartObject;
 
 /**
  * Request Input parser
@@ -20,8 +16,10 @@ use Drahak\Restful\Validation\IValidationScopeFactory;
  *
  * @property array $data
  */
-class Input extends Object implements IteratorAggregate, IInput, IDataProvider
+class Input implements IteratorAggregate, IInput, IDataProvider
 {
+
+    use SmartObject;
 
 	/** @var array */
 	private $data;

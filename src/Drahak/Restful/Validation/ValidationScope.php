@@ -1,7 +1,7 @@
 <?php
 namespace Drahak\Restful\Validation;
 
-use Nette\Object;
+use Nette\SmartObject;
 use Nette\Utils\Validators;
 use Nette\Utils\Strings;
 
@@ -11,9 +11,12 @@ use Nette\Utils\Strings;
  * @author Drahomír Hanák
  *
  * @property-read IValidator $validator
+ * @property-read Field[] $fields
  */
-class ValidationScope extends Object implements IValidationScope
+class ValidationScope implements IValidationScope
 {
+
+    use SmartObject;
 
 	/** @var IValidator */
 	private $validator;

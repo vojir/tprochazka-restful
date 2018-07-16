@@ -27,6 +27,8 @@ use Nette\Http;
  * Base presenter for REST API presenters
  * @package Drahak\Restful\Application
  * @author Drahomír Hanák
+ *
+ * @property-read IInput $input
  */
 abstract class ResourcePresenter extends UI\Presenter implements IResourcePresenter
 {

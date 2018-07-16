@@ -4,9 +4,19 @@ namespace Drahak\Restful\Application\Responses;
 
 use Nette\Application\IResponse;
 use Nette\Http;
-use Nette\Object;
+use Nette\SmartObject;
 
-class ErrorResponse extends Object implements IResponse {
+/**
+ * Class ErrorResponse
+ * @package Drahak\Restful\Application\Responses
+ *
+ * @property-read array|\stdClass|\Traversable $data
+ * @property-read string $contentType
+ * @property-read int $code
+ */
+class ErrorResponse implements IResponse {
+
+    use SmartObject;
 
 	private $response;
 
@@ -42,7 +52,7 @@ class ErrorResponse extends Object implements IResponse {
 
 	/**
 	 * Get response data
-	 * @return array|\stdClass|\Traversable
+	 * @return int
 	 */
 	public function getCode()
 	{

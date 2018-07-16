@@ -1,16 +1,18 @@
 <?php
 namespace Drahak\Restful\Converters;
 
-use Nette\Object;
 use Drahak\Restful\Utils\Strings;
+use Nette\SmartObject;
 
 /**
  * PascalCaseConverter
  * @package Drahak\Restful\Converters
  * @author Drahomír Hanák
  */
-class PascalCaseConverter extends Object implements IConverter
+class PascalCaseConverter implements IConverter
 {
+
+    use SmartObject;
 
 	/**
 	 * Converts resource data keys to PascalCase

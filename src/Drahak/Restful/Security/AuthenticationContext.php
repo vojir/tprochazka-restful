@@ -3,15 +3,18 @@ namespace Drahak\Restful\Security;
 
 use Drahak\Restful\Http\IInput;
 use Drahak\Restful\Security\Process\AuthenticationProcess;
-use Nette\Object;
+use Nette\SmartObject;
 
 /**
  * AuthenticationContext determines which authentication process should use
  * @package Drahak\Restful\Security
  * @author Drahomír Hanák
+ * @property-write AuthenticationProcess $process
  */
-class AuthenticationContext extends Object
+class AuthenticationContext
 {
+
+    use SmartObject;
 
 	/** @var AuthenticationProcess */
 	private $process;
