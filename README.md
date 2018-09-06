@@ -1,6 +1,10 @@
 Nette REST API
 ==============
 
+Fork of [marten-cz](https://github.com/marten-cz/Restful) fork with support for PHP 7.2 (like SmartObject in Nette instead of Object).
+And with fix of requiring [nette/deprecated](https://github.com/drahak/Restful/issues/129) dependency provided by [Trejjam](https://github.com/Trejjam/Restful).
+It is always sad when original autor stop to receive pull requests.
+
 [![Build Status](https://travis-ci.org/drahak/Restful.svg?branch=master)](https://travis-ci.org/drahak/Restful)
 
 This repository is being developed.
@@ -27,7 +31,7 @@ Installation & setup
 --------------------
 The easiest way is to use [Composer](http://doc.nette.org/en/composer)
 
-	$ composer require drahak/restful:@dev
+	$ composer require tprochazka/restful:@dev
 
 Then register the extension by adding this code to `bootstrap.php` (before creating container):
 
