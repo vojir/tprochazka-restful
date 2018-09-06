@@ -1,5 +1,5 @@
 {
-	"name": "marten-cz/restful",
+	"name": "tprochazka/restful",
 	"type": "library",
 	"description": "Nette REST API bundle",
 	"keywords": ["nette", "rest", "api", "drahak"],
