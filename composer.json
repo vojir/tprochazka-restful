@@ -21,10 +21,10 @@
 		"nette/caching": "~2.0|~3.0",
 		"nette/di": "~2.0|~3.0",
 		"nette/http": "~2.0|~3.0",
-		"nette/reflection": "~2.0|~3.0",
-		"nette/robot-loader": "~2.0|~3.0",
+		"nette/reflection": "~2.0|~3.0|~4.0",
+		"nette/robot-loader": "~2.0|~3.0|~4.0",
 		"nette/security": "~2.0|~3.0",
-		"nette/utils": "~2.0|~3.0"
+		"nette/utils": "~2.0|~3.0|~4.0"
 	},
 	"require-dev": {
 		"drahak/oauth2": "dev-master",
